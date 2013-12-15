@@ -25,6 +25,15 @@ Or just add it to your Gemfile
 Use
 ===
 
+Create a `MailCannon::Envelope`:
+```ruby
+envelope = MailCannon::Envelope.create(
+  from: 'test@mailcannon.com',
+  to: 'lucasmartins@railsnapraia.com',
+  subject: 'Test',
+  mail: MailCannon::Mail.create(text: 'you will see this when no HTML reader is available', html: 'this should be an HTML'))
+envelope.send!
+```
 ### Configuration file
 If you are on Rails, run the following command to generate a config file:
 

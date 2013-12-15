@@ -1,5 +1,3 @@
-load 'lib/mailcannon/adapters/sendgrid.rb'
-
 class MailCannon::Envelope
   include Mongoid::Document
   include Mongoid::Timestamps

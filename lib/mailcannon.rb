@@ -22,15 +22,14 @@ class Module
 end
 
 module MailCannon
-  
-  load 'mailcannon/envelope.rb'
-  load 'mailcannon/mail.rb'
-  load 'mailcannon/stamp.rb'
-  load 'mailcannon/event.rb'
-  load 'mailcannon/adapter.rb'
-  load 'mailcannon/adapters/sendgrid.rb'
-  load 'mailcannon/workers/single_barrel.rb'
-  load 'mailcannon/version.rb'
+  require_relative 'mailcannon/adapter'
+  require_relative 'mailcannon/adapters/sendgrid'
+  require_relative 'mailcannon/envelope'
+  require_relative 'mailcannon/mail'
+  require_relative 'mailcannon/stamp'
+  require_relative 'mailcannon/event'
+  require_relative 'mailcannon/workers/single_barrel'
+  require_relative 'mailcannon/version'
   
   self.warmode if ENV['MAILCANNON_MODE']=='war'
   
