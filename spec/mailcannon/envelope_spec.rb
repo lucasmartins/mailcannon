@@ -6,6 +6,11 @@ describe MailCannon::Envelope do
     it "creates a new Stamp" do
       expect{ envelope.save }.to change{MailCannon::Stamp.count}.by(1)
     end
+    context "check for expected adapter behavior" do
+      it "implements send! behavior" do
+        expect(envelope.respond_to?(:send!)).to be_true
+      end
+    end
   end
   
   describe "#stamp!" do
