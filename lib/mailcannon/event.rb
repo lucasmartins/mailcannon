@@ -1,4 +1,4 @@
-class Mailgun::Event
+class MailCannon::Event
   
   EVENTS = [
     'new',
@@ -15,7 +15,7 @@ class Mailgun::Event
   ]
   
   EVENTS.each do |module_name|
-Mailgun::Event.class_eval <<RUBY
+MailCannon::Event.class_eval <<RUBY
 module #{module_name.camelize}
   def self.to_i
     #{EVENTS.index(module_name)}
@@ -24,7 +24,7 @@ module #{module_name.camelize}
     "#{module_name}"
   end
   def self.stamp
-    Mailgun::Stamp.new({code: #{EVENTS.index(module_name)} })
+    MailCannon::Stamp.new({code: #{EVENTS.index(module_name)} })
   end
   def self.to_stamp
     self.stamp
@@ -45,7 +45,7 @@ RUBY
   private
   def self.eval_module(code)
     if EVENTS.include?(code)
-      return eval("Mailgun::Event::#{code.camelize}")
+      return eval("MailCannon::Event::#{code.camelize}")
     else
       raise "invalid code. Use one of the following: #{EVENTS}"
     end

@@ -1,4 +1,4 @@
-class Mailgun::Mail
+class MailCannon::Mail
   include Mongoid::Document
   include Mongoid::Timestamps
   
@@ -10,4 +10,4 @@ class Mailgun::Mail
   validate :text, presence: true
 end
 
-# Mailgun::Mail.new({text: "If you can't read the HTML content, you're screwed!", html: "<html><body><p>You should see what happens when your email client can't read HTML content.</p></body></html>"})
+# MailCannon::Mail.new({text: "If you can't read the HTML content, you're screwed!", html: "<html><body><p>You should see what happens when your email client can't read HTML content.</p></body></html>"})

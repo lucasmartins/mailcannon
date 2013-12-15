@@ -1,4 +1,4 @@
-module Mailgun::Adapter
+module MailCannon::Adapter
   module Sendgrid
     module InstanceMethods
       def send!

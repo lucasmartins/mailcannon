@@ -1,4 +1,4 @@
-class Mailgun::Stamp
+class MailCannon::Stamp
   include Mongoid::Document
   include Mongoid::Timestamps
   
@@ -9,8 +9,8 @@ class Mailgun::Stamp
   validate :code, :envelope, presence: true
   
   def event
-    Mailgun::Event.from_code(self.code)
+    MailCannon::Event.from_code(self.code)
   end
 end
 
-# stamp = Mailgun::Stamp.new({code: 3})
+# stamp = MailCannon::Stamp.new({code: 3})

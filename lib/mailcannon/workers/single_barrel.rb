@@ -3,12 +3,12 @@ class MailCannon::SingleBarrel
 
   def perform(envelope_id)
     aggregator = Librato::Metrics::Aggregator.new
-    aggregator.time 'mailgun.shooter.perform' do
+    aggregator.time 'mailcannon.shooter.perform' do
       envelope_id = envelope_id['$oid'] if envelope_id['$oid']
-      puts "sending Mailgun::Envelope.find('#{envelope_id}')"
+      puts "sending MailCannon::Envelope.find('#{envelope_id}')"
     
       begin
-        envelope = Mailgun::Envelope.find(envelope_id)
+        envelope = MailCannon::Envelope.find(envelope_id)
         if envelope.valid?
           response = envelope.send!
           unless response==true
@@ -16,7 +16,7 @@ class MailCannon::SingleBarrel
           end
         end  
       rescue Exception => e
-        puts "unable to send Mailgun::Envelope.find(#{envelope_id})"
+        puts "unable to send MailCannon::Envelope.find(#{envelope_id})"
         puts e.backtrace
       end
     end
