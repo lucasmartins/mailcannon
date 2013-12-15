@@ -1,0 +1,36 @@
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "mailcannon/version"
+
+Gem::Specification.new do |s|
+  s.name                  = "mailcannon"
+  s.version               = MailCannon::Version::STRING
+  s.platform              = Gem::Platform::RUBY
+  s.required_ruby_version = ">= 1.9.3"
+  s.authors               = ["Lucas Martins"]
+  s.email                 = ["lucasmartins@railsnapraia.com"]
+  s.homepage              = "http://rubygems.org/gems/mailcannon"
+  s.summary               = "Parking Gem name"
+  s.description           = s.summary
+  s.license               = "MIT"
+
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib"]
+
+  s.add_dependency 'redis'
+  s.add_dependency 'mongoid'
+  s.add_dependency 'sidekiq'
+  s.add_dependency 'sendgrid_webapi'
+  s.add_dependency 'librato-metrics'
+  s.add_dependency 'rubysl'
+  #s.add_dependency 'jruby-openssl'
+
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "rspec-mocks"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "pry-nav"
+end
+

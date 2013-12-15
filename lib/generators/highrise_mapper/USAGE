@@ -1,0 +1,8 @@
+Description:
+    Creates a sample mailcannon.yml
+
+Example:
+    rails generate mailcannon:config
+
+    This will create:
+        config/mailcannon.yml
