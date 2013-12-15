@@ -12,7 +12,7 @@ class MailCannon::Stamp
     MailCannon::Event.from_code(self.code)
   end
   
-  def self.stamp_from_code(code)
+  def self.from_code(code)
     if code.is_a? Fixnum
       return MailCannon::Stamp.new({code: code})
     elsif code.is_a? MailCannon::Stamp
@@ -22,5 +22,3 @@ class MailCannon::Stamp
     end
   end
 end
-
-# stamp = MailCannon::Stamp.new({code: 3})

@@ -27,8 +27,13 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubysl'
   #s.add_dependency 'jruby-openssl'
 
+  s.add_development_dependency "vcr"
   s.add_development_dependency "rspec"
   s.add_development_dependency "rspec-mocks"
+  s.add_development_dependency "rspec-expectations"
+  s.add_development_dependency "webmock", '>= 1.8.0', '< 1.16'
+  s.add_development_dependency "database_cleaner"
+  s.add_development_dependency "factory_girl"
   s.add_development_dependency "rake"
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-nav"

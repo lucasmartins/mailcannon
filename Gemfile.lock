@@ -7,12 +7,15 @@ GEM
     activesupport (3.2.16)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
+    addressable (2.3.5)
     aggregate (0.2.2)
     builder (3.0.4)
     celluloid (0.15.2)
       timers (~> 1.1.0)
     coderay (1.0.9)
     connection_pool (1.2.0)
+    crack (0.4.1)
+      safe_yaml (~> 0.9.0)
     database_cleaner (1.2.0)
     diff-lcs (1.2.4)
     factory_girl (4.3.0)
@@ -256,6 +259,7 @@ GEM
     rubysl-xmlrpc (2.0.0)
     rubysl-yaml (2.0.4)
     rubysl-zlib (2.0.1)
+    safe_yaml (0.9.7)
     sendgrid_webapi (0.0.2)
       faraday (~> 0.8.0)
       json (~> 1.8.0)
@@ -268,6 +272,10 @@ GEM
     slop (3.4.5)
     timers (1.1.0)
     tzinfo (0.3.38)
+    vcr (2.8.0)
+    webmock (1.15.2)
+      addressable (>= 2.2.7)
+      crack (>= 0.3.2)
 
 PLATFORMS
   ruby
@@ -288,3 +296,5 @@ DEPENDENCIES
   rubysl
   sendgrid_webapi
   sidekiq
+  vcr
+  webmock (>= 1.8.0, < 1.16)

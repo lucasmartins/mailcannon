@@ -14,6 +14,8 @@ group :development do
   gem 'rspec-expectations'
   gem 'database_cleaner'
   gem 'factory_girl'
+  gem 'vcr'
+  gem 'webmock', '>= 1.8.0', '< 1.16'
   gem 'rake'
   gem 'pry'
   gem 'pry-nav'

@@ -27,6 +27,7 @@ module MailCannon
   load 'mailcannon/mail.rb'
   load 'mailcannon/stamp.rb'
   load 'mailcannon/event.rb'
+  load 'mailcannon/adapter.rb'
   load 'mailcannon/adapters/sendgrid.rb'
   load 'mailcannon/workers/single_barrel.rb'
   load 'mailcannon/version.rb'

@@ -28,7 +28,7 @@ class MailCannon::Envelope
   
   def stamp!(code)
     self.class.valid_code_kind?(code)
-    self.stamps << MailCannon::Stamp.stamp_from_code(code)
+    self.stamps << MailCannon::Stamp.from_code(code)
   end
   
   def after_sent(response)
@@ -47,7 +47,3 @@ class MailCannon::Envelope
   end
     
 end
-
-# MailCannon::Envelope.new({from: 'test@rdstation.com.br', to: 'lucasmartins@me.com', subject: 'Test'})
-
-# MailCannon::Envelope.new({from: 'test@rdstation.com.br', to: 'lucasmartins@me.com', subject: 'Test', mail: MailCannon::Mail.new({text: "If you can't read the HTML content, you're screwed!", html: "<html><body><p>You should see what happens when your email client can't read HTML content.</p></body></html>"})})
