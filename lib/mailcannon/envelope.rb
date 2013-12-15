@@ -27,10 +27,10 @@ class MailCannon::Envelope
   end
   
   def stamp!(code)
-    unless [Fixnum, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code)
+    unless [Fixnum, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code.to_s.camelize.to_sym)
       raise 'code must be an Integer, MailCannon::Event::*, or MailCannon::Stamp !'
     end
-    if code.is_a? Integer
+    if code.is_a? Fixnum
       self.stamps << MailCannon::Stamp.new({code: code})
     elsif code.is_a? MailCannon::Stamp
       self.stamps << code
@@ -43,6 +43,7 @@ class MailCannon::Envelope
     if response
       stamp!(MailCannon::Event::Processed.stamp)
       self.mail.destroy
+      self.mail=nil # to avoid reload
     end
   end
     

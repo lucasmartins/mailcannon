@@ -32,34 +32,30 @@ describe MailCannon::Envelope do
         expect(envelope.stamps.last.event.to_i).to be(3)
       end
     end
+    context "passing Event" do
+      let(:envelope) { build(:envelope) }
+      let(:event) { MailCannon::Event::Click }
+      
+      it "creates a Stamp" do
+        expect{ envelope.stamp!(event) }.to change{ envelope.stamps.size }.by(1)
+      end
+      it "creates the right kind of Stamp" do
+        envelope.stamp!(event)
+        expect(envelope.stamps.last).to be_kind_of(MailCannon::Stamp)
+        expect(envelope.stamps.last.event.to_i).to be(4)
+      end
+    end
+  end
+  
+  describe "#after_sent" do
+    let(:envelope) { create(:envelope) }
+    it "creates a Processed Stamp" do
+      envelope.after_sent(true)
+      expect(envelope.stamps.last.event).to be(MailCannon::Event::Processed)
+    end
+    it "destroys the email content" do
+      envelope.after_sent(true)
+      expect(envelope.mail).to be_nil
+    end
   end
 end
-=begin
-
-unless [Integer, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code)
-  raise 'code must be an Integer, MailCannon::Event::*, or MailCannon::Stamp !'
-end
-if code.is_a? Integer
-  self.stamps << MailCannon::Stamp.new({code: code})
-elsif code.is_a? MailCannon::Stamp
-  self.stamps << code
-else # MailCannon::Event::*
-  self.stamps << code.stamp
-end
-
-EVENTS = [
-  'new',
-  'processed',
-  'delivered',
-  'open',
-  'click',
-  'deferred',
-  'spam_report',
-  'spam',
-  'unsubscribe',
-  'drop',
-  'bounce'
-]
-
-EVENTS.each do |module_name|
-=end
