@@ -1,14 +1,3 @@
-PATH
-  remote: .
-  specs:
-    mailcannon (0.0.1)
-      librato-metrics
-      mongoid
-      redis
-      rubysl
-      sendgrid_webapi
-      sidekiq
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -24,7 +13,10 @@ GEM
       timers (~> 1.1.0)
     coderay (1.0.9)
     connection_pool (1.2.0)
+    database_cleaner (1.2.0)
     diff-lcs (1.2.4)
+    factory_girl (4.3.0)
+      activesupport (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     ffi2-generators (0.1.1)
@@ -281,9 +273,18 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mailcannon!
+  database_cleaner
+  factory_girl
+  jruby-openssl
+  librato-metrics
+  mongoid
   pry
   pry-nav
   rake
+  redis
   rspec
+  rspec-expectations
   rspec-mocks
+  rubysl
+  sendgrid_webapi
+  sidekiq

@@ -1,4 +1,15 @@
 require 'yaml'
+require 'openssl'
+require 'bundler'
+require 'json'
+require 'mongoid'
+
+case ENV['RACK_ENV']
+when 'production'
+  Bundler.require(:default)
+else
+  Bundler.require(:default,:development)
+end
 
 Encoding.default_internal = "utf-8"
 Encoding.default_external = "utf-8"
@@ -12,11 +23,18 @@ end
 
 module MailCannon
   
+  load 'mailcannon/envelope.rb'
+  load 'mailcannon/mail.rb'
+  load 'mailcannon/stamp.rb'
+  load 'mailcannon/event.rb'
+  load 'mailcannon/adapters/sendgrid.rb'
+  load 'mailcannon/workers/single_barrel.rb'
   load 'mailcannon/version.rb'
   
   self.warmode if ENV['MAILCANNON_MODE']=='war'
   
   def self.warmode
+    Bundler.require(:default)
     Mongoid.load!("config/mongoid.yml", ENV['RACK_ENV']) # change to env URL
     Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_TOKEN']) if ENV['LIBRATO_TOKEN'] && ENV['LIBRATO_USER'] # change to initializer
     redis_uri = URI.parse(ENV['REDIS_URL'])

@@ -1,0 +1,24 @@
+development:
+  # Configure available database sessions. (required)
+  sessions:
+    # Defines the default session. (required)
+    default:
+      # Defines the name of the default database that Mongoid can connect to.
+      # (required).
+      database: mailcannon_development
+      # Provides the hosts the default session can connect to. Must be an array
+      # of host:port pairs. (required)
+      hosts:
+        - localhost:<%= ENV['MONGODB_PORT'] || '27017' %>
+test:
+  sessions:
+    default:
+      database: mailcannon_test
+      hosts:
+        - localhost:<%= ENV['MONGODB_PORT'] || '27017' %>
+      options:
+        consistency: :strong
+        # In the test environment we lower the retries and retry interval to
+        # low amounts for fast failures.
+        max_retries: 1
+        retry_interval: 0

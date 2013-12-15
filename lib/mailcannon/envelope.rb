@@ -16,6 +16,7 @@ class MailCannon::Envelope
   field :bcc, type: String
   field :reply_to, type: String
   field :date, type: Date
+  field :xsmtpapi, type: Hash
   
   validates :from, :to, :subject, :mail, presence: true
   validates_associated :mail
@@ -26,7 +27,7 @@ class MailCannon::Envelope
   end
   
   def stamp!(code)
-    unless [Integer, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code)
+    unless [Fixnum, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code)
       raise 'code must be an Integer, MailCannon::Event::*, or MailCannon::Stamp !'
     end
     if code.is_a? Integer
