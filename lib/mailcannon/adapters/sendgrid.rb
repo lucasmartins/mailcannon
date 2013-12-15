@@ -16,18 +16,22 @@ module MailCannon::Adapter
           :bcc => self.bcc,
           :replyto => self.reply_to
         )
-        if response['message']=='success'
-          success = true
-        else
-          success = false
-        end
-        self.after_sent(success)
+        self.after_sent(successfully_sent?(response))
         return response
       end
     end
     
     def self.included(receiver)
       receiver.send :include, InstanceMethods
+    end
+    
+    private
+    def successfully_sent?(response)
+      if response['message']=='success'
+        true
+      else
+        false
+      end
     end
   end
 end
