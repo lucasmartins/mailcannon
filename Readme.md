@@ -58,4 +58,4 @@ This is an opensource project so don't expect premium support, but don't be shy,
 License
 =======
 
-MailCannon is free software under the [MIT license](http://lucasmartins.mit-license.org).
+MailCannon is free software under the [FreeBSD license](http://www.freebsd.org/copyright/freebsd-license.html).
