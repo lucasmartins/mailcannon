@@ -45,4 +45,4 @@ VCR.configure do |c|
   c.allow_http_connections_when_no_cassette = false
 end
 
-Mongoid.load!("spec/support/mongoid.yml", ENV['RACK_ENV'])
+Mongoid.load!("spec/support/mongoid.yml", 'test')
