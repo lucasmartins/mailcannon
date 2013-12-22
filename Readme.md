@@ -1,4 +1,4 @@
-[![Gem version](https://badge.fury.io/rb/mailcannon.png)](http://rubygems.org/gems/mailcannon) [![Code Climate](https://codeclimate.com/github/lucasmartins/mailcannon.png)](https://codeclimate.com/github/lucasmartins/mailcannon) [![Build Status](https://travis-ci.org/lucasmartins/mailcannon.png?branch=master)](https://travis-ci.org/lucasmartins/mailcannon) [![Dependency Status](https://gemnasium.com/lucasmartins/mailcannon.png)](https://gemnasium.com/lucasmartins/mailcannon)
+[![Gem version](https://badge.fury.io/rb/mailcannon.png)](http://rubygems.org/gems/mailcannon) [![Code Climate](https://codeclimate.com/github/lucasmartins/mailcannon.png)](https://codeclimate.com/github/lucasmartins/mailcannon) [![Build Status](https://travis-ci.org/lucasmartins/mailcannon.png?branch=master)](https://travis-ci.org/lucasmartins/mailcannon) [![Dependency Status](https://gemnasium.com/lucasmartins/mailcannon.png)](https://gemnasium.com/lucasmartins/mailcannon) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lucasmartins/mailcannon/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 MailCannon
 ==========
