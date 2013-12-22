@@ -4,6 +4,7 @@ gem 'redis'
 gem 'mongoid'
 gem 'sidekiq'
 gem 'sendgrid_webapi'
+#gem 'sendgrid_toolkit'
 gem 'librato-metrics'
 gem 'rubysl', platform: :rbx
 gem 'jruby-openssl', platform: :jruby
