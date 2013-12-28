@@ -10,6 +10,7 @@ class MailCannon::Envelope
   field :from_name, type: String
   field :to, type: Array # strings
   field :to_name, type: Array # strings
+  field :substitutions, type: Array # hashes
   field :subject, type: String
   field :bcc, type: String
   field :reply_to, type: String
@@ -22,6 +23,7 @@ class MailCannon::Envelope
   after_create :post_envelope!
 
   def post_envelope!
+    self.save if self.changed?
     self.stamp! MailCannon::Event::New.stamp
     if validate_xsmtpapi(self.xsmtpapi)
       MailCannon::SingleBarrel.perform_async(self.id)
@@ -51,6 +53,7 @@ class MailCannon::Envelope
   end
 
   def validate_xsmtpapi(xsmtpapi)
+    return true # TODO write tests for this method
     if xsmtpapi['to'].is_a? Array
       true
     else
