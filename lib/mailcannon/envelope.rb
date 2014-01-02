@@ -6,16 +6,17 @@ class MailCannon::Envelope
   embeds_one :mail
   embeds_many :stamps
   
+  field :group_id, type: Bignum # create sparse Index for this field, put this in RDoc
   field :from, type: String
   field :from_name, type: String
-  field :to, type: Array # strings
+  field :to, type: Array # of hashes
   field :to_name, type: Array # strings
-  field :substitutions, type: Array # hashes
+  field :substitutions, type: Hash # of hashes
   field :subject, type: String
   field :bcc, type: String
   field :reply_to, type: String
   field :date, type: Date
-  field :xsmtpapi, type: Hash # this will mostly be used by MailCannon itself.
+  field :xsmtpapi, type: Hash # this will mostly be used by MailCannon itself. http://sendgrid.com/docs/API_Reference/SMTP_API/index.html
   
   validates :from, :to, :subject, :mail, presence: true
   validates_associated :mail

@@ -3,7 +3,7 @@ module MailCannon::Adapter
     include MailCannon::Adapter
     module InstanceMethods
       def send!
-        raise 'Invalid Document!' unless self.valid?
+        validate_envelope!
         if self.to.size>1
           response = send_multiple_emails
         else
@@ -11,6 +11,10 @@ module MailCannon::Adapter
         end
         self.after_sent(successfully_sent?(response))
         return response
+      end
+
+      def send_bulk!
+        self.send! # send! does bulk too!
       end
     end
     
@@ -23,6 +27,31 @@ module MailCannon::Adapter
       client = SendGridWebApi::Client.new(ENV['SENDGRID_USERNAME'], ENV['SENDGRID_PASSWORD'])
     end
     
+    def validate_envelope!
+      raise "Invalid Document! #{self.errors.messages}" unless self.valid?
+    end
+
+    def prepare_xsmtpapi!
+      validate_envelope!
+      self.xsmtpapi = build_xsmtpapi({'to'=>self.to},{'sub'=>self.substitutions})
+      validate_xsmtpapi!
+    end
+
+    def build_xsmtpapi(to,subs)
+      xsmtpapi = to
+      xsmtpapi.merge!(subs) if subs!=nil && subs.is_a?(Hash)
+      return xsmtpapi
+    end
+
+    def validate_xsmtpapi!
+      return true
+      if self.to.size>1
+        if xsmtpapi['sub']
+          raise 'sub[Array] must match to[Array] size!' unless xsmtpapi['sub'].first.size==xsmtpapi['to'].size
+        end
+      end
+    end
+
     def send_single_email
       api_client.mail.send(
                 :to => self.to.first[:email],
@@ -38,9 +67,12 @@ module MailCannon::Adapter
     end
 
     def send_multiple_emails
+      #binding.pry
+      prepare_xsmtpapi!
+
       api_client.mail.send(
-                :to => self.to.first[:email],
-                :toname => self.to.first[:name],
+                :to => self.from,
+                #:toname => self.to.first[:name],
                 :subject => self.subject,
                 :text => self.mail.text,
                 :html => self.mail.html,
