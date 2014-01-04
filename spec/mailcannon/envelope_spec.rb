@@ -4,7 +4,7 @@ describe MailCannon::Envelope do
   describe "initialize" do
     let(:envelope) { build(:envelope) }
     it "creates a new Stamp" do
-      expect{ envelope.save }.to change{MailCannon::Stamp.count}.by(1)
+      expect{ envelope.save }.to change{envelope.stamps.size}.by(1)
     end
     context "check for expected adapter behavior" do
       it "implements send! behavior" do

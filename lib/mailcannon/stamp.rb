@@ -5,8 +5,8 @@ class MailCannon::Stamp
   belongs_to :envelope, index: true
   
   field :code, type: Integer, default: 0
-  
-  validate :code, :envelope, presence: true
+  field :recipient # email address for this "notification"
+  validates :code, :envelope, presence: true
   
   def event
     MailCannon::Event.from_code(self.code)

@@ -15,5 +15,13 @@ describe MailCannon::Adapter::Sendgrid do
       end
     end
   end
-end
 
+  describe "#send_bulk!" do
+    let(:envelope) { build(:envelope_multi) }
+    it "sends http request for Sendgrid web API" do
+      VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
+        expect(envelope.send_bulk!).to eq({"message"=>"success"})
+      end
+    end
+  end
+end

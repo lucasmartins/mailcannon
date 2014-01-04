@@ -3,7 +3,7 @@ class MailCannon::SingleBarrel
 
   def perform(envelope_id)
     aggregator = Librato::Metrics::Aggregator.new
-    aggregator.time 'mailcannon.shooter.perform' do
+    aggregator.time 'mailcannon.single_barrel.perform' do
       envelope_id = envelope_id['$oid'] if envelope_id['$oid']
       puts "sending MailCannon::Envelope.find('#{envelope_id}')"
     
