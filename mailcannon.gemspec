@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors               = ["Lucas Martins"]
   s.email                 = ["lucasmartins@railsnapraia.com"]
   s.homepage              = "http://rubygems.org/gems/mailcannon"
-  s.summary               = "Parking Gem name"
+  s.summary               = "A mass mailing tool for real threads aficionados"
   s.description           = s.summary
   s.license               = "MIT"
 
