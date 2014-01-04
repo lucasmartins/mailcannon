@@ -37,8 +37,13 @@ module MailCannon::Adapter
       validate_xsmtpapi!
     end
 
-    def build_xsmtpapi(to,subs)
-      xsmtpapi = to
+    def build_xsmtpapi(recipients,subs)
+      xsmtpapi = {}
+      to = []
+      recipients['to'].each do |h|
+        to.push h[:email]
+      end
+      xsmtpapi.merge!({'to' => to})
       xsmtpapi.merge!(subs) if subs!=nil && subs.is_a?(Hash)
       return xsmtpapi
     end
