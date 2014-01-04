@@ -85,7 +85,7 @@ module MailCannon::Adapter
                 :fromname => self.from_name,
                 :bcc => self.bcc,
                 :replyto => self.reply_to,
-                :xsmtpapi => self.xsmtpapi.to_json
+                :"x-smtpapi" => self.xsmtpapi.to_json
               )
     end
     

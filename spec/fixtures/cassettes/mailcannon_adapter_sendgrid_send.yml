@@ -5,7 +5,7 @@ http_interactions:
     uri: https://sendgrid.com/api/mail.send.json
     body:
       encoding: US-ASCII
-      string: to=lucasmartins%40railsnapraia.com&toname&subject=Test&text=If+you+can%27t+read+the+HTML+content%2C+you%27re+screwed%21&html=%3Chtml%3E%3Cbody%3E%3Cp%3EYou+should+see+what+happens+when+your+email+client+can%27t+read+HTML+content.%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E&from=test%40mailcannon.com&fromname&bcc&replyto&api_user=app5967346%40heroku.com&api_key=i1att6wi
+      string: to=lucasmartins%40railsnapraia.com&toname&subject=Test&text=If+you+can%27t+read+the+HTML+content%2C+you%27re+screwed%21&html=%3Chtml%3E%3Cbody%3E%3Cp%3EYou+should+see+what+happens+when+your+email+client+can%27t+read+HTML+content.%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E&from=test%40mailcannon.com&fromname&bcc&replyto
     headers:
       User-Agent:
       - Faraday v0.8.8
