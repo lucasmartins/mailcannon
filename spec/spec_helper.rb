@@ -10,6 +10,9 @@ require 'factory_girl'
 require 'vcr'
 require 'webmock'
 require 'webmock/rspec'
+require 'coveralls'
+
+Coveralls.wear!
 
 SPECDIR = Pathname.new(File.dirname(__FILE__))
 TMPDIR = SPECDIR.join("tmp")
