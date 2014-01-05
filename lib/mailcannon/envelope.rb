@@ -1,7 +1,7 @@
 class MailCannon::Envelope
   include Mongoid::Document
   include Mongoid::Timestamps
-  include MailCannon::Adapter::Sendgrid
+  include MailCannon::Adapter::SendgridWeb
   
   embeds_one :mail
   embeds_many :stamps

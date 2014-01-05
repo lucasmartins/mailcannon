@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe MailCannon::Adapter::Sendgrid do
+describe MailCannon::Adapter::SendgridWeb do
   describe "#send!" do
     let(:envelope) { build(:envelope) }
     it "sends http request for Sendgrid web API" do

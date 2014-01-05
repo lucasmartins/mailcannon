@@ -23,7 +23,7 @@ end
 
 module MailCannon
   require_relative 'mailcannon/adapter'
-  require_relative 'mailcannon/adapters/sendgrid'
+  require_relative 'mailcannon/adapters/sendgrid_web'
   require_relative 'mailcannon/envelope'
   require_relative 'mailcannon/mail'
   require_relative 'mailcannon/stamp'

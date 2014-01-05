@@ -8,6 +8,9 @@ gem 'sendgrid_webapi'
 gem 'librato-metrics'
 gem 'rubysl', platform: :rbx
 gem 'jruby-openssl', platform: :jruby
+#for SendgridWeb adapter
+gem "yajl-ruby"
+gem "json-schema"
 
 group :development do
   gem 'rake'

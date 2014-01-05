@@ -1,5 +1,7 @@
+require 'json-schema'
+# this will be extracted to an external gem when more adapters are available.
 module MailCannon::Adapter
-  module Sendgrid
+  module SendgridWeb
     include MailCannon::Adapter
     module InstanceMethods
       def send!
@@ -52,9 +54,21 @@ module MailCannon::Adapter
       return true
       if self.to.size>1
         if xsmtpapi['sub']
-          raise 'sub[Array] must match to[Array] size!' unless xsmtpapi['sub'].first.size==xsmtpapi['to'].size
+          xsmtpapi['sub'].each do |sub|
+            raise 'sub[Array] must match to[Array] size!' unless sub.size==xsmtpapi['to'].size
+          end
         end
       end
+=begin
+      schema = {
+        "type" => "object",
+        "required" => ["to"],
+        "properties" => {
+          "to" => {"type" => "array", "default" => [self.to.first]}
+        }
+      }
+      JSON::Validator.validate!(schema, self.xsmtpapi)
+=end
     end
 
     def send_single_email
@@ -72,7 +86,6 @@ module MailCannon::Adapter
     end
 
     def send_multiple_emails
-      #binding.pry
       prepare_xsmtpapi!
 
       api_client.mail.send(
