@@ -10,9 +10,15 @@ require 'factory_girl'
 require 'vcr'
 require 'webmock'
 require 'webmock/rspec'
-require 'coveralls'
 
-Coveralls.wear!
+if ENV['TRAVIS']==true
+  begin
+    require 'coveralls'
+    Coveralls.wear!
+  rescue Exception => e
+    puts "Coveralls not available!"
+  end  
+end
 
 SPECDIR = Pathname.new(File.dirname(__FILE__))
 TMPDIR = SPECDIR.join("tmp")

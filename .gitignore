@@ -1,6 +1,7 @@
 spec/fixtures/cassettes
 tmp/mongod
-spec/fixtures/cassettes
 env.sh
 doc/
 .yardoc/
+coverage/
+.coveralls.yml

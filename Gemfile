@@ -27,5 +27,5 @@ group :test do
   gem 'factory_girl'
   gem 'vcr'
   gem 'webmock', '>= 1.8.0', '< 1.16'
-  gem 'coveralls', require: false
+  gem 'coveralls', platform: :ruby, require: false
 end
