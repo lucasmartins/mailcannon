@@ -16,6 +16,7 @@ group :development do
   gem 'rake'
   gem 'pry'
   gem 'pry-nav'
+  gem 'yard'
 end
 
 group :test do

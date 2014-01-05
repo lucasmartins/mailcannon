@@ -14,13 +14,6 @@ end
 Encoding.default_internal = "utf-8"
 Encoding.default_external = "utf-8"
 
-#Adds a way to retrieve Submodules of a Module, used for CustomContentParsers
-class Module
-  def submodules
-    constants.collect {|const_name| const_get(const_name)}.select {|const| const.class == Module}
-  end
-end
-
 module MailCannon
   require_relative 'mailcannon/adapter'
   require_relative 'mailcannon/adapters/sendgrid_web'
@@ -33,6 +26,7 @@ module MailCannon
   
   self.warmode if ENV['MAILCANNON_MODE']=='war'
   
+  # To be used with caution
   def self.warmode
     Bundler.require(:default)
     Mongoid.load!("config/mongoid.yml", ENV['RACK_ENV']) # change to env URL
@@ -41,10 +35,12 @@ module MailCannon
     $redis = Redis.new(host: redis_uri.host, port: redis_uri.port)
   end
 
+  # Returns the config Hash
   def self.config(root_dir=nil)
     @config ||= load_config(root_dir)
   end
 
+  # Loads the config Hash from the YAML
   def self.load_config(root_dir=nil)
     root_dir ||= Pathname.new(Dir.pwd)
     

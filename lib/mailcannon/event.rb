@@ -1,3 +1,4 @@
+# Manages the mailing Events, very tricky.
 class MailCannon::Event
   
   EVENTS = [

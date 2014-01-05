@@ -1,3 +1,4 @@
+# This worker handles the sending of single emails
 class MailCannon::SingleBarrel
   include Sidekiq::Worker
 

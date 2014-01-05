@@ -1,3 +1,4 @@
+# Where the magic happens, the Envelope is responsible for keeping the information necessary to send the email(s) and holding the Stamps related to mailing Events.
 class MailCannon::Envelope
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -23,6 +24,7 @@ class MailCannon::Envelope
   
   after_create :post_envelope!
 
+  # Post this Envelope!
   def post_envelope!
     self.save if self.changed?
     self.stamp! MailCannon::Event::New.stamp
@@ -33,11 +35,13 @@ class MailCannon::Envelope
     end
   end
 
+  # Stamp this Envelope with code.
   def stamp!(code)
     self.class.valid_code_kind?(code)
     self.stamps << MailCannon::Stamp.from_code(code)
   end
   
+  # Callback to be run after the Envelope has been processed.
   def after_sent(response)
     if response
       stamp!(MailCannon::Event::Processed.stamp)

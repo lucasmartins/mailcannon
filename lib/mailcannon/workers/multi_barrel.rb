@@ -1,3 +1,4 @@
+# This worker handles the sending of multiple emails
 class MailCannon::MultiBarrel
   include Sidekiq::Worker
 

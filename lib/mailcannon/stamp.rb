@@ -1,3 +1,4 @@
+# Holds information about a recipient's email event, like deliveries and bounces.
 class MailCannon::Stamp
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -8,10 +9,13 @@ class MailCannon::Stamp
   field :recipient # email address for this "notification"
   validates :code, :envelope, presence: true
   
+  # Returns the Event for this Stamp. 
   def event
     MailCannon::Event.from_code(self.code)
   end
   
+  # Creates a Stamp from an Event code.
+  # @param code Can be either an Integer, a MailCannon::Event or the MailCannon::Stamp itself.
   def self.from_code(code)
     if code.is_a? Fixnum
       return MailCannon::Stamp.new({code: code})

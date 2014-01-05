@@ -1,3 +1,4 @@
+# Keeps the versioning clean and simple.
 module MailCannon
   module Version
     MAJOR = 0
