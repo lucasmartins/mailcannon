@@ -1,17 +1,17 @@
-# This worker handles the sending of multiple emails
-class MailCannon::MultiBarrel
+# This worker handles Envelopes dispatch
+class MailCannon::Barrel
   include Sidekiq::Worker
 
   def perform(envelope_id)
     aggregator = Librato::Metrics::Aggregator.new
-    aggregator.time 'mailcannon.multi_barrel.perform' do
+    aggregator.time 'mailcannon.barrel.perform' do
       envelope_id = envelope_id['$oid'] if envelope_id['$oid']
       puts "sending MailCannon::Envelope.find('#{envelope_id}')"
     
       begin
         envelope = MailCannon::Envelope.find(envelope_id)
         if envelope.valid?
-          response = envelope.send_bulk!
+          response = envelope.send!
           unless response==true
             raise response
           end

@@ -29,7 +29,7 @@ class MailCannon::Envelope
     self.save if self.changed?
     self.stamp! MailCannon::Event::New.stamp
     if validate_xsmtpapi(self.xsmtpapi)
-      MailCannon::SingleBarrel.perform_async(self.id)
+      MailCannon::Barrel.perform_async(self.id)
     else
       raise 'Invalid xsmtpapi hash!'
     end

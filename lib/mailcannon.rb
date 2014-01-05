@@ -21,7 +21,7 @@ module MailCannon
   require_relative 'mailcannon/mail'
   require_relative 'mailcannon/stamp'
   require_relative 'mailcannon/event'
-  require_relative 'mailcannon/workers/single_barrel'
+  require_relative 'mailcannon/workers/barrel'
   require_relative 'mailcannon/version'
   
   self.warmode if ENV['MAILCANNON_MODE']=='war'
