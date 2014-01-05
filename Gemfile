@@ -9,7 +9,7 @@ gem 'librato-metrics'
 gem 'rubysl', platform: :rbx
 gem 'jruby-openssl', platform: :jruby
 #for SendgridWeb adapter
-gem "yajl-ruby"
+gem "yajl-ruby", :platforms=>[:rbx,:ruby]
 gem "json-schema"
 
 group :development do
