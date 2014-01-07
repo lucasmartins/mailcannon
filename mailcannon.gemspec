@@ -19,6 +19,25 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  if RUBY_ENGINE=='rbx'
+    s.add_runtime_dependency "rubysl"
+  end
+  if RUBY_PLATFORM=='ruby'
+    s.add_runtime_dependency "yajl-ruby"
+  end
+  if RUBY_PLATFORM=='java'
+    s.add_runtime_dependency "jruby-openssl"
+  end
+  
+  s.add_runtime_dependency "redis"
+  s.add_runtime_dependency "mongoid"
+  s.add_runtime_dependency "sidekiq"
+  s.add_runtime_dependency "sendgrid_webapi"
+  s.add_runtime_dependency "librato-metrics"
+  s.add_runtime_dependency "json-schema"
+  s.add_runtime_dependency "redis"
+  s.add_runtime_dependency "redis"
+
   s.add_development_dependency "vcr"
   s.add_development_dependency "rspec"
   s.add_development_dependency "rspec-mocks"
@@ -30,5 +49,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-nav"
   s.add_development_dependency "yard"
+  s.add_development_dependency "coveralls"
 end
-

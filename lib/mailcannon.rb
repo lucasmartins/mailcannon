@@ -2,7 +2,6 @@ require 'yaml'
 require 'openssl'
 require 'bundler'
 require 'json'
-require 'mongoid'
 
 case ENV['RACK_ENV']
 when 'production'
