@@ -16,5 +16,30 @@ FactoryGirl.define do
       substitutions hash
       subject 'Test'
     end
+    
+    factory :envelope_multi_1k, class: MailCannon::Envelope do
+      mails = []
+      source = 'lucasmartins+#@railsnapraia.com'
+      1000.times.each do |i|
+        mails.push source.gsub('#',i.to_s)
+      end
+
+      names = []
+      source = 'Lucas Martins #'
+      1000.times.each do |i|
+        names.push source.gsub('#',i.to_s)
+      end
+      
+      to_array = []
+      1000.times.each do |i|
+        to_array.push({name: names[i], email: mails[i]})
+      end
+      
+      from 'mailcannon@railsonthebeach.com'
+      to to_array
+      hash = {"%name%"=>names}
+      substitutions hash
+      subject 'Test'
+    end
   end
 end
