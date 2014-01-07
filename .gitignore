@@ -5,3 +5,4 @@ doc/
 .yardoc/
 coverage/
 .coveralls.yml
+pkg/
