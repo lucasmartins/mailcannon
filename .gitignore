@@ -6,3 +6,4 @@ doc/
 coverage/
 .coveralls.yml
 pkg/
+Gemfile.lock
