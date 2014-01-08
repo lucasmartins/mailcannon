@@ -29,15 +29,13 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency "jruby-openssl"
   end
   
-  s.add_runtime_dependency "redis"
-  s.add_runtime_dependency "mongoid"
-  s.add_runtime_dependency "sidekiq"
-  s.add_runtime_dependency "sendgrid_webapi"
-  s.add_runtime_dependency "librato-metrics"
-  s.add_runtime_dependency "json-schema"
-  s.add_runtime_dependency "redis"
-  s.add_runtime_dependency "redis"
-
+  s.add_dependency "redis"
+  s.add_dependency "mongoid"
+  s.add_dependency "sidekiq"
+  s.add_dependency "sendgrid_webapi"
+  s.add_dependency "librato-metrics"
+  s.add_dependency "json-schema"
+  
   s.add_development_dependency "vcr"
   s.add_development_dependency "rspec"
   s.add_development_dependency "rspec-mocks"
