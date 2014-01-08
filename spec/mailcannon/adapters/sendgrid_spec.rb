@@ -5,7 +5,7 @@ describe MailCannon::Adapter::SendgridWeb do
     let(:envelope) { build(:envelope) }
     it "sends http request for Sendgrid web API" do
       VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
-        expect(envelope.send!).to eq({"message"=>"success"})
+        expect(envelope.send!).to be_true
       end
     end
     it "calls after_sent callback" do
@@ -20,7 +20,7 @@ describe MailCannon::Adapter::SendgridWeb do
     let(:envelope) { build(:envelope_multi) }
     it "sends http request for Sendgrid web API" do
       VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
-        expect(envelope.send_bulk!).to eq({"message"=>"success"})
+        expect(envelope.send_bulk!).to be_true
       end
     end
   end

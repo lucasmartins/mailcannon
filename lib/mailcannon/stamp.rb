@@ -3,11 +3,11 @@ class MailCannon::Stamp
   include Mongoid::Document
   include Mongoid::Timestamps
   
-  belongs_to :envelope, index: true
+  embedded_in :envelope
   
   field :code, type: Integer, default: 0
   field :recipient # email address for this "notification"
-  validates :code, :envelope, presence: true
+  validates :code, presence: true
   
   # Returns the Event for this Stamp. 
   def event
