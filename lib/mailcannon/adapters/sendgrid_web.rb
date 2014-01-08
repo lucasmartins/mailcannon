@@ -11,7 +11,7 @@ module MailCannon::Adapter::SendgridWeb
         response = send_single_email
       end
       self.after_sent(successfully_sent?(response))
-      return response
+      return successfully_sent?(response)
     end
 
     def send_bulk!
