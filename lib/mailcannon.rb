@@ -6,9 +6,9 @@ require 'json'
 require 'mongoid'
 require 'sidekiq'
 require 'sendgrid_webapi'
-#require 'librato-metrics'
 require 'yajl-ruby' if RUBY_PLATFORM=='ruby'
 require 'jruby-openssl' if RUBY_PLATFORM=='jruby'
+#require 'librato-metrics'
 
 Encoding.default_internal = "utf-8"
 Encoding.default_external = "utf-8"
@@ -25,11 +25,12 @@ module MailCannon
   
   self.warmode if ENV['MAILCANNON_MODE']=='war'
   
+  #Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_TOKEN']) if ENV['LIBRATO_TOKEN'] && ENV['LIBRATO_USER'] # change to initializer
+  
   # To be used with caution
   def self.warmode
     Bundler.require(:default)
     Mongoid.load!("config/mongoid.yml", ENV['RACK_ENV']) # change to env URL
-    Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_TOKEN']) if ENV['LIBRATO_TOKEN'] && ENV['LIBRATO_USER'] # change to initializer
     redis_uri = URI.parse(ENV['REDIS_URL'])
     $redis = Redis.new(host: redis_uri.host, port: redis_uri.port)
   end

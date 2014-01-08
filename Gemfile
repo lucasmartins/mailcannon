@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'redis'
+gem 'activemodel'
 gem 'mongoid', '3.1.6'
 gem 'sidekiq'
 gem 'sendgrid_webapi'
-gem 'librato-metrics'
+#gem 'librato-metrics'
 gem 'rubysl', platform: :rbx
 gem 'jruby-openssl', platform: :jruby
 gem 'yajl-ruby', :platforms=>[:rbx,:ruby]
