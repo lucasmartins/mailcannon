@@ -2,14 +2,13 @@ require 'yaml'
 require 'openssl'
 require 'bundler'
 require 'json'
+#should use Bundler
 require 'mongoid'
-
-case ENV['RACK_ENV']
-when 'production'
-  Bundler.require(:default)
-else
-  Bundler.require(:default,:development)
-end
+require 'sidekiq'
+require 'sendgrid_webapi'
+#require 'librato-metrics'
+require 'yajl-ruby' if RUBY_PLATFORM=='ruby'
+require 'jruby-openssl' if RUBY_PLATFORM=='jruby'
 
 Encoding.default_internal = "utf-8"
 Encoding.default_external = "utf-8"
