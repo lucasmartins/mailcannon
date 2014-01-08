@@ -29,10 +29,9 @@ Create a `MailCannon::Envelope`:
 ```ruby
 envelope = MailCannon::Envelope.create(
   from: 'test@mailcannon.com',
-  to: 'lucasmartins@railsnapraia.com',
+  to: [{email: 'lucasmartins@railsnapraia.com', name: 'Lucas Martins'}],
   subject: 'Test',
-  mail: MailCannon::Mail.create(text: 'you will see this when no HTML reader is available', html: 'this should be an HTML'))
-envelope.send!
+  mail: MailCannon::Mail.new(text: 'you will see this when no HTML reader is available', html: 'this should be an HTML'))
 ```
 ### Configuration file
 If you are on Rails, run the following command to generate a config file:
