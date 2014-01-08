@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'redis'
-gem 'mongoid'
+gem 'mongoid', '3.1.6'
 gem 'sidekiq'
 gem 'sendgrid_webapi'
 gem 'librato-metrics'
@@ -22,7 +22,7 @@ group :test do
   gem 'rspec-mocks'
   gem 'rspec-expectations'
   gem 'database_cleaner'
-  gem 'factory_girl'
+  gem 'factory_girl', '4.2.0'
   gem 'vcr'
   gem 'webmock', '>= 1.8.0', '< 1.16'
   gem 'coveralls', platform: :ruby, require: false
