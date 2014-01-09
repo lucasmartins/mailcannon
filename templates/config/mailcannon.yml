@@ -1,3 +1,4 @@
 # This file will hold any hard configurations MailCannon may need. Customizations included.
-folder:
-  key: value
+
+# When creating a MailCannon::Envelope the default behavior is to auto-post the Job to send it.
+auto_post: true

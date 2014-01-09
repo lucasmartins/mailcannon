@@ -23,17 +23,17 @@ module MailCannon
   require_relative 'mailcannon/workers/barrel'
   require_relative 'mailcannon/version'
   
-  self.warmode if ENV['MAILCANNON_MODE']=='war'
-  
   #Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_TOKEN']) if ENV['LIBRATO_TOKEN'] && ENV['LIBRATO_USER'] # change to initializer
+  # If your client is single-threaded, we just need a single connection in our Redis connection pool
   
   # To be used with caution
   def self.warmode
-    Bundler.require(:default)
-    Mongoid.load!("config/mongoid.yml", ENV['RACK_ENV']) # change to env URL
-    redis_uri = URI.parse(ENV['REDIS_URL'])
-    $redis = Redis.new(host: redis_uri.host, port: redis_uri.port)
+    #Mongoid.load!("config/mongoid.yml", ENV['RACK_ENV']||'development') # change to env URL
+    Sidekiq.configure_client do |config|
+      config.redis = { :namespace => 'mailcannon', :size => 1, :url => ENV['REDIS_URL'] }
+    end
   end
+  self.warmode if ENV['MAILCANNON_MODE']=='war'
 
   # Returns the config Hash
   def self.config(root_dir=nil)

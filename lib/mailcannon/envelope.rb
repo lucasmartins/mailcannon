@@ -10,8 +10,7 @@ class MailCannon::Envelope
   field :group_id, type: Bignum # create sparse Index for this field, put this in RDoc
   field :from, type: String
   field :from_name, type: String
-  field :to, type: Array # of hashes
-  field :to_name, type: Array # strings
+  field :to, type: Array # of hashes. [{email: '', name: ''},...]
   field :substitutions, type: Hash # of hashes
   field :subject, type: String
   field :bcc, type: String
@@ -22,10 +21,11 @@ class MailCannon::Envelope
   validates :from, :to, :subject, :mail, presence: true
   validates_associated :mail
   
-  after_create :post_envelope!
+  after_create :post_envelope! # apparently MailCannon module isn't ready here to check for the auto_post config. Look into it.
 
   # Post this Envelope!
   def post_envelope!
+    #return false unless MailCannon.config['auto_post']
     self.save if self.changed?
     self.stamp! MailCannon::Event::New.stamp
     if validate_xsmtpapi(self.xsmtpapi)
@@ -38,7 +38,8 @@ class MailCannon::Envelope
   # Stamp this Envelope with code.
   def stamp!(code)
     self.class.valid_code_kind?(code)
-    self.stamps << MailCannon::Stamp.from_code(code)
+    stamp = MailCannon::Stamp.from_code(code)
+    stamp.envelope = self # autosave
   end
   
   # Callback to be run after the Envelope has been processed.

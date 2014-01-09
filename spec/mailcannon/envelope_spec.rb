@@ -5,6 +5,7 @@ describe MailCannon::Envelope do
     let(:envelope) { build(:envelope) }
     it "creates a new Stamp" do
       expect{ envelope.save }.to change{envelope.stamps.size}.by(1)
+      expect(MailCannon::Envelope.find(envelope.id).stamps.last).not_to be_nil
       expect(envelope.reload.stamps.last.envelope.id).to eq(envelope.id) 
     end
     context "check for expected adapter behavior" do

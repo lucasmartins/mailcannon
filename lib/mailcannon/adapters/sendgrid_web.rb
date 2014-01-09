@@ -72,8 +72,8 @@ module MailCannon::Adapter::SendgridWeb
 
   def send_single_email
     api_client.mail.send(
-              :to => self.to.first[:email],
-              :toname => self.to.first[:name],
+              :to => self.to.first['email'],
+              :toname => self.to.first['name'],
               :subject => self.subject,
               :text => self.mail.text,
               :html => self.mail.html,
@@ -86,10 +86,8 @@ module MailCannon::Adapter::SendgridWeb
 
   def send_multiple_emails
     prepare_xsmtpapi!
-
     api_client.mail.send(
               :to => self.from,
-              #:toname => self.to.first[:name],
               :subject => self.subject,
               :text => self.mail.text,
               :html => self.mail.html,

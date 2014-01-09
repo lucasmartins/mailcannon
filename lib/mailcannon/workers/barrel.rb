@@ -15,7 +15,7 @@ class MailCannon::Barrel
         end
       end  
     rescue Exception => e
-      puts "unable to send MailCannon::Envelope.find(#{envelope_id})"
+      puts "unable to send MailCannon::Envelope.find('#{envelope_id}')"
       puts e.backtrace
     end
   end
