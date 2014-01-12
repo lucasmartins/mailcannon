@@ -2,3 +2,6 @@
 
 # When creating a MailCannon::Envelope the default behavior is to auto-post the Job to send it.
 auto_post: true
+
+# This is will schedule a delay for the Job execution, useful if you want to be able to Cancel the Job.
+waiting_time: 0
