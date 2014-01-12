@@ -3,7 +3,7 @@ class MailCannon::Mail
   include Mongoid::Document
   include Mongoid::Timestamps
   
-  embedded_in :envelope#, index: true
+  embedded_in :envelope
   
   field :text, type: String
   field :html, type: String

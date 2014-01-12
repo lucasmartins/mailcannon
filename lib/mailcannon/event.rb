@@ -2,7 +2,7 @@
 class MailCannon::Event
   
   EVENTS = [
-    'new',
+    'posted',
     'processed',
     'delivered',
     'open',

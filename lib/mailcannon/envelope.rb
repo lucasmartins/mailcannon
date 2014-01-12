@@ -20,26 +20,28 @@ class MailCannon::Envelope
   
   validates :from, :to, :subject, :mail, presence: true
   validates_associated :mail
-  
-  after_create :post_envelope! # apparently MailCannon module isn't ready here to check for the auto_post config. Look into it.
 
   # Post this Envelope!
   def post_envelope!
     #return false unless MailCannon.config['auto_post']
     self.save if self.changed?
-    self.stamp! MailCannon::Event::New.stamp
+    self.stamp! MailCannon::Event::Posted.stamp
     if validate_xsmtpapi(self.xsmtpapi)
       MailCannon::Barrel.perform_async(self.id)
     else
       raise 'Invalid xsmtpapi hash!'
     end
   end
+  alias_method :"post!",:"post_envelope!"
 
   # Stamp this Envelope with code.
-  def stamp!(code)
+  def stamp!(code,recipient=nil)
     self.class.valid_code_kind?(code)
-    stamp = MailCannon::Stamp.from_code(code)
-    stamp.envelope = self # autosave
+    unless self.persisted?
+      puts "You're trying to save the Stamp with an unsaved Envelope! Auto-saving Stamp."
+      self.save
+    end
+    self.stamps.create(code: MailCannon::Stamp.from_code(code).code, recipient: recipient)
   end
   
   # Callback to be run after the Envelope has been processed.

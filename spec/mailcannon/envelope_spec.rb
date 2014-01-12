@@ -3,10 +3,9 @@ require "spec_helper"
 describe MailCannon::Envelope do
   describe "initialize" do
     let(:envelope) { build(:envelope) }
-    it "creates a new Stamp" do
-      expect{ envelope.save }.to change{envelope.stamps.size}.by(1)
-      expect(MailCannon::Envelope.find(envelope.id).stamps.last).not_to be_nil
-      expect(envelope.reload.stamps.last.envelope.id).to eq(envelope.id) 
+    it "has no Stamps" do
+      envelope.save
+      expect(envelope.stamps.size).to eq(0)
     end
     context "check for expected adapter behavior" do
       it "implements send! behavior" do
