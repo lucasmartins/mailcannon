@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe MailCannon::Envelope do
-  describe "initialize" do
+  describe "initialization" do
     let(:envelope) { build(:envelope) }
     it "has no Stamps" do
       envelope.save
