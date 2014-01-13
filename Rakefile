@@ -13,6 +13,7 @@ end
 desc 'Opens a Pry/IRB session with the environment loaded'
 task :console => :environment do
   #gotcha!
+  Mongoid.load!("spec/support/mongoid.yml", 'development')
   binding.pry
 end
 

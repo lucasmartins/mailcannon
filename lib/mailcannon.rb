@@ -24,7 +24,6 @@ module MailCannon
   require_relative 'mailcannon/version'
   
   #Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_TOKEN']) if ENV['LIBRATO_TOKEN'] && ENV['LIBRATO_USER'] # change to initializer
-  # If your client is single-threaded, we just need a single connection in our Redis connection pool
   
   # To be used with caution
   def self.warmode

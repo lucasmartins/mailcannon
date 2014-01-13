@@ -56,3 +56,4 @@ VCR.configure do |c|
 end
 
 Mongoid.load!("spec/support/mongoid.yml", 'test')
+MailCannon.config('templates')

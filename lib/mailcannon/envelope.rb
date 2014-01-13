@@ -37,7 +37,7 @@ class MailCannon::Envelope
   def stamp!(code,recipient=nil)
     self.class.valid_code_kind?(code)
     unless self.persisted?
-      logger.warn "You're trying to save the Stamp with an unsaved Envelope! Auto-saving Stamp."
+      logger.warn "You're trying to save the Stamp with an unsaved Envelope! Auto-saving Envelope."
       self.save
     end
     self.stamps.create(code: MailCannon::Stamp.from_code(code).code, recipient: recipient)
