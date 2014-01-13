@@ -26,7 +26,11 @@ class MailCannon::Envelope
     self.save if self.changed?
     self.stamp! MailCannon::Event::Posted.stamp
     if validate_xsmtpapi(self.xsmtpapi)
-      MailCannon::Barrel.perform_in(MailCannon.config['waiting_time'].seconds,self.id)
+      if MailCannon.config['waiting_time'] && MailCannon.config['waiting_time'].to_i>0
+        MailCannon::Barrel.perform_in(MailCannon.config['waiting_time'].seconds,self.id)  
+      else
+        MailCannon::Barrel.perform_async(self.id)
+      end      
     else
       raise 'Invalid xsmtpapi hash!'
     end
