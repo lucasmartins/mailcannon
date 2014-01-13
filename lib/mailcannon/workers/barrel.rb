@@ -6,7 +6,7 @@ class MailCannon::Barrel
     envelope_id = envelope_id['$oid'] if envelope_id['$oid']
     logger.info "sending MailCannon::Envelope.find('#{envelope_id}')"
     begin
-      envelope = MailCannon::Envelope.find(envelope_id)
+      envelope = MailCannon::Envelope.find(envelope_id.to_s)
       if envelope.valid?
         response = envelope.send!
         unless response==true
