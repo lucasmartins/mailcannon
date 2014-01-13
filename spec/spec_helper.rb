@@ -10,6 +10,7 @@ require 'factory_girl'
 require 'vcr'
 require 'webmock'
 require 'webmock/rspec'
+require 'sidekiq/testing'
 
 if ENV['TRAVIS']==true
   begin
