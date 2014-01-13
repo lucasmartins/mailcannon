@@ -52,4 +52,24 @@ module MailCannon
     YAML.load(erb)
   end
 
+  # alias method
+  def logger
+    MailCannon.logger
+  end
+
+  # Returns the lib logger object
+  def self.logger
+    @logger || initialize_logger
+  end
+
+  # Initializes logger with mailcannon setup
+  def self.initialize_logger(log_target = STDOUT)
+    oldlogger = @logger
+    @logger = Logger.new(log_target)
+    @logger.level = Logger::INFO
+    @logger.progname = 'mailcannon'
+    oldlogger.close if oldlogger && !$TESTING # don't want to close testing's STDOUT logging
+    @logger
+  end
+
 end

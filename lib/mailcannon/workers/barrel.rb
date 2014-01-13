@@ -4,8 +4,7 @@ class MailCannon::Barrel
 
   def perform(envelope_id)
     envelope_id = envelope_id['$oid'] if envelope_id['$oid']
-    puts "sending MailCannon::Envelope.find('#{envelope_id}')"
-  
+    logger.info "sending MailCannon::Envelope.find('#{envelope_id}')"
     begin
       envelope = MailCannon::Envelope.find(envelope_id)
       if envelope.valid?
@@ -13,10 +12,11 @@ class MailCannon::Barrel
         unless response==true
           raise response
         end
-      end  
+      end
+    rescue Mongoid::Errors::DocumentNotFound
+      logger.error "unable to find the document MailCannon::Envelope.find('#{envelope_id}')"
     rescue Exception => e
-      puts "unable to send MailCannon::Envelope.find('#{envelope_id}')"
-      puts e.backtrace
+      logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}')\n#{e.backtrace}"
     end
   end
 end
