@@ -17,8 +17,10 @@ describe MailCannon::Barrel do
       end
     end
     it "runs the job without errors" do
-      Sidekiq::Testing.inline! do
-        expect{envelope.post!}.not_to raise_error
+      VCR.use_cassette('mailcannon_barrel_envelope_post') do
+        Sidekiq::Testing.inline! do
+          expect{envelope.post!}.not_to raise_error
+        end
       end
     end
     pending "calls Envelope#send!" do
