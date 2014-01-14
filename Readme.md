@@ -32,7 +32,25 @@ envelope = MailCannon::Envelope.create(
   to: [{email: 'lucasmartins@railsnapraia.com', name: 'Lucas Martins'}],
   subject: 'Test',
   mail: MailCannon::Mail.new(text: 'you will see this when no HTML reader is available', html: 'this should be an HTML'))
+
+envelope.post!
 ```
+
+### Campaign abstraction
+
+Create a `MailCannon::Envelope`:
+```ruby
+envelope_bag = MailCannon::EnvelopeBag.new
+envelope = MailCannon::Envelope.create(
+  from: 'test@mailcannon.com',
+  to: [{email: 'lucasmartins@railsnapraia.com', name: 'Lucas Martins'}],
+  subject: 'Test',
+  mail: MailCannon::Mail.new(text: 'you will see this when no HTML reader is available', html: 'this should be an HTML'))
+envelope_bag.push envelope
+# envelope_bag.push ...
+envelope_bag.post!
+```
+
 ### Configuration file
 If you are on Rails, run the following command to generate a config file:
 

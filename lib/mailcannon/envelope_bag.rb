@@ -6,13 +6,15 @@ class MailCannon::EnvelopeBag
   has_many :envelopes, autosave: true
   field :integration_code, type: String # Used to link your own app models to the Bag.
 
+  def push(envelope)
+    self.envelopes.push envelope
+  end
+
   # Post this Envelope!
   def post_envelopes!
     return false if envelopes.size==0
     self.save if self.changed?
     envelopes.each do |e|
-      puts "Envelope.posted? #{e.posted?}"
-      #binding.pry if e.posted?
       unless e.posted?
         e.post!
       end
