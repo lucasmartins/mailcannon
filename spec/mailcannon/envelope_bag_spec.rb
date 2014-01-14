@@ -19,11 +19,15 @@ describe MailCannon::EnvelopeBag do
       it "returns true" do
         expect(envelope_bag.post!).to be_true
       end
+    end
+    context "when it has Envelopes (isolating Bag)" do
+      let(:envelope_bag) { MailCannon::EnvelopeBag.new }
       it "posts Envelopes in the bag" do
-        envelopes = envelope_bag.envelopes.to_a
-        expect(envelopes.size).to eq(2)
+        envelope_bag.envelopes.push build(:envelope)
+        envelope_bag.envelopes.push build(:envelope_multi)
+        expect(envelope_bag.envelopes.size).to eq(2)
         # Rspec can't do 'any_instance.should_receive' twice.
-        envelopes.each do |envelope|
+        envelope_bag.envelopes.each do |envelope|
           expect(envelope).to receive(:post!)
         end
         envelope_bag.post!

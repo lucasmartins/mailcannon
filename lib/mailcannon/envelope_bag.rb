@@ -4,14 +4,20 @@ class MailCannon::EnvelopeBag
   include Mongoid::Timestamps
   
   has_many :envelopes, autosave: true
+  field :integration_code, type: String # Used to link your own app models to the Bag.
 
   # Post this Envelope!
   def post_envelopes!
-    return false if self.envelopes.size==0
+    return false if envelopes.size==0
     self.save if self.changed?
-    self.envelopes.each do |e|
-      e.post! unless e.posted?
+    envelopes.each do |e|
+      puts "Envelope.posted? #{e.posted?}"
+      #binding.pry if e.posted?
+      unless e.posted?
+        e.post!
+      end
     end
+    true
   end
   alias_method :"post!",:"post_envelopes!"
     
