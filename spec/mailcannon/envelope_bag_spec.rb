@@ -23,8 +23,9 @@ describe MailCannon::EnvelopeBag do
         envelopes = envelope_bag.envelopes.to_a
         expect(envelopes.size).to eq(2)
         # Rspec can't do 'any_instance.should_receive' twice.
-        envelopes.first.should_receive(:post!)
-        envelopes.last.should_receive(:post!)
+        envelopes.each do |envelope|
+          expect(envelope).to receive(:post!)
+        end
         envelope_bag.post!
       end
     end
