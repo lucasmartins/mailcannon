@@ -53,6 +53,24 @@ describe MailCannon::Envelope do
     end
   end
   
+  describe "#posted?" do
+    context "when already posted" do
+      let(:envelope) { build(:envelope) }
+      it "returns true" do
+        VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
+          envelope.post!
+        end
+        expect(envelope.posted?).to be_true
+      end
+    end
+    context "when not yet posted" do
+      let(:envelope) { build(:envelope) }
+      it "returns false" do
+        expect(envelope.posted?).to be_false
+      end
+    end
+  end
+
   describe "#after_sent" do
     let(:envelope) { create(:envelope) }
     it "creates a Processed Stamp" do

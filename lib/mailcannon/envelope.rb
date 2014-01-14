@@ -55,6 +55,14 @@ class MailCannon::Envelope
       self.mail=nil # to avoid reload
     end
   end
+
+  def posted?
+    if self.stamps.where(code: 0).count > 0
+      true
+    else
+      false
+    end
+  end
   
   private
   def self.valid_code_kind?(code)
