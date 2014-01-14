@@ -6,8 +6,8 @@ class MailCannon::Envelope
   
   embeds_one :mail
   embeds_many :stamps
-  
-  field :group_id, type: Bignum # create sparse Index for this field, put this in RDoc
+  belongs_to :envelope_bag
+
   field :from, type: String
   field :from_name, type: String
   field :to, type: Array # of hashes. [{email: '', name: ''},...]

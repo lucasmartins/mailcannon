@@ -16,6 +16,7 @@ Encoding.default_external = "utf-8"
 module MailCannon
   require_relative 'mailcannon/adapter'
   require_relative 'mailcannon/adapters/sendgrid_web'
+  require_relative 'mailcannon/envelope_bag'
   require_relative 'mailcannon/envelope'
   require_relative 'mailcannon/mail'
   require_relative 'mailcannon/stamp'
