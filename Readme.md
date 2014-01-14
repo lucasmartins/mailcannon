@@ -40,7 +40,7 @@ envelope.post!
 
 Create a `MailCannon::Envelope`:
 ```ruby
-envelope_bag = MailCannon::EnvelopeBag.new
+envelope_bag = MailCannon::EnvelopeBag.new(integration_code: 'my-cool-campaign')
 envelope = MailCannon::Envelope.create(
   from: 'test@mailcannon.com',
   to: [{email: 'lucasmartins@railsnapraia.com', name: 'Lucas Martins'}],
