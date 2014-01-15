@@ -9,6 +9,7 @@ class MailCannon::EnvelopeBag
   def push(envelope)
     self.envelopes.push envelope
   end
+  alias_method :"add!",:"push!"
 
   # Post this Envelope!
   def post_envelopes!
