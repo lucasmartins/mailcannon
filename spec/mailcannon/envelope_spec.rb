@@ -73,13 +73,18 @@ describe MailCannon::Envelope do
 
   describe "xsmtpapi" do
     context "keep xsmtpapi arguments after #post!" do
-      let(:envelope) { build(:envelope, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
+      let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
 
       it "returns true" do
-        VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
-          envelope.post!
+        VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
+          Sidekiq::Testing.inline! do
+            envelope.post!
+          end
         end
+        envelope.reload # content is changed inside the Adapter module
         expect(envelope.xsmtpapi).to have_key("unique_args")
+        expect(envelope.xsmtpapi).to have_key("to")
+        expect(envelope.xsmtpapi).to have_key("sub")
       end
     end
   end

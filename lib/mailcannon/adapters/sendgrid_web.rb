@@ -43,7 +43,9 @@ module MailCannon::Adapter::SendgridWeb
   def build_xsmtpapi(recipients,subs)
     xsmtpapi = {}
     to = []
-    recipients['to'].each do |h|
+    recipients.symbolize_keys!
+    recipients[:to].each do |h|
+      h.symbolize_keys!
       to.push h[:email]
     end
     xsmtpapi.merge!({'to' => to})
