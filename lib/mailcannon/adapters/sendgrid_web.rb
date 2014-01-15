@@ -34,8 +34,10 @@ module MailCannon::Adapter::SendgridWeb
 
   def prepare_xsmtpapi!
     validate_envelope!
-    self.xsmtpapi = build_xsmtpapi({'to'=>self.to},{'sub'=>self.substitutions})
+    self.xsmtpapi = {} if self.xsmtpapi.nil?
+    self.xsmtpapi = self.xsmtpapi.merge(build_xsmtpapi({'to'=>self.to},{'sub'=>self.substitutions}))
     validate_xsmtpapi!
+    self.save!
   end
 
   def build_xsmtpapi(recipients,subs)

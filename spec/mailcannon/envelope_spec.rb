@@ -71,6 +71,19 @@ describe MailCannon::Envelope do
     end
   end
 
+  describe "xsmtpapi" do
+    context "keep xsmtpapi arguments after #post!" do
+      let(:envelope) { build(:envelope, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
+
+      it "returns true" do
+        VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
+          envelope.post!
+        end
+        expect(envelope.xsmtpapi).to have_key("unique_args")
+      end
+    end
+  end
+
   describe "#after_sent" do
     let(:envelope) { create(:envelope) }
     it "creates a Processed Stamp" do
