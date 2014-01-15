@@ -75,6 +75,9 @@ module MailCannon::Adapter::SendgridWeb
   end
 
   def send_single_email
+    if self.xsmtpapi!=nil
+      logger.warn "Single emails do not support X-SMTPAPI! #{self.id}"
+    end
     api_client.mail.send(
               :to => self.to.first['email'],
               :toname => self.to.first['name'],
