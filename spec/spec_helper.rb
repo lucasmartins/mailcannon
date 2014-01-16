@@ -25,7 +25,7 @@ SPECDIR = Pathname.new(File.dirname(__FILE__))
 TMPDIR = SPECDIR.join("tmp")
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|r| require r}
-Dir[File.dirname(__FILE__) + "/factories/*.rb"].each {|r| require r}
+Dir[File.dirname(__FILE__) + "/factories/**/*.rb"].each {|r| require r}
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
