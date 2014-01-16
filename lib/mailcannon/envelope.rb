@@ -17,6 +17,8 @@ class MailCannon::Envelope
   field :reply_to, type: String
   field :date, type: Date
   field :xsmtpapi, type: Hash # this will mostly be used by MailCannon itself. http://sendgrid.com/docs/API_Reference/SMTP_API/index.html
+  field :jid, type: String
+
   
   validates :from, :to, :subject, :mail, presence: true
   validates_associated :mail
@@ -24,13 +26,16 @@ class MailCannon::Envelope
   # Post this Envelope!
   def post_envelope!
     self.save if self.changed?
-    self.stamp! MailCannon::Event::Posted.stamp
     if validate_xsmtpapi(self.xsmtpapi)
       if MailCannon.config['waiting_time'] && MailCannon.config['waiting_time'].to_i>0
-        MailCannon::Barrel.perform_in(MailCannon.config['waiting_time'].seconds,self.id)  
+        self.jid = MailCannon::Barrel.perform_in(MailCannon.config['waiting_time'].seconds,self.id)
       else
-        MailCannon::Barrel.perform_async(self.id)
-      end      
+        self.jid = MailCannon::Barrel.perform_async(self.id)
+      end
+      if self.jid
+        self.stamp! MailCannon::Event::Posted.stamp
+        return self.jid
+      end
     else
       raise 'Invalid xsmtpapi hash!'
     end
