@@ -57,8 +57,10 @@ class MailCannon::Envelope
   def after_sent(response)
     if response
       stamp!(MailCannon::Event::Processed.stamp)
-      self.mail.destroy
-      self.mail=nil # to avoid reload
+      if MailCannon.config['auto_destroy']
+        self.mail.destroy
+        self.mail=nil # to avoid reload
+      end
     end
   end
 

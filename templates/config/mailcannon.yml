@@ -5,3 +5,7 @@ auto_post: true
 
 # This is will schedule a delay for the Job execution, useful if you want to be able to Cancel the Job.
 waiting_time: 0
+
+# Destroy mail content after send was successful, all other Envelope data is left untouched.
+# * this config is useful for saving storage
+auto_destroy: true
