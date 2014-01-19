@@ -2,7 +2,6 @@ require 'yaml'
 require 'openssl'
 require 'bundler'
 require 'json'
-#should use Bundler
 require 'mongoid'
 require 'sidekiq'
 require 'sendgrid_webapi'

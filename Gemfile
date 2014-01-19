@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'redis'
 gem 'activemodel'
-gem 'mongoid', '3.1.6'
+gem 'mongoid', '>=3.1.6'
 gem 'sidekiq'
 gem 'sendgrid_webapi'
 #gem 'librato-metrics'
