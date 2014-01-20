@@ -51,6 +51,22 @@ envelope_bag.push envelope
 envelope_bag.post!
 ```
 
+### Multiple Sendgrid Accounts
+
+You can pass an auth Hash to the `Envelope` and/or `EnvelopeBag`, the `Envelope` auth will always override the Bag's auth.
+
+```ruby
+envelope_bag = MailCannon::EnvelopeBag.new(auth: {username: 'shared-account',password: '123'})
+envelope = MailCannon::Envelope.create(
+  auth: {username: 'hot-account',password: '456'}
+  from: 'test@mailcannon.com',
+  to: [{email: 'lucasmartins@railsnapraia.com', name: 'Lucas Martins'}],
+  subject: 'Test',
+  mail: MailCannon::Mail.new(text: 'you will see this when no HTML reader is available', html: 'this should be an HTML'))
+envelope_bag.push envelope
+envelope_bag.post! # this will sent using the 'hot-account'.
+```
+
 ### Configuration file
 If you are on Rails, run the following command to generate a config file:
 
