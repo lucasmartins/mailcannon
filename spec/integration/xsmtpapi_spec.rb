@@ -13,11 +13,14 @@ describe 'X-SMTPAPI compatibility' do
             envelope.post!
           end
         end
+        envelope.save
         envelope.reload # content is changed inside the Adapter module
-        expect(envelope.xsmtpapi['to']).to match_array ['mailcannon@railsnapraia.com', 'contact@railsonthebeach.com', 'lucasmartins@railsnapraia.com']
-        expect(envelope.xsmtpapi).to have_key('sub')
-        expect(envelope.xsmtpapi['sub']).to have_key('-email-id-')
-        expect(envelope.xsmtpapi).to have_key('unique_args')
+        expect(envelope.xsmtpapi).to eq({
+          "sub"=>{"*|NAME|*"=>["Mail Cannon", "Lucas Martins", "Contact"]},
+          "unique_args"=>{"email_id"=>"-email-id-"},
+          "to"=>["mailcannon@railsnapraia.com",
+           "lucasmartins@railsnapraia.com",
+           "contact@railsonthebeach.com"]})
       end
     end
   end

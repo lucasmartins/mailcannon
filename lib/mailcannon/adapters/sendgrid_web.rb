@@ -35,9 +35,17 @@ module MailCannon::Adapter::SendgridWeb
   def prepare_xsmtpapi!
     validate_envelope!
     self.xsmtpapi = {} if self.xsmtpapi.nil?
+    self.xsmtpapi['sub']={} unless self.xsmtpapi['sub']
     self.xsmtpapi = self.xsmtpapi.merge(build_xsmtpapi({'to'=>self.to},{'sub'=>self.substitutions}))
     validate_xsmtpapi!
     self.save!
+  end
+
+  def build_name_subs
+    name_placeholder = MailCannon.config['default_name_placeholder'] || '%name%'
+    selected_hash_array = []
+    self.to.map {|h| selected_hash_array.push h['name']||h[:name]||''}
+    {'sub'=>{"#{name_placeholder}"=>selected_hash_array}}
   end
 
   def build_xsmtpapi(recipients,subs)
@@ -50,6 +58,7 @@ module MailCannon::Adapter::SendgridWeb
     end
     xsmtpapi.merge!({'to' => to})
     xsmtpapi.deep_merge!(subs) if subs!=nil && subs.is_a?(Hash)
+    xsmtpapi.deep_merge!(build_name_subs) if build_name_subs!=nil && build_name_subs.is_a?(Hash)
     return xsmtpapi
   end
 

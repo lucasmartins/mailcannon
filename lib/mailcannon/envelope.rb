@@ -26,7 +26,7 @@ class MailCannon::Envelope
   # Post this Envelope!
   def post_envelope!
     self.save if self.changed?
-    raise 'Envelope has no mail!' unless self.mail
+    raise "Envelope(#{self.id}) has no mail! Didn't you already send it?" unless self.mail
     if validate_xsmtpapi(self.xsmtpapi)
       if MailCannon.config['waiting_time'] && MailCannon.config['waiting_time'].to_i>0
         self.jid = MailCannon::Barrel.perform_in(MailCannon.config['waiting_time'].seconds,self.id)

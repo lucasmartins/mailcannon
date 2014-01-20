@@ -12,8 +12,6 @@ FactoryGirl.define do
         {email: 'lucasmartins@railsnapraia.com', name: 'Lucas Martins'},
         {email: 'contact@railsonthebeach.com', name: 'Contact'}
       ]
-      hash = {"%name%"=>['Mail Cannon','Lucas Martins','Contact']}
-      substitutions hash
       subject 'Test'
     end
     
