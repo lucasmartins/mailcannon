@@ -4,18 +4,36 @@ module MailCannon::Adapter::SendgridWeb
   include MailCannon::Adapter
   module InstanceMethods
     def send!
-      validate_envelope!
-      if self.to.size>1
-        response = send_multiple_emails
-      else
-        response = send_single_email
+      begin
+        validate_envelope!
+        if self.to.size>1
+          response = send_multiple_emails
+        else
+          response = send_single_email
+        end
+        self.after_sent(successfully_sent?(response))
+        return successfully_sent?(response)
+      rescue Exception => e
+        if e.message == "[\"Permission denied, wrong credentials\"]"
+          raise MailCannon::Adapter::AuthException
+        else
+          raise e
+        end
       end
-      self.after_sent(successfully_sent?(response))
-      return successfully_sent?(response)
     end
 
     def send_bulk!
       self.send! # send! does bulk too!
+    end
+
+    def auth_pair
+      default_auth = {'username'=>ENV['SENDGRID_USERNAME'],'password'=>ENV['SENDGRID_PASSWORD']}
+      begin
+        self.auth || self.envelope_bag.auth || default_auth  
+      rescue Exception => e
+        logger.error "Unable to read auth config from Envelope or Bag, using default auth options from ENV"
+        return default_auth
+      end      
     end
   end
   
@@ -25,7 +43,7 @@ module MailCannon::Adapter::SendgridWeb
   
   private
   def api_client
-    client = SendGridWebApi::Client.new(ENV['SENDGRID_USERNAME'], ENV['SENDGRID_PASSWORD'])
+    client = SendGridWebApi::Client.new(self.auth_pair[0],self.auth_pair[1])
   end
   
   def validate_envelope!

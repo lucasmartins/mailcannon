@@ -15,6 +15,10 @@ FactoryGirl.define do
       subject 'Test'
     end
     
+    factory :envelope_wrong_auth, class: MailCannon::Envelope do
+      auth({username: 'wrong', password: 'combination'})
+    end
+
     factory :envelope_multi_1k, class: MailCannon::Envelope do
       mails = []
       source = 'lucasmartins+#@railsnapraia.com'

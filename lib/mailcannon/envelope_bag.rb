@@ -5,6 +5,7 @@ class MailCannon::EnvelopeBag
   
   has_many :envelopes, autosave: true
   field :integration_code, type: String # Used to link your own app models to the Bag.
+  field :auth, type: Hash # {user: 'foo', password: 'bar'}, some Adapters might need an token:secret pair, which you can translete into user:password pair. This config will be overriden by the Envelope.auth if present.
 
   def push(envelope)
     self.envelopes.push envelope
