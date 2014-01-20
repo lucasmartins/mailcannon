@@ -38,7 +38,7 @@ envelope.post!
 
 ### Campaign abstraction
 
-Create a `MailCannon::Envelope`:
+Create a `MailCannon::EnvelopeBag` and add Envelopes to it:
 ```ruby
 envelope_bag = MailCannon::EnvelopeBag.new(integration_code: 'my-cool-campaign')
 envelope = MailCannon::Envelope.create(
@@ -55,6 +55,13 @@ envelope_bag.post!
 If you are on Rails, run the following command to generate a config file:
 
 `$ rails g mailcannon:config`
+
+Otherwise, just copy the template file:
+
+```bash
+$ cd my-project
+$ cp `bundle show mailcannon`/templates/config/mailcannon.yml config/
+```
 
 Edit the file to meet your environemnt needs.
 
