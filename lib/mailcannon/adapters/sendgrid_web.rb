@@ -6,11 +6,7 @@ module MailCannon::Adapter::SendgridWeb
     def send!
       begin
         validate_envelope!
-        if self.to.size>1
-          response = send_multiple_emails
-        else
-          response = send_single_email
-        end
+        response = send_multiple_emails
         self.after_sent(successfully_sent?(response))
         return successfully_sent?(response)
       rescue Exception => e
@@ -43,7 +39,7 @@ module MailCannon::Adapter::SendgridWeb
   
   private
   def api_client
-    client = SendGridWebApi::Client.new(self.auth_pair[0],self.auth_pair[1])
+    SendGridWebApi::Client.new(self.auth_pair['username'],self.auth_pair['password'])
   end
   
   def validate_envelope!
@@ -99,23 +95,6 @@ module MailCannon::Adapter::SendgridWeb
     }
     JSON::Validator.validate!(schema, self.xsmtpapi)
 =end
-  end
-
-  def send_single_email
-    if self.xsmtpapi!=nil
-      logger.warn "Single emails do not support X-SMTPAPI! #{self.id}"
-    end
-    api_client.mail.send(
-              :to => self.to.first['email'],
-              :toname => self.to.first['name'],
-              :subject => self.subject,
-              :text => self.mail.text,
-              :html => self.mail.html,
-              :from => self.from,
-              :fromname => self.from_name,
-              :bcc => self.bcc,
-              :replyto => self.reply_to
-            )
   end
 
   def send_multiple_emails
