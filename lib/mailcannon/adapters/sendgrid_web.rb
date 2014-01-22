@@ -50,7 +50,8 @@ module MailCannon::Adapter::SendgridWeb
     validate_envelope!
     self.xsmtpapi = {} if self.xsmtpapi.nil?
     self.xsmtpapi['sub']={} unless self.xsmtpapi['sub']
-    self.xsmtpapi = self.xsmtpapi.merge(build_xsmtpapi({'to'=>self.to},{'sub'=>self.substitutions}))
+    binding.pry
+    self.xsmtpapi = self.xsmtpapi.deep_merge(build_xsmtpapi({'to'=>self.to},{'sub'=>self.substitutions}))
     validate_xsmtpapi!
     self.save!
   end
@@ -70,9 +71,9 @@ module MailCannon::Adapter::SendgridWeb
       h.symbolize_keys!
       to.push h[:email]
     end
-    xsmtpapi.merge!({'to' => to})
-    xsmtpapi.deep_merge!(subs) if subs!=nil && subs.is_a?(Hash)
-    xsmtpapi.deep_merge!(build_name_subs) if build_name_subs!=nil && build_name_subs.is_a?(Hash)
+    xsmtpapi.merge!({'to' => to}) if to
+    xsmtpapi = xsmtpapi.deep_merge(subs) if subs!=nil && subs['sub']!=nil
+    xsmtpapi = xsmtpapi.deep_merge(build_name_subs) if build_name_subs!=nil && build_name_subs.is_a?(Hash)
     return xsmtpapi
   end
 
