@@ -50,7 +50,6 @@ module MailCannon::Adapter::SendgridWeb
     validate_envelope!
     self.xsmtpapi = {} if self.xsmtpapi.nil?
     self.xsmtpapi['sub']={} unless self.xsmtpapi['sub']
-    binding.pry
     self.xsmtpapi = self.xsmtpapi.deep_merge(build_xsmtpapi({'to'=>self.to},{'sub'=>self.substitutions}))
     validate_xsmtpapi!
     self.save!
