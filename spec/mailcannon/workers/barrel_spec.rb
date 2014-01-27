@@ -23,14 +23,6 @@ describe MailCannon::Barrel do
         end
       end
     end
-    pending "calls Envelope#send!" do
-      Sidekiq::Testing.inline! do
-        MailCannon::Adapter::SendgridWeb.any_instance.should_receive('send!')
-        VCR.use_cassette('mailcannon_barrel_envelope_post') do
-          envelope.post!
-        end
-      end
-    end
     context "check for expected adapter behavior" do
       it "implements send! behavior" do
         expect(envelope.respond_to?(:send!)).to be_true
