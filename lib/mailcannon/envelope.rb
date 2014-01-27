@@ -29,15 +29,8 @@ class MailCannon::Envelope
     self.save if self.changed?
     raise "Envelope(#{self.id}) has no mail! Didn't you already send it?" unless self.mail
     if validate_xsmtpapi(self.xsmtpapi)
-      if MailCannon.config['waiting_time'] && MailCannon.config['waiting_time'].to_i>0
-        self.jid = MailCannon::Barrel.perform_in(MailCannon.config['waiting_time'].seconds,self.id)
-      else
-        self.jid = MailCannon::Barrel.perform_async(self.id)
-      end
-      if self.jid
-        self.stamp! MailCannon::Event::Posted.stamp
-        return self.jid
-      end
+      jid = schedule_send_job
+      self.save if self.changed?
     else
       raise 'Invalid xsmtpapi hash!'
     end
@@ -74,6 +67,18 @@ class MailCannon::Envelope
   end
   
   private
+  def schedule_send_job
+    if MailCannon.config['waiting_time'].to_i>0
+      self.jid = MailCannon::Barrel.perform_in(MailCannon.config['waiting_time'].seconds,self.id)
+    else
+      self.jid = MailCannon::Barrel.perform_async(self.id)
+    end
+    if self.jid
+      self.stamp! MailCannon::Event::Posted.stamp
+      return self.jid
+    end
+  end
+
   def self.valid_code_kind?(code)
     unless [Fixnum, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code.to_s.camelize.to_sym)
       raise 'code must be an Integer, MailCannon::Event::*, or MailCannon::Stamp !'
