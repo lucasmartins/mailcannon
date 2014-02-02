@@ -5,11 +5,13 @@
 MailCannon
 ==========
 
-This is a **WORK IN PROGRESS**
+Although this is a **WORK IN PROGRESS**, we're rolling it out to **production** with no issues for now at [Resultados Digitais](http://resultadosdigitais.com.br/).
 
 This Gem relies heavily on both [Sidekiq](https://github.com/mperham/sidekiq) and Celluloid Gems, you are encouraged to use it anywhere with Ruby (a http interface is on the Roadmap ).
 
-This Gem provides workers ready for deploy cooked with [MongoDB](http://www.mongodb.org/) + [Mongoid](https://github.com/mongoid/mongoid) + [Sidekiq](https://github.com/mperham/sidekiq) + [Rubinius](http://rubini.us/) (feel free to use on MRI and jruby as well).
+This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mongodb.org/) + [Mongoid](https://github.com/mongoid/mongoid) + [Sidekiq](https://github.com/mperham/sidekiq) + [Rubinius](http://rubini.us/) (feel free to use on MRI and jRuby as well).
+
+For production deploy, you should take a loot at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
 
 Install
 =======
@@ -20,7 +22,7 @@ You can:
 ```
 
 Or just add it to your Gemfile
-```
+```ruby
   gem 'mailcannon'
 ```
 
