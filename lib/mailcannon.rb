@@ -21,6 +21,7 @@ module MailCannon
   require_relative 'mailcannon/stamp'
   require_relative 'mailcannon/event'
   require_relative 'mailcannon/workers/barrel'
+  require_relative 'mailcannon/workers/librato'
   require_relative 'mailcannon/version'
   
   #Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_TOKEN']) if ENV['LIBRATO_TOKEN'] && ENV['LIBRATO_USER'] # change to initializer

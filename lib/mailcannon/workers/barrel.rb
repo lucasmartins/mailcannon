@@ -1,8 +1,26 @@
 # This worker handles Envelopes dispatch
 class MailCannon::Barrel
   include Sidekiq::Worker
-
+  
   def perform(envelope_id)
+    if MailCannon::Barrel::Librato.available?
+      shoot_with_librato!(envelope_id)
+    else
+      shoot!(envelope_id)
+    end
+  end
+
+  private
+  def shoot_with_librato!(envelope_id)
+    MailCannon::Barrel::Librato.authenticate
+    aggregator = Librato::Metrics::Aggregator.new
+    aggregator.time 'mailcannon.shoot!' do
+      shoot!(envelope_id)
+    end
+    aggregator.submit
+  end
+
+  def shoot!(envelope_id)
     envelope_id = envelope_id['$oid'] if envelope_id['$oid']
     logger.info "sending MailCannon::Envelope.find('#{envelope_id}')"
     begin
