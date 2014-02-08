@@ -7,7 +7,7 @@ require 'sidekiq'
 require 'sendgrid_webapi'
 require 'yajl-ruby' if RUBY_PLATFORM=='ruby'
 require 'jruby-openssl' if RUBY_PLATFORM=='jruby'
-#require 'librato-metrics'
+require 'librato/metrics'
 
 Encoding.default_internal = "utf-8"
 Encoding.default_external = "utf-8"
@@ -21,10 +21,8 @@ module MailCannon
   require_relative 'mailcannon/stamp'
   require_relative 'mailcannon/event'
   require_relative 'mailcannon/workers/barrel'
-  require_relative 'mailcannon/workers/librato'
+  require_relative 'mailcannon/librato'
   require_relative 'mailcannon/version'
-  
-  #Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_TOKEN']) if ENV['LIBRATO_TOKEN'] && ENV['LIBRATO_USER'] # change to initializer
   
   # To be used with caution
   def self.warmode

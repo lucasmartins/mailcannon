@@ -3,7 +3,7 @@ class MailCannon::Barrel
   include Sidekiq::Worker
   
   def perform(envelope_id)
-    if MailCannon::Barrel::Librato.available?
+    if MailCannon::Librato.available?
       shoot_with_librato!(envelope_id)
     else
       shoot!(envelope_id)
@@ -12,7 +12,7 @@ class MailCannon::Barrel
 
   private
   def shoot_with_librato!(envelope_id)
-    MailCannon::Barrel::Librato.authenticate
+    MailCannon::Librato.authenticate
     aggregator = Librato::Metrics::Aggregator.new
     aggregator.time 'mailcannon.shoot!' do
       shoot!(envelope_id)

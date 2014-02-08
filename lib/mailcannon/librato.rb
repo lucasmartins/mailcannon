@@ -1,4 +1,4 @@
-module MailCannon::Barrel::Librato
+module MailCannon::Librato
   extend self
   
   def available?
