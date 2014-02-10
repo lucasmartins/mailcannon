@@ -2,7 +2,7 @@ module MailCannon::Librato
   extend self
   
   def available?
-    if ENV['LIBRATO_USER'] && ENV['LIBRATO_PASSWORD']
+    if ENV['LIBRATO_USER'] && ENV['LIBRATO_TOKEN']
       true
     else
       false
@@ -10,6 +10,6 @@ module MailCannon::Librato
   end
 
   def authenticate
-    Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_PASSWORD']) if available?
+    Librato::Metrics.authenticate(ENV['LIBRATO_USER'], ENV['LIBRATO_TOKEN']) if available?
   end
 end

@@ -3,6 +3,7 @@ class MailCannon::Barrel
   include Sidekiq::Worker
   
   def perform(envelope_id)
+    envelope_id = envelope_id['$oid'] if envelope_id['$oid']
     if MailCannon::Librato.available?
       shoot_with_librato!(envelope_id)
     else
@@ -14,14 +15,13 @@ class MailCannon::Barrel
   def shoot_with_librato!(envelope_id)
     MailCannon::Librato.authenticate
     aggregator = Librato::Metrics::Aggregator.new
-    aggregator.time 'mailcannon.shoot!' do
+    aggregator.time 'mailcannon.shoot' do
       shoot!(envelope_id)
     end
     aggregator.submit
   end
 
   def shoot!(envelope_id)
-    envelope_id = envelope_id['$oid'] if envelope_id['$oid']
     logger.info "sending MailCannon::Envelope.find('#{envelope_id}')"
     begin
       envelope = MailCannon::Envelope.find(envelope_id.to_s)
