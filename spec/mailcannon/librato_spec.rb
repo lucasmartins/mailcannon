@@ -1,6 +1,10 @@
 require "spec_helper"
 
 describe MailCannon::Librato do
+  after(:each) do
+    ENV['LIBRATO_USER']=nil
+    ENV['LIBRATO_TOKEN']=nil
+  end
   describe "#available?" do
     context 'when Librato info is NOT in the ENV' do
       it "returns false" do
