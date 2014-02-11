@@ -57,3 +57,6 @@ end
 
 Mongoid.load!("spec/support/mongoid.yml", 'test')
 MailCannon.config('templates')
+
+ENV['AIRBRAKE_TOKEN']=nil
+ENV['LIBRATO_TOKEN']=nil

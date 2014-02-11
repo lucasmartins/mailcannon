@@ -35,6 +35,7 @@ class MailCannon::Barrel
       logger.error "unable to find the document MailCannon::Envelope.find('#{envelope_id}')"
     rescue Exception => e
       logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}')\n#{e.backtrace}"
+      Airbrake.notify(e, parameters: {'envelope_id'=>envelope_id}, cgi_data: ENV.to_hash) if MailCannon::Airbrake.available?
     end
   end
 end
