@@ -62,6 +62,13 @@ module MailCannon::Adapter::SendgridWeb
     {'sub'=>{"#{name_placeholder}"=>selected_hash_array}}
   end
 
+  def build_email_subs
+    email_placeholder = MailCannon.config['default_email_placeholder'] || '%email%'
+    selected_hash_array = []
+    self.to.map {|h| selected_hash_array.push h['email']||h[:email]||''}
+    {'sub'=>{"#{email_placeholder}"=>selected_hash_array}}
+  end
+
   def build_xsmtpapi(recipients,subs)
     xsmtpapi = self.xsmtpapi || {}
     to = []
@@ -73,6 +80,7 @@ module MailCannon::Adapter::SendgridWeb
     xsmtpapi.merge!({'to' => to}) if to
     xsmtpapi = xsmtpapi.deep_merge(subs) if subs!=nil && subs['sub']!=nil
     xsmtpapi = xsmtpapi.deep_merge(build_name_subs) if build_name_subs!=nil && build_name_subs.is_a?(Hash)
+    xsmtpapi = xsmtpapi.deep_merge(build_email_subs) if build_email_subs!=nil && build_email_subs.is_a?(Hash)
     return xsmtpapi
   end
 
