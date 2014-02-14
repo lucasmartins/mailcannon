@@ -91,6 +91,13 @@ Docs
 ====
 You should check the [factories](https://github.com/lucasmartins/mailcannon/tree/master/spec/factories) to learn what you need to build your objects, and the [tests](https://github.com/lucasmartins/mailcannon/tree/master/spec/mailcannon) to learn how to use them. But hey, we have docs [right here](http://rdoc.info/github/lucasmartins/mailcannon/master/frames).
 
+Roadmap
+=======
+
+- Statistics (Map&Reduce awesomeness);
+- New service adapter (any ideas?);
+- Memory optimization (for MailCannon Outpost;
+
 Contribute
 ==========
 
