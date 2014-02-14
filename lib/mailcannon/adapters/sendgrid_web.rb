@@ -55,18 +55,20 @@ module MailCannon::Adapter::SendgridWeb
     self.save!
   end
 
-  def build_name_subs
-    name_placeholder = MailCannon.config['default_name_placeholder'] || '%name%'
+  def build_to_subs(placeholder, to_key)
     selected_hash_array = []
-    self.to.map {|h| selected_hash_array.push h['name']||h[:name]||''}
-    {'sub'=>{"#{name_placeholder}"=>selected_hash_array}}
+    self.to.map {|h| selected_hash_array.push h[to_key]||h[to_key.to_sym]||''}
+    {'sub'=>{"#{placeholder}"=>selected_hash_array}}
+  end
+
+  def build_name_subs
+    placeholder = MailCannon.config['default_name_placeholder'] || '%name%'
+    build_to_subs(placeholder, 'name')
   end
 
   def build_email_subs
-    email_placeholder = MailCannon.config['default_email_placeholder'] || '%email%'
-    selected_hash_array = []
-    self.to.map {|h| selected_hash_array.push h['email']||h[:email]||''}
-    {'sub'=>{"#{email_placeholder}"=>selected_hash_array}}
+    placeholder = MailCannon.config['default_email_placeholder'] || '%email%'
+    build_to_subs(placeholder, 'email')
   end
 
   def build_xsmtpapi(recipients,subs)
