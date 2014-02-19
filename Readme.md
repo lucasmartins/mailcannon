@@ -95,9 +95,10 @@ Roadmap
 =======
 
 - Statistics (Map&Reduce awesomeness);
-- New service adapter (Mandrill?);
 - Memory optimization (focused on MailCannon Outpost);
 - HTTP interface (so you don't need to be coding Ruby to use it!)
+- New service adapter (Mandrill?);
+
 Contribute
 ==========
 
