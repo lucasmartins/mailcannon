@@ -71,15 +71,6 @@ module MailCannon::Adapter::SendgridWeb
     build_to_subs(placeholder, 'email')
   end
 
-
-  def build_unique_args
-    unique_args = {}
-    if MailCannon.config['add_envelope_id_to_unique_args']
-      unique_args.merge!({'envelope_id'=>self.id})
-    end
-    unique_args
-  end
-
   def build_xsmtpapi(recipients,subs)
     xsmtpapi = self.xsmtpapi || {}
     to = []
@@ -92,7 +83,6 @@ module MailCannon::Adapter::SendgridWeb
     xsmtpapi = xsmtpapi.deep_merge(subs) if subs!=nil && subs['sub']!=nil
     xsmtpapi = xsmtpapi.deep_merge(build_name_subs) if build_name_subs!=nil && build_name_subs.is_a?(Hash)
     xsmtpapi = xsmtpapi.deep_merge(build_email_subs) if build_email_subs!=nil && build_email_subs.is_a?(Hash)
-    xsmtpapi.merge!({'unique_args' => build_unique_args })
     return xsmtpapi
   end
 

@@ -15,6 +15,3 @@ default_name_placeholder: "*|NAME|*"
 
 # MailCannon builds the 'email' substitution Array for convenience, using the email from Envelope.to: [{email: 'foo', name: 'bar'}]
 default_email_placeholder: "*|EMAIL|*"
-
-# Pretty self explanatory. This is intended to be used by your event consuming service.
-add_envelope_id_to_unique_args: true
