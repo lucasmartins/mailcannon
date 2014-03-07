@@ -7,6 +7,6 @@ class MailCannon::SendgridEvent
   field :event, type: String
   
   def self.insert_bulk(tha_huge_string)
-    SendgridEvent.collection.insert(tha_huge_string)
+    MailCannon::SendgridEvent.collection.insert(tha_huge_string)
   end
 end

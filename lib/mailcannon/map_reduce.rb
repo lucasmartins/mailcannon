@@ -1,9 +1,12 @@
 class MailCannon::MapReduce
   # gets the events from the generic event collection into the right envelope 
-  def grab_events_for_envelope(id)
+  def self.grab_events_for_envelope(id)
     #TODO em lotes
     events = MailCannon::SendgridEvent.where(envelope_id: id).find_and_modify({}, remove: true)
-    
+    envelope = MailCannon::Envelope.find(id)
+    events.each do |e|
+      envelope.sendgrid_events << e
+    end
   end
 end
 

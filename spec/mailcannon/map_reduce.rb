@@ -15,9 +15,10 @@ describe MailCannon::MapReduce do
     MailCannon::SendgridEvent.insert_bulk(test_hash)
   end
 
-  describe "#grab_events" do
-    it "does shit" do
-      
+  describe "#grab_events_for_envelope" do
+    it "inserts the events into the envelope" do
+      binding.pry
+      expect{ MailCannon::MapReduce.grab_events_for_envelope(envelope_a.id) }.to change{envelope_a.sendgrid_events.count}.by(2)
     end
   end
 end
