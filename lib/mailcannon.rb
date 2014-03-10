@@ -25,6 +25,7 @@ module MailCannon
   require_relative 'mailcannon/sendgrid_event'
   require_relative 'mailcannon/map_reduce'
   require_relative 'mailcannon/workers/barrel'
+  require_relative 'mailcannon/workers/aggregation_job'
   require_relative 'mailcannon/librato'
   require_relative 'mailcannon/airbrake'
   require_relative 'mailcannon/version'
