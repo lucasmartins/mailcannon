@@ -18,7 +18,14 @@ describe MailCannon::MapReduce do
 
   describe "#grab_events_for_envelope" do
     it "inserts the events into the envelope" do
-      expect(envelope_a.sendgrid_events.count).to eq(3)
+      MailCannon::MapReduce.grab_events_for_envelope(envelope_a.id)
+      expect(envelope_a.reload.embedded_sendgrid_events.count).to eq(3)
+    end
+    
+    it "deletes the events from the generic collection to avoid that they are processed more than once" do
+      expect do
+        MailCannon::MapReduce.grab_events_for_envelope(envelope_a.id)
+      end.to change {MailCannon::SendgridEvent.count}.from(5).to(2)
     end
   end
 end

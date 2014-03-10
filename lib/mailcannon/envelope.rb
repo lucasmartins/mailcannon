@@ -6,7 +6,8 @@ class MailCannon::Envelope
   
   embeds_one :mail
   embeds_many :stamps
-  has_many :sendgrid_events
+  # has_many :sendgrid_events
+  embeds_many :embedded_sendgrid_events
   belongs_to :envelope_bag
 
   field :from, type: String

@@ -1,13 +1,12 @@
-class MailCannon::SendgridEvent
+class MailCannon::EmbeddedSendgridEvent
   include Mongoid::Document
-  #field :envelope_id, type: String
   field :email, type: String
   field :timestamp, type: String
   field :unique_arg, type: String
   field :event, type: String
   
-  # belongs_to :envelope
-
+  embedded_in :envelope
+  
   def self.insert_bulk(tha_huge_string)
     MailCannon::SendgridEvent.collection.insert(tha_huge_string)
   end
