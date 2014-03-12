@@ -53,7 +53,7 @@ describe MailCannon::MapReduce do
         "unsubscribe"=>{"count"=>0.0, "leads"=>[]},
         "drop"=>{"count"=>0.0, "leads"=>[]},
         "bounce"=>{"count"=>1.0, "leads"=>["3"]}}
-      expect(mapreduce.raw['results'].first['value']['envelope_statistics']['events']).to eq(expected_hash)
+      expect(mapreduce.raw['results'].first['value']).to eq(expected_hash)
     end
   end
 

@@ -11,7 +11,24 @@ class MailCannon::MapReduce
     MailCannon::SendgridEvent.where(envelope_id: id).map_reduce(MailCannon::MapReduce.map, MailCannon::MapReduce.reduce).out(inline: true)
   end
 
-  #private
+  def self.persist_statistics_for_envelope(statistics)
+    statistics.each do |statistic|
+      envelope = MailCannon::Envelope.find(statistic["_id"])
+      envelope.statistics = envelope.statistics.nil?  ? statistics["value"] : merge_statistics(envelope.statistics, statistics["value"])
+      envelope.save
+    end 
+  end
+
+  private
+
+  def self.merge_statistics(consolidated, new_statistics)
+    ["posted","processed","delivered", "open", "click","deferred","spam_report","spam","unsubscribe","drop","bounce"].each do |status|
+      consolidated[i]["count"] = consolidated[i]["count"] + new_statistics[i]["count"]
+      consolidated[i]["leads"] << new_statistics[i]["leads"]
+    end
+    consolidated
+  end
+
   def self.map
     %Q{
       function () {
@@ -24,102 +41,97 @@ class MailCannon::MapReduce
     %Q{
       function (key, values) {
       var result = {
-        'envelope_statistics': {
-          'envelope_id': key,
-          'events': {
-            'posted': {
-              'count': 0,
-              'leads': []
-            },
-            'processed': {
-              'count': 0,
-              'leads': []
-            },
-            'delivered': {
-              'count': 0,
-              'leads': []
-            },
-            'open': {
-              'count': 0,
-              'leads': []
-            },
-            'click': {
-              'count': 0,
-              'leads': []
-            },
-            'deferred': {
-              'count': 0,
-              'leads': []
-            },
-            'spam_report': {
-              'count': 0,
-              'leads': []
-            },
-            'spam': {
-              'count': 0,
-              'leads': []
-            },
-            'unsubscribe': {
-              'count': 0,
-              'leads': []
-            },
-            'drop': {
-              'count': 0,
-              'leads': []
-            },
-            'bounce': {
-              'count': 0,
-              'leads': []
-            }
-          }
+        'posted': {
+          'count': 0,
+          'leads': []
+        },
+        'processed': {
+          'count': 0,
+          'leads': []
+        },
+        'delivered': {
+          'count': 0,
+          'leads': []
+        },
+        'open': {
+          'count': 0,
+          'leads': []
+        },
+        'click': {
+          'count': 0,
+          'leads': []
+        },
+        'deferred': {
+          'count': 0,
+          'leads': []
+        },
+        'spam_report': {
+          'count': 0,
+          'leads': []
+        },
+        'spam': {
+          'count': 0,
+          'leads': []
+        },
+        'unsubscribe': {
+          'count': 0,
+          'leads': []
+        },
+        'drop': {
+          'count': 0,
+          'leads': []
+        },
+        'bounce': {
+          'count': 0,
+          'leads': []
         }
       };
 
       values.forEach(function(value) {
         switch (value['event']) {
           case 'posted':
-            result['envelope_statistics']['events']['posted']['count']++;
-            result['envelope_statistics']['events']['posted']['leads'].push(value['lead_id']);
+            result['posted']['count']++;
+            result['posted']['leads'].push(value['lead_id']);
           break;
           case 'processed':
-            result['envelope_statistics']['events']['processed']['count']++;
-            result['envelope_statistics']['events']['processed']['leads'].push(value['lead_id']);
+            result['processed']['count']++;
+            result['processed']['leads'].push(value['lead_id']);
           break;
           case 'delivered':
-            result['envelope_statistics']['events']['delivered']['count']++;
-            result['envelope_statistics']['events']['delivered']['leads'].push(value['lead_id']);
+            result['delivered']['count']++;
+            result['delivered']['leads'].push(value['lead_id']);
           break;
           case 'open':
-            result['envelope_statistics']['events']['open']['count']++;
-            result['envelope_statistics']['events']['open']['leads'].push(value['lead_id']);
+            result['open']['count']++;
+            result['open']['leads'].push(value['lead_id']);
           break;
           case 'click':
-            result['envelope_statistics']['events']['click']['count']++;
-            result['envelope_statistics']['events']['click']['leads'].push(value['lead_id']);
+            result['click']['count']++;
+            result['click']['leads'].push(value['lead_id']);
           break;
           case 'deferred':
-            result['envelope_statistics']['events']['deferred']['count']++;
-            result['envelope_statistics']['events']['deferred']['leads'].push(value['lead_id']);
+            result['deferred']['count']++;
+            result['deferred']['leads'].push(value['lead_id']);
           break;
           case 'spam_report':
-            result['envelope_statistics']['events']['spam_report']['count']++;
-            result['envelope_statistics']['events']['spam_report']['leads'].push(value['lead_id']);
+            result['spam_report']['count']++;
+            result['spam_report']['leads'].push(value['lead_id']);
           break;
           case 'spam':
-            result['envelope_statistics']['events']['spam']['count']++;
-            result['envelope_statistics']['events']['spam']['leads'].push(value['lead_id']);
+            result['spam']['count']++;
+            result['spam']['leads'].push(value['lead_id']);
           break;
           case 'unsubscribe':
-            result['envelope_statistics']['events']['unsubscribe']['count']++;
-            result['envelope_statistics']['events']['unsubscribe']['leads'].push(value['lead_id']);
+            result['unsubscribe']['count']++;
+            result['unsubscribe']['leads'].push(value['lead_id']);
           break;
           case 'drop':
-            result['envelope_statistics']['events']['drop']['count']++;
-            result['envelope_statistics']['events']['drop']['leads'].push(value['lead_id']);
+            result['drop']['count']++;
+            result['drop']['leads'].push(value['lead_id']);
           break;
           case 'bounce':
-            result['envelope_statistics']['events']['bounce']['count']++;
-            result['envelope_statistics']['events']['bounce']['leads'].push(value['lead_id']);
+            result['bounce']['count']++;
+            result['bounce']['leads'].push(value['lead_id']);
           break;
         }
       });

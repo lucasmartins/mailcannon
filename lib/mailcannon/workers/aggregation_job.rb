@@ -3,7 +3,7 @@ class MailCannon::AggregationJob
   
   def perform(envelope_ids)
     envelope_ids.each do |id|
-      MailCannon::MapReduce.grab_events_for_envelope(id)
+      MailCannon::MapReduce.statistics_for_envelope(id)
     end
   end
   
