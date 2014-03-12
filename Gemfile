@@ -20,6 +20,7 @@ group :development do
 end
 
 group :test do
+  gem 'jasmine'
   gem 'rspec'
   gem 'rspec-mocks'
   gem 'rspec-expectations'

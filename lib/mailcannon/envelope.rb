@@ -4,12 +4,12 @@ class MailCannon::Envelope
   include Mongoid::Timestamps
   include MailCannon::Adapter::SendgridWeb
   
-  embeds_one :mail
-  embeds_many :stamps
-  # has_many :sendgrid_events
-  embeds_many :embedded_sendgrid_events
   belongs_to :envelope_bag
 
+  embeds_one :mail
+  embeds_many :stamps
+  has_many :sendgrid_events
+  
   field :from, type: String
   field :from_name, type: String
   field :to, type: Array # of hashes. [{email: '', name: ''},...]

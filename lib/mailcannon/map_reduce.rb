@@ -1,39 +1,9 @@
 class MailCannon::MapReduce
-  # gets the events from the generic event collection into the right envelope 
-    def self.grab_events_for_envelope(id)
-    #TODO em lotes
-    events = MailCannon::SendgridEvent.where(envelope_id: id)
-    embedded_events = events.map { |e| MailCannon::EmbeddedSendgridEvent.new(e.attributes.except!("_id")) }
-    events.destroy_all
+  def self.grab_events_for_envelope(id)
+    # processed: (nil:new), (false:locked), (true: processed)
+    MailCannon::SendgridEvent.where(envelope_id: id, processed: nil).update_all(processed: false)
+    events = MailCannon::SendgridEvent.where(envelope_id: id, processed: false).to_a
     envelope = MailCannon::Envelope.find(id)
-    envelope.embedded_sendgrid_events.concat(embedded_events)
+    envelope.sendgrid_events.concat(events) unless events.empty?
   end
 end
-
-=begin
-  
-map = %Q{
-  function() {
-    emit(this.name, { likes: this.likes });
-  }
-}
-
-reduce = %Q{
-  function(key, values) {
-    var result = { likes: 0 };
-    values.forEach(function(value) {
-      result.likes += value.likes;
-    });
-    return result;
-  }
-}
-
-Band.where(:likes.gt => 100).map_reduce(map, reduce).out(inline: true)
-
-
-Queue.
-  where(pending: true).
-  asc(:created_at).
-  find_and_modify({ "$set" => { pending: false }}, new: true)
-
-=end
