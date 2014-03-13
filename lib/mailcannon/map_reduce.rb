@@ -24,7 +24,7 @@ class MailCannon::MapReduce
   def self.merge_statistics(consolidated, new_statistics)
     ["posted","processed","delivered", "open", "click","deferred","spam_report","spam","unsubscribe","drop","bounce"].each do |status|
       consolidated[i]["count"] = consolidated[i]["count"] + new_statistics[i]["count"]
-      consolidated[i]["leads"] << new_statistics[i]["leads"]
+      consolidated[i]["targets"] << new_statistics[i]["targets"]
     end
     consolidated
   end
@@ -32,7 +32,7 @@ class MailCannon::MapReduce
   def self.map
     %Q{
       function () {
-        emit(this.envelope_id, { lead_id: this.lead_id, event: this.event });
+        emit(this.envelope_id, { target_id: this.target_id, event: this.event });
       }
     }
   end
@@ -43,47 +43,47 @@ class MailCannon::MapReduce
       var result = {
         'posted': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'processed': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'delivered': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'open': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'click': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'deferred': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'spam_report': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'spam': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'unsubscribe': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'drop': {
           'count': 0,
-          'leads': []
+          'targets': []
         },
         'bounce': {
           'count': 0,
-          'leads': []
+          'targets': []
         }
       };
 
@@ -91,47 +91,47 @@ class MailCannon::MapReduce
         switch (value['event']) {
           case 'posted':
             result['posted']['count']++;
-            result['posted']['leads'].push(value['lead_id']);
+            result['posted']['targets'].push(value['target_id']);
           break;
           case 'processed':
             result['processed']['count']++;
-            result['processed']['leads'].push(value['lead_id']);
+            result['processed']['targets'].push(value['target_id']);
           break;
           case 'delivered':
             result['delivered']['count']++;
-            result['delivered']['leads'].push(value['lead_id']);
+            result['delivered']['targets'].push(value['target_id']);
           break;
           case 'open':
             result['open']['count']++;
-            result['open']['leads'].push(value['lead_id']);
+            result['open']['targets'].push(value['target_id']);
           break;
           case 'click':
             result['click']['count']++;
-            result['click']['leads'].push(value['lead_id']);
+            result['click']['targets'].push(value['target_id']);
           break;
           case 'deferred':
             result['deferred']['count']++;
-            result['deferred']['leads'].push(value['lead_id']);
+            result['deferred']['targets'].push(value['target_id']);
           break;
           case 'spam_report':
             result['spam_report']['count']++;
-            result['spam_report']['leads'].push(value['lead_id']);
+            result['spam_report']['targets'].push(value['target_id']);
           break;
           case 'spam':
             result['spam']['count']++;
-            result['spam']['leads'].push(value['lead_id']);
+            result['spam']['targets'].push(value['target_id']);
           break;
           case 'unsubscribe':
             result['unsubscribe']['count']++;
-            result['unsubscribe']['leads'].push(value['lead_id']);
+            result['unsubscribe']['targets'].push(value['target_id']);
           break;
           case 'drop':
             result['drop']['count']++;
-            result['drop']['leads'].push(value['lead_id']);
+            result['drop']['targets'].push(value['target_id']);
           break;
           case 'bounce':
             result['bounce']['count']++;
-            result['bounce']['leads'].push(value['lead_id']);
+            result['bounce']['targets'].push(value['target_id']);
           break;
         }
       });
