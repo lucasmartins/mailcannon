@@ -68,7 +68,7 @@ envelope = MailCannon::Envelope.create(
   subject: 'Test',
   mail: MailCannon::Mail.new(text: 'you will see this when no HTML reader is available', html: 'this should be an HTML'))
 envelope_bag.push envelope
-envelope_bag.post! # this will sent using the 'hot-account'.
+envelope_bag.post! # this will be sent using the 'hot-account'.
 ```
 
 ### Configuration file
