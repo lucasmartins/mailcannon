@@ -2,9 +2,9 @@ module MailCannon::MapReduce
   module ClassMethods
     def reduce_statistics_for_envelope(id)
       events = set_events_processed_status_for_envelope(id,nil,:lock)
-      events.map_reduce(self.js_map, self.js_reduce).out(reduce: "mail_cannon_envelope_statistics")
-      binding.pry
+      result = events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_statistics")
       set_events_to(events,:processed)
+      result.raw
     end
 
     def statistics_for_envelope(id)
@@ -146,7 +146,6 @@ module MailCannon::MapReduce
       if events.kind_of?(Mongoid::Criteria)
         events.update_all(processed: status)
       else
-        binding.pry
         events.processed=status
         events.save
       end

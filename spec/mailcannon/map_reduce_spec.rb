@@ -51,15 +51,29 @@ describe MailCannon::MapReduce do
 
     let(:expected_hash_b){ {"posted"=>{"count"=>0.0, "targets"=>[]},
         "processed"=>{"count"=>0.0, "targets"=>[]},
-        "delivered"=>{"count"=>2.0, "targets"=>["1"]},
-        "open"=>{"count"=>2.0, "targets"=>["2"]},
+        "delivered"=>{"count"=>2.0, "targets"=>["1","1"]},
+        "open"=>{"count"=>2.0, "targets"=>["2","2"]},
         "click"=>{"count"=>0.0, "targets"=>[]},
         "deferred"=>{"count"=>0.0, "targets"=>[]},
         "spam_report"=>{"count"=>0.0, "targets"=>[]},
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
-        "bounce"=>{"count"=>2.0, "targets"=>["3"]}} }
+        "bounce"=>{"count"=>2.0, "targets"=>["3","3"]}} }
+
+    it "measure reduce output availability" do
+      envelope_a.reduce_statistics
+      start_time = Time.now
+      #puts "Reduced at: #{start_time}"
+      while MailCannon::EnvelopeStatistic.count==0
+        sleep 1
+      end
+      end_time = Time.now
+      diff = end_time-start_time
+      #puts "Available at: #{end_time}"
+      #puts "Diff #{diff}"
+      expect(diff<1.0).to be_true
+    end
 
     it "creates an EnvelopeStatistic entry" do
       expect{ MailCannon::Envelope.reduce_statistics_for_envelope(envelope_a.id) }.to change{ MailCannon::EnvelopeStatistic.count }.from(0).to(1)
@@ -72,6 +86,7 @@ describe MailCannon::MapReduce do
 
     it "merges recurring reduces" do
       envelope_a.reduce_statistics
+      expect(envelope_a.stats).to eq(expected_hash_a)
       insert_sample_events
       envelope_a.reduce_statistics
       expect(envelope_a.stats).to eq(expected_hash_b)
