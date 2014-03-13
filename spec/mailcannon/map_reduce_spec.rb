@@ -4,10 +4,8 @@ describe MailCannon::MapReduce do
   let(:envelope_a) { build(:envelope) }
   let(:envelope_b) { build(:envelope) }
   let(:envelope_c) { build(:envelope) }
-  before(:each) do
-    envelope_a.save
-    envelope_b.save
-    envelope_c.save
+
+  def insert_sample_events
     test_hash = [
       {envelope_id: envelope_a.id, email: 'foo1@bar.com', timestamp: 1322000092, unique_arg: 'my unique arg', event: 'delivered', target_id: '1'},
       {envelope_id: envelope_a.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'open', target_id: '2'},
@@ -19,30 +17,27 @@ describe MailCannon::MapReduce do
     MailCannon::SendgridEvent.insert_bulk(test_hash)
   end
 
-  describe "#grab_events_for_envelope" do
-    it "inserts the events into the envelope" do
-      MailCannon::MapReduce.grab_events_for_envelope(envelope_a.id)
-      expect(envelope_a.reload.sendgrid_events.count).to eq(3)
+  before(:each) do
+    envelope_a.save
+    envelope_b.save
+    envelope_c.save
+    insert_sample_events
+  end
+
+  describe "#set_events_processed_status_for_envelope" do
+    it "sets events status (processed) to :lock(false)" do
+      MailCannon::Envelope.set_events_processed_status_for_envelope(envelope_a.id, nil, :lock)
+      expect(envelope_a.reload.sendgrid_events.where(processed: false).count).to eq(3)
     end
     
-  it "deals with only one event" do
-      expect do
-        MailCannon::MapReduce.grab_events_for_envelope(envelope_c.id)
-      end.to change {envelope_c.sendgrid_events.first.processed}.to be_false
-    end
-
-    it "changes processed status to false (lock)" do
-      expect do
-        MailCannon::MapReduce.grab_events_for_envelope(envelope_a.id)
-      end.to change {envelope_a.sendgrid_events.pluck(:processed)}.to match_array([false,false,false])
+    it "sets events status (processed) to :processed(true)" do
+      MailCannon::Envelope.set_events_processed_status_for_envelope(envelope_a.id, nil, :processed)
+      expect(envelope_a.reload.sendgrid_events.where(processed: true).count).to eq(3)
     end
   end
 
-  describe ".statistics_for_envelope" do
-    it "returns statistics hash/json" do
-      mapreduce = MailCannon::MapReduce.statistics_for_envelope(envelope_a.id)
-      expected_hash = {       
-        "posted"=>{"count"=>0.0, "targets"=>[]},
+  describe ".reduce_statistics_for_envelope" do
+    let(:expected_hash_a){ {"posted"=>{"count"=>0.0, "targets"=>[]},
         "processed"=>{"count"=>0.0, "targets"=>[]},
         "delivered"=>{"count"=>1.0, "targets"=>["1"]},
         "open"=>{"count"=>1.0, "targets"=>["2"]},
@@ -52,8 +47,34 @@ describe MailCannon::MapReduce do
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
-        "bounce"=>{"count"=>1.0, "targets"=>["3"]}}
-      expect(mapreduce.raw['results'].first['value']).to eq(expected_hash)
+        "bounce"=>{"count"=>1.0, "targets"=>["3"]}} }
+
+    let(:expected_hash_b){ {"posted"=>{"count"=>0.0, "targets"=>[]},
+        "processed"=>{"count"=>0.0, "targets"=>[]},
+        "delivered"=>{"count"=>2.0, "targets"=>["1"]},
+        "open"=>{"count"=>2.0, "targets"=>["2"]},
+        "click"=>{"count"=>0.0, "targets"=>[]},
+        "deferred"=>{"count"=>0.0, "targets"=>[]},
+        "spam_report"=>{"count"=>0.0, "targets"=>[]},
+        "spam"=>{"count"=>0.0, "targets"=>[]},
+        "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
+        "drop"=>{"count"=>0.0, "targets"=>[]},
+        "bounce"=>{"count"=>2.0, "targets"=>["3"]}} }
+
+    it "creates an EnvelopeStatistic entry" do
+      expect{ MailCannon::Envelope.reduce_statistics_for_envelope(envelope_a.id) }.to change{ MailCannon::EnvelopeStatistic.count }.from(0).to(1)
+    end
+
+    it "returns statistics hash/json" do
+      envelope_a.reduce_statistics
+      expect(envelope_a.stats).to eq(expected_hash_a)
+    end
+
+    it "merges recurring reduces" do
+      envelope_a.reduce_statistics
+      insert_sample_events
+      envelope_a.reduce_statistics
+      expect(envelope_a.stats).to eq(expected_hash_b)
     end
   end
 
