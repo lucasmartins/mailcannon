@@ -11,7 +11,7 @@ This Gem relies heavily on both [Sidekiq](https://github.com/mperham/sidekiq) an
 
 This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mongodb.org/) + [Mongoid](https://github.com/mongoid/mongoid) + [Sidekiq](https://github.com/mperham/sidekiq) + [Rubinius](http://rubini.us/) (feel free to use on MRI and jRuby as well).
 
-For production deployment, you should take a loot at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
+For production deployment, you should take a look at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
 
 Install
 =======
