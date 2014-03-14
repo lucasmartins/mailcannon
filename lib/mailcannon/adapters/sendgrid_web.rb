@@ -71,17 +71,22 @@ module MailCannon::Adapter::SendgridWeb
 
   def build_xsmtpapi(recipients,subs)
     xsmtpapi = self.xsmtpapi || {}
-    to = []
     recipients.symbolize_keys!
-    recipients[:to].each do |h|
-      h.symbolize_keys!
-      to.push h[:email]
-    end
+    to = extract_values(recipients[:to],:email)
     xsmtpapi.merge!({'to' => to}) if to
     xsmtpapi = xsmtpapi.deep_merge(subs) if subs!=nil && subs['sub']!=nil
     xsmtpapi = xsmtpapi.deep_merge(build_name_subs) if build_name_subs!=nil && build_name_subs.is_a?(Hash)
     xsmtpapi = xsmtpapi.deep_merge(build_email_subs) if build_email_subs!=nil && build_email_subs.is_a?(Hash)
     return xsmtpapi
+  end
+
+  def extract_values(values,key)
+    extract=[]
+    values.each do |h|
+      h.symbolize_keys!
+      extract.push h[key]
+    end
+    extract
   end
 
   def validate_xsmtpapi!
