@@ -4,122 +4,21 @@ module MailCannon::EnvelopeMapReduce
       events = change_events_status_for_envelope(id,nil,:lock)
       result = events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_statistics")
       set_events_to(events,:processed)
-      result.raw
+      {raw: result.raw, count: events.count}
     end
 
     def statistics_for_envelope(id)
-      MailCannon::Envelope.stats
+      self.stats
     end
 
     def js_map
-      %Q{
-        function () {
-          emit(this.envelope_id, { target_id: this.target_id, event: this.event });
-        }
-      }
+      #TODO cache this
+      File.read('lib/mailcannon/reduces/envelope_map.js')
     end
-  
-    def js_reduce
-      %Q{
-        function (key, values) {
-        var result = {
-          'posted': {
-            'count': 0,
-            'targets': []
-          },
-          'processed': {
-            'count': 0,
-            'targets': []
-          },
-          'delivered': {
-            'count': 0,
-            'targets': []
-          },
-          'open': {
-            'count': 0,
-            'targets': []
-          },
-          'click': {
-            'count': 0,
-            'targets': []
-          },
-          'deferred': {
-            'count': 0,
-            'targets': []
-          },
-          'spam_report': {
-            'count': 0,
-            'targets': []
-          },
-          'spam': {
-            'count': 0,
-            'targets': []
-          },
-          'unsubscribe': {
-            'count': 0,
-            'targets': []
-          },
-          'drop': {
-            'count': 0,
-            'targets': []
-          },
-          'bounce': {
-            'count': 0,
-            'targets': []
-          }
-        };
 
-        values.forEach(function(value) {
-          switch (value['event']) {
-            case 'posted':
-              result['posted']['count']++;
-              result['posted']['targets'].push(value['target_id']);
-            break;
-            case 'processed':
-              result['processed']['count']++;
-              result['processed']['targets'].push(value['target_id']);
-            break;
-            case 'delivered':
-              result['delivered']['count']++;
-              result['delivered']['targets'].push(value['target_id']);
-            break;
-            case 'open':
-              result['open']['count']++;
-              result['open']['targets'].push(value['target_id']);
-            break;
-            case 'click':
-              result['click']['count']++;
-              result['click']['targets'].push(value['target_id']);
-            break;
-            case 'deferred':
-              result['deferred']['count']++;
-              result['deferred']['targets'].push(value['target_id']);
-            break;
-            case 'spam_report':
-              result['spam_report']['count']++;
-              result['spam_report']['targets'].push(value['target_id']);
-            break;
-            case 'spam':
-              result['spam']['count']++;
-              result['spam']['targets'].push(value['target_id']);
-            break;
-            case 'unsubscribe':
-              result['unsubscribe']['count']++;
-              result['unsubscribe']['targets'].push(value['target_id']);
-            break;
-            case 'drop':
-              result['drop']['count']++;
-              result['drop']['targets'].push(value['target_id']);
-            break;
-            case 'bounce':
-              result['bounce']['count']++;
-              result['bounce']['targets'].push(value['target_id']);
-            break;
-          }
-        });
-        return result;
-      }
-      }
+    def js_reduce
+      #TODO cache this
+      File.read('lib/mailcannon/reduces/envelope_reduce.js')
     end
 
     # [from|to]sym = :new, :lock, :processed
