@@ -3,7 +3,7 @@ class MailCannon::Envelope
   include Mongoid::Document
   include Mongoid::Timestamps
   include MailCannon::Adapter::SendgridWeb
-  include MailCannon::MapReduce
+  include MailCannon::EnvelopeMapReduce
   
   belongs_to :envelope_bag
 

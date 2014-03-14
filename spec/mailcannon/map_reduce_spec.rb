@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe MailCannon::MapReduce do
+describe MailCannon::EnvelopeMapReduce do
   let(:envelope_a) { build(:envelope) }
   let(:envelope_b) { build(:envelope) }
   let(:envelope_c) { build(:envelope) }
@@ -24,14 +24,14 @@ describe MailCannon::MapReduce do
     insert_sample_events
   end
 
-  describe "#set_events_processed_status_for_envelope" do
+  describe "#change_events_status_for_envelope" do
     it "sets events status (processed) to :lock(false)" do
-      MailCannon::Envelope.set_events_processed_status_for_envelope(envelope_a.id, nil, :lock)
+      MailCannon::Envelope.change_events_status_for_envelope(envelope_a.id, nil, :lock)
       expect(envelope_a.reload.sendgrid_events.where(processed: false).count).to eq(3)
     end
     
     it "sets events status (processed) to :processed(true)" do
-      MailCannon::Envelope.set_events_processed_status_for_envelope(envelope_a.id, nil, :processed)
+      MailCannon::Envelope.change_events_status_for_envelope(envelope_a.id, nil, :processed)
       expect(envelope_a.reload.sendgrid_events.where(processed: true).count).to eq(3)
     end
   end

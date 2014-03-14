@@ -1,7 +1,7 @@
-module MailCannon::MapReduce
+module MailCannon::EnvelopeMapReduce
   module ClassMethods
     def reduce_statistics_for_envelope(id)
-      events = set_events_processed_status_for_envelope(id,nil,:lock)
+      events = change_events_status_for_envelope(id,nil,:lock)
       result = events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_statistics")
       set_events_to(events,:processed)
       result.raw
@@ -123,7 +123,7 @@ module MailCannon::MapReduce
     end
 
     # [from|to]sym = :new, :lock, :processed
-    def set_events_processed_status_for_envelope(id, from_sym, to_sym)
+    def change_events_status_for_envelope(id, from_sym, to_sym)
       from_status = processed_status_for(from_sym)
       to_status = processed_status_for(to_sym)
       if from_sym
@@ -175,7 +175,7 @@ module MailCannon::MapReduce
       self.class.statistics_for_envelope(self.id)
     end
 
-    def set_events_processed_status(from_sym, to_sym)
+    def change_events_status(from_sym, to_sym)
       self.set_processed_status_for_envelope(self.id, from_sym, to_sym)
     end
   end
