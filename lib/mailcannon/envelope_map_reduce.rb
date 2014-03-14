@@ -13,12 +13,12 @@ module MailCannon::EnvelopeMapReduce
 
     def js_map
       #TODO cache this
-      File.read('lib/mailcannon/reduces/envelope_map.js')
+      @js_map ||= File.read('lib/mailcannon/reduces/envelope_map.js')
     end
 
     def js_reduce
       #TODO cache this
-      File.read('lib/mailcannon/reduces/envelope_reduce.js')
+      @js_reduce ||= File.read('lib/mailcannon/reduces/envelope_reduce.js')
     end
 
     # [from|to]sym = :new, :lock, :processed
