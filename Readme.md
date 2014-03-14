@@ -107,6 +107,8 @@ MailCannon provides statistics calculation/reduce for the events related to an `
 }
 ```
 
+You can trigger the reduce operation directly with `envelope.reduce_statistics`.
+
 **Targets** are your __glue_id__ to link this data inside your own application, we use it as the "Contact#id" so we can show witch `Contact` has received, read, or clicked the email.
 
 Repeating events on the same target will increase the array: `"click"=>{"count"=>3.0, "targets"=>["3","3","3"]}`
