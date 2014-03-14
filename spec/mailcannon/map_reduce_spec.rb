@@ -64,14 +64,11 @@ describe MailCannon::EnvelopeMapReduce do
     it "measure reduce output availability" do
       envelope_a.reduce_statistics
       start_time = Time.now
-      #puts "Reduced at: #{start_time}"
       while MailCannon::EnvelopeStatistic.count==0
         sleep 1
       end
       end_time = Time.now
       diff = end_time-start_time
-      #puts "Available at: #{end_time}"
-      #puts "Diff #{diff}"
       expect(diff<1.0).to be_true
     end
 
