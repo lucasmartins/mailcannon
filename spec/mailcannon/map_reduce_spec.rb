@@ -37,7 +37,9 @@ describe MailCannon::EnvelopeMapReduce do
   end
 
   describe ".reduce_statistics_for_envelope" do
-    let(:expected_hash_a){ {"posted"=>{"count"=>0.0, "targets"=>[]},
+    let(:expected_hash_a){
+      {
+        "posted"=>{"count"=>0.0, "targets"=>[]},
         "processed"=>{"count"=>0.0, "targets"=>[]},
         "delivered"=>{"count"=>1.0, "targets"=>["1"]},
         "open"=>{"count"=>1.0, "targets"=>["2"]},
@@ -47,9 +49,13 @@ describe MailCannon::EnvelopeMapReduce do
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
-        "bounce"=>{"count"=>1.0, "targets"=>["3"]}} }
+        "bounce"=>{"count"=>1.0, "targets"=>["3"]}
+      }
+    }
 
-    let(:expected_hash_b){ {"posted"=>{"count"=>0.0, "targets"=>[]},
+    let(:expected_hash_b){
+      {
+        "posted"=>{"count"=>0.0, "targets"=>[]},
         "processed"=>{"count"=>0.0, "targets"=>[]},
         "delivered"=>{"count"=>2.0, "targets"=>["1","1"]},
         "open"=>{"count"=>2.0, "targets"=>["2","2"]},
@@ -59,7 +65,9 @@ describe MailCannon::EnvelopeMapReduce do
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
-        "bounce"=>{"count"=>2.0, "targets"=>["3","3"]}} }
+        "bounce"=>{"count"=>2.0, "targets"=>["3","3"]}
+      }
+    }
 
     it "measure reduce output availability" do
       envelope_a.reduce_statistics

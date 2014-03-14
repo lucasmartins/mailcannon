@@ -3,8 +3,8 @@ module MailCannon::EnvelopeMapReduce
     def reduce_statistics_for_envelope(id)
       events = change_events_status_for_envelope(id,nil,:lock)
       result = events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_statistics")
-      set_events_to(events,:processed)
-      result.raw
+      set_events_to(events, :processed)
+      {raw: result.raw, count: events.count}
     end
 
     def statistics_for_envelope(id)
@@ -13,12 +13,12 @@ module MailCannon::EnvelopeMapReduce
 
     def js_map
       #TODO cache this
-      File.read('lib/mailcannon/reduces/envelope_bag_map.js')
+      @js_map ||= File.read('lib/mailcannon/reduces/envelope_bag_map.js')
     end
 
     def js_reduce
       #TODO cache this
-      File.read('lib/mailcannon/reduces/envelope_bag_reduce.js')
+      @js_reduce ||= File.read('lib/mailcannon/reduces/envelope_bag_reduce.js')
     end
 
     # [from|to]sym = :new, :lock, :processed

@@ -30,7 +30,7 @@ class MailCannon::Envelope
     begin
       MailCannon::EnvelopeStatistic.find(self.id).value  
     rescue Mongoid::Errors::DocumentNotFound => e
-      nil
+      raise "You haven't run envelope.reduce_statistics yet, no data available!"
     end
   end
 
