@@ -4,23 +4,10 @@ class MailCannon::Barrel
   
   def perform(envelope_id)
     envelope_id = envelope_id['$oid'] if envelope_id['$oid']
-    if MailCannon::Librato.available?
-      shoot_with_librato!(envelope_id)
-    else
-      shoot!(envelope_id)
-    end
+    shoot!(envelope_id)
   end
 
   private
-  def shoot_with_librato!(envelope_id)
-    MailCannon::Librato.authenticate
-    aggregator = Librato::Metrics::Aggregator.new
-    aggregator.time 'mailcannon.shoot' do
-      shoot!(envelope_id)
-    end
-    aggregator.submit
-  end
-
   def shoot!(envelope_id)
     logger.info "sending MailCannon::Envelope.find('#{envelope_id}')"
     begin
