@@ -6,6 +6,7 @@ class MailCannon::SendgridEvent
   field :timestamp, type: String
   field :unique_arg, type: String
   field :event, type: String
+  field :type, type: String
   field :processed, type: Boolean, default: nil
   
   belongs_to :envelope

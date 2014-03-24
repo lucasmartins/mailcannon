@@ -10,7 +10,7 @@ describe MailCannon::EnvelopeBagMapReduce do
     test_hash = [
       {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo1@bar.com', timestamp: 1322000092, unique_arg: 'my unique arg', event: 'delivered', target_id: '1'},
       {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'open', target_id: '2'},
-      {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo3@bar.com', timestamp: 1322000094, unique_arg: 'my unique arg', event: 'bounce', target_id: '3'},
+      {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo3@bar.com', timestamp: 1322000094, unique_arg: 'my unique arg', event: 'bounce', type: 'bounce', target_id: '3'},
       {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo1@bar.com', timestamp: 1322000092, unique_arg: 'my unique arg', event: 'delivered', target_id: '1'},
       {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'click', target_id: '2'},
       {envelope_id: envelope_c.id, envelope_bag_id: envelope_bag.id, email: 'foo1@bar.com', timestamp: 1322000092, unique_arg: 'my unique arg', event: 'click', target_id: '1'}
@@ -54,7 +54,9 @@ describe MailCannon::EnvelopeBagMapReduce do
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
-        "bounce"=>{"count"=>1.0, "targets"=>["3"]}
+        "hard_bounce"=>{"count"=>1.0, "targets"=>["3"]},
+        "soft_bounce"=>{"count"=>0.0, "targets"=>[]},
+        "unknown"=>{"count"=>0.0, "targets"=>[]}
       }
     }
 
@@ -70,7 +72,9 @@ describe MailCannon::EnvelopeBagMapReduce do
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
-        "bounce"=>{"count"=>2.0, "targets"=>["3","3"]}
+        "hard_bounce"=>{"count"=>2.0, "targets"=>["3","3"]},
+        "soft_bounce"=>{"count"=>0.0, "targets"=>[]},
+        "unknown"=>{"count"=>0.0, "targets"=>[]}
       }
     }
 
