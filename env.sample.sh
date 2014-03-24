@@ -6,3 +6,4 @@ export LIBRATO_SOURCE='staging'
 export LIBRATO_USER=''
 export LIBRATO_TOKEN=''
 export MONGODB_URL=mongodb://localhost:27017:mailcannon_development
+export MONGODB_PORT=27017
