@@ -1,8 +1,8 @@
-module MailCannon::EnvelopeMapReduce
+module MailCannon::EnvelopeBagMapReduce
   module ClassMethods
-    def reduce_statistics_for_envelope(id)
-      events = change_events_status_for_envelope(id,nil,:lock)
-      result = events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_statistics")
+    def reduce_statistics_for_envelope_bag(id)
+      events = change_events_status_for_envelope_bag(id, nil, :lock)
+      result = events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_bag_statistics")
       set_events_to(events,:processed)
       {raw: result.raw, count: events.count}
     end
@@ -13,22 +13,22 @@ module MailCannon::EnvelopeMapReduce
 
     def js_map
       #TODO cache this
-      @js_map ||= File.read('lib/mailcannon/reduces/envelope_map.js')
+      @js_map ||= File.read('lib/mailcannon/reduces/envelope_bag_map.js')
     end
 
     def js_reduce
       #TODO cache this
-      @js_reduce ||= File.read('lib/mailcannon/reduces/envelope_reduce.js')
+      @js_reduce ||= File.read('lib/mailcannon/reduces/envelope_bag_reduce.js')
     end
 
     # [from|to]sym = :new, :lock, :processed
-    def change_events_status_for_envelope(id, from_sym, to_sym)
+    def change_events_status_for_envelope_bag(id, from_sym, to_sym)
       from_status = processed_status_for(from_sym)
       to_status = processed_status_for(to_sym)
       if from_sym
-        query = MailCannon::SendgridEvent.where(envelope_id: id, processed: from_status)
+        query = MailCannon::SendgridEvent.where(envelope_bag_id: id, processed: from_status)
       else
-        query = MailCannon::SendgridEvent.where(envelope_id: id)
+        query = MailCannon::SendgridEvent.where(envelope_bag_id: id)
       end
       if query.kind_of?(Mongoid::Criteria)
         query.update_all(processed: to_status)
@@ -67,7 +67,7 @@ module MailCannon::EnvelopeMapReduce
   
   module InstanceMethods
     def reduce_statistics
-      self.class.reduce_statistics_for_envelope(self.id)
+      self.class.reduce_statistics_for_envelope_bag(self.id)
     end
 
     def statistics
