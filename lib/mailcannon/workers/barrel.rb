@@ -21,7 +21,7 @@ class MailCannon::Barrel
     rescue Mongoid::Errors::DocumentNotFound
       logger.error "unable to find the document MailCannon::Envelope.find('#{envelope_id}')"
     rescue Exception => e
-      logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}')\n#{e.backtrace}"
+      logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}') #{e.backtrace}"
     end
   end
 end
