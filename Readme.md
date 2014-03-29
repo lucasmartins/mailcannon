@@ -11,7 +11,7 @@ This Gem relies heavily on both [Sidekiq](https://github.com/mperham/sidekiq) an
 
 This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mongodb.org/) + [Mongoid](https://github.com/mongoid/mongoid) + [Sidekiq](https://github.com/mperham/sidekiq) + [Rubinius](http://rubini.us/) (feel free to use on MRI and jRuby as well).
 
-For production deployment, you should take a loot at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
+For production deployment, you should take a look at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
 
 Install
 =======
@@ -68,7 +68,7 @@ envelope = MailCannon::Envelope.create(
   subject: 'Test',
   mail: MailCannon::Mail.new(text: 'you will see this when no HTML reader is available', html: 'this should be an HTML'))
 envelope_bag.push envelope
-envelope_bag.post! # this will sent using the 'hot-account'.
+envelope_bag.post! # this will be sent using the 'hot-account'.
 ```
 
 ### Configuration file
@@ -122,8 +122,9 @@ Roadmap
 =======
 
 - Statistics (Map&Reduce awesomeness);
-- New service adapter (any ideas?);
-- Memory optimization (for MailCannon Outpost;
+- Memory optimization (focused on MailCannon Outpost);
+- HTTP (webservice) interface - so you don't need to be coding Ruby to use it!;
+- New service adapter (Mandrill?);
 
 Contribute
 ==========

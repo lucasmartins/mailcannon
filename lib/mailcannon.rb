@@ -7,8 +7,6 @@ require 'sidekiq'
 require 'sendgrid_webapi'
 require 'yajl-ruby' if RUBY_PLATFORM=='ruby'
 require 'jruby-openssl' if RUBY_PLATFORM=='jruby'
-require 'librato/metrics'
-require 'airbrake'
 
 Encoding.default_internal = "utf-8"
 Encoding.default_external = "utf-8"
@@ -26,8 +24,6 @@ module MailCannon
   require_relative 'mailcannon/sendgrid_event'
   require_relative 'mailcannon/workers/barrel'
   require_relative 'mailcannon/workers/envelope_bag_reduce_job'
-  require_relative 'mailcannon/librato'
-  require_relative 'mailcannon/airbrake'
   require_relative 'mailcannon/version'
   
   # To be used with caution
