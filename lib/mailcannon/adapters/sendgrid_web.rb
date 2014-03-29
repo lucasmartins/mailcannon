@@ -77,7 +77,7 @@ module MailCannon::Adapter::SendgridWeb
     if MailCannon.config['add_envelope_id_to_unique_args']
       unique_args.merge!({'envelope_id'=>self.id})
     end
-    if MailCannon.config['add_envelope_bag_id_to_unique_args']
+    if MailCannon.config['add_envelope_bag_id_to_unique_args'] && self.envelope_bag
       unique_args.merge!({'envelope_bag_id'=>self.envelope_bag.id})
     end
     unique_args
