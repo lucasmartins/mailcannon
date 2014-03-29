@@ -66,6 +66,14 @@ class MailCannon::Envelope
       false
     end
   end
+
+  def processed?
+    if self.stamps.where(code: 1).count > 0
+      true
+    else
+      false
+    end
+  end
   
   private
   def schedule_send_job
