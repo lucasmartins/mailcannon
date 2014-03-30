@@ -29,7 +29,7 @@ module MailCannon::Adapter::SendgridWeb
       rescue Exception => e
         logger.error "Unable to read auth config from Envelope or Bag, using default auth options from ENV"
         return default_auth
-      end      
+      end
     end
   end
   
@@ -76,6 +76,9 @@ module MailCannon::Adapter::SendgridWeb
     unique_args = {}
     if MailCannon.config['add_envelope_id_to_unique_args']
       unique_args.merge!({'envelope_id'=>self.id})
+    end
+    if MailCannon.config['add_envelope_bag_id_to_unique_args'] && self.envelope_bag
+      unique_args.merge!({'envelope_bag_id'=>self.envelope_bag.id})
     end
     unique_args
   end

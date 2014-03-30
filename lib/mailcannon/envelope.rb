@@ -3,7 +3,6 @@ class MailCannon::Envelope
   include Mongoid::Document
   include Mongoid::Timestamps
   include MailCannon::Adapter::SendgridWeb
-  include MailCannon::EnvelopeMapReduce
   
   belongs_to :envelope_bag
 
@@ -25,14 +24,6 @@ class MailCannon::Envelope
   
   validates :from, :to, :subject, presence: true
   validates_associated :mail
-
-  def stats
-    begin
-      MailCannon::EnvelopeStatistic.find(self.id).value  
-    rescue Mongoid::Errors::DocumentNotFound => e
-      raise "You haven't run envelope.reduce_statistics yet, no data available!"
-    end
-  end
 
   # Post this Envelope!
   def post_envelope!
@@ -70,6 +61,14 @@ class MailCannon::Envelope
 
   def posted?
     if self.stamps.where(code: 0).count > 0
+      true
+    else
+      false
+    end
+  end
+
+  def processed?
+    if self.stamps.where(code: 1).count > 0
       true
     else
       false
