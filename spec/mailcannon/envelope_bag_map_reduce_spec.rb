@@ -1,6 +1,107 @@
 require "spec_helper"
 
 describe MailCannon::EnvelopeBagMapReduce do
+
+  describe "#find_gem_root_path" do
+
+    after(:all) do
+      Gem::Specification.any_instance.unstub(:gem_dir)
+      Gem::Specification.unstub(:find_by_name)
+    end
+
+    context "when gem is found" do
+      it "returns the path" do
+        mocked_gem_path = "/app/vendor/bundle/ruby/2.0.0/bundler/gems/mailcannon-2c266138c2eb"
+        Gem::Specification.stub(:find_by_name).and_return(Gem::Specification.new)
+        Gem::Specification.any_instance.stub(:gem_dir).and_return(mocked_gem_path)
+        expect(MailCannon::EnvelopeBag.find_gem_root_path).to eq(mocked_gem_path)
+      end
+    end
+
+    context "when gem is not found" do
+      it "returns empty string" do
+        Gem::Specification.stub(:find_by_name) do
+          raise LoadError.new(message: /mailcannon/)
+        end
+        expect(MailCannon::EnvelopeBag.find_gem_root_path).to eq("")
+      end
+    end
+
+    context "when dependence is not found" do
+      it "raises error" do
+        Gem::Specification.stub(:find_by_name) do
+          raise LoadError.new(message: /some_other_gem/)
+        end
+        expect{ MailCannon::EnvelopeBag.find_gem_root_path }.to raise_error
+      end
+    end
+
+    context "something else goes wrong" do
+      it "raises exception" do
+        Gem::Specification.stub(:find_by_name).and_raise(Exception.new)
+        expect{ MailCannon::EnvelopeBag.find_gem_root_path }.to raise_exception
+      end
+    end
+  end
+
+  describe "#js_map" do
+
+    before(:each) do
+      File.stub(:read) { |path| path }
+      MailCannon::EnvelopeBag.instance_variable_set(:@js_map, nil)
+    end
+
+    after(:each) do
+      File.unstub(:read)
+      MailCannon::EnvelopeBag.unstub(:find_gem_root_path)
+      MailCannon::EnvelopeBag.instance_variable_set(:@js_map, nil)
+    end
+
+
+    context "when gem is found" do
+      it "returns full gem file path" do
+        MailCannon::EnvelopeBag.stub(:find_gem_root_path).and_return("path/to/gem")
+        expect(MailCannon::EnvelopeBag.js_map).to eq("path/to/gem/lib/mailcannon/reduces/envelope_bag_map.js")
+      end
+    end
+
+    context "when gem is not found" do
+      it "returns file path relative to current location" do
+        MailCannon::EnvelopeBag.stub(:find_gem_root_path).and_return("")
+        expect(MailCannon::EnvelopeBag.js_map).to eq("lib/mailcannon/reduces/envelope_bag_map.js")
+      end
+    end
+  end
+
+  describe "#js_reduce" do
+
+    before(:each) do
+      File.stub(:read) { |path| path }
+      MailCannon::EnvelopeBag.instance_variable_set(:@js_reduce, nil)
+    end
+
+    after(:each) do
+      File.unstub(:read)
+      MailCannon::EnvelopeBag.unstub(:find_gem_root_path)
+      MailCannon::EnvelopeBag.instance_variable_set(:@js_reduce, nil)
+    end
+
+    context "when gem is found" do
+      it "returns full gem file path" do
+        MailCannon::EnvelopeBag.stub(:find_gem_root_path).and_return("path/to/gem")
+        expect(MailCannon::EnvelopeBag.js_reduce).to eq("path/to/gem/lib/mailcannon/reduces/envelope_bag_reduce.js")
+      end
+    end
+
+    context "when gem is not found" do
+      it "returns file path relative to current location" do
+        MailCannon::EnvelopeBag.stub(:find_gem_root_path).and_return("")
+        expect(MailCannon::EnvelopeBag.js_reduce).to eq("lib/mailcannon/reduces/envelope_bag_reduce.js")
+      end
+    end
+  end
+
+
   let!(:envelope_bag) { build(:empty_envelope_bag) }
   let(:envelope_a) { build(:envelope, envelope_bag_id: envelope_bag.id) }
   let(:envelope_b) { build(:envelope, envelope_bag_id: envelope_bag.id) }
