@@ -4,7 +4,7 @@ class MailCannon::Envelope
   include Mongoid::Timestamps
   include MailCannon::Adapter::SendgridWeb
   
-  belongs_to :envelope_bag
+  belongs_to :envelope_bag, index: true
 
   embeds_one :mail
   embeds_many :stamps
