@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   
   s.add_dependency 'redis'
   s.add_dependency 'mongoid'
-  s.add_dependency 'sidekiq'
+  s.add_dependency 'sidekiq', '2.17.7'
   s.add_dependency 'sendgrid_webapi'
   s.add_dependency 'json-schema'
 
