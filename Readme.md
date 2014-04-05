@@ -5,7 +5,7 @@
 MailCannon
 ==========
 
-Although this is a **WORK IN PROGRESS**, we're rolling it out to **production** with no issues for now at [Resultados Digitais](http://resultadosdigitais.com.br/).
+Although this is a **WORK IN PROGRESS**, we're getting great results on **production** at [Resultados Digitais](http://resultadosdigitais.com.br/).
 
 This Gem relies heavily on both [Sidekiq](https://github.com/mperham/sidekiq) and Celluloid Gems, you are encouraged to use it anywhere with Ruby (a http interface is on the Roadmap ).
 
@@ -132,7 +132,7 @@ Contribute
 Just fork [MailCannon](https://github.com/lucasmartins/mailcannon), add your feature+spec, and make a pull request. Do not mess up with the version file though.
 
 **NOTICE**: The project is at embrionary stage, breaking changes will apply.
-
+  
 Support
 =======
 
