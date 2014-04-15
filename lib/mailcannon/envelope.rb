@@ -4,10 +4,12 @@ class MailCannon::Envelope
   include Mongoid::Timestamps
   include MailCannon::Adapter::SendgridWeb
   
-  embeds_one :mail
-  embeds_many :stamps
   belongs_to :envelope_bag
 
+  embeds_one :mail
+  embeds_many :stamps
+  has_many :sendgrid_events
+  
   field :from, type: String
   field :from_name, type: String
   field :to, type: Array # of hashes. [{email: '', name: ''},...]
@@ -19,7 +21,6 @@ class MailCannon::Envelope
   field :xsmtpapi, type: Hash # this will mostly be used by MailCannon itself. http://sendgrid.com/docs/API_Reference/SMTP_API/index.html
   field :auth, type: Hash # {user: 'foo', password: 'bar'}, some Adapters might need an token:secret pair, which you can translete into user:password pair.
   field :jid, type: String
-
   
   validates :from, :to, :subject, presence: true
   validates_associated :mail
@@ -60,6 +61,14 @@ class MailCannon::Envelope
 
   def posted?
     if self.stamps.where(code: 0).count > 0
+      true
+    else
+      false
+    end
+  end
+
+  def processed?
+    if self.stamps.where(code: 1).count > 0
       true
     else
       false
