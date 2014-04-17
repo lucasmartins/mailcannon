@@ -3,11 +3,14 @@ class MailCannon::Envelope
   include Mongoid::Document
   include Mongoid::Timestamps
   include MailCannon::Adapter::SendgridWeb
+  include MailCannon::EnvelopeMapReduce
   
-  embeds_one :mail
-  embeds_many :stamps
   belongs_to :envelope_bag
 
+  embeds_one :mail
+  embeds_many :stamps
+  has_many :sendgrid_events
+  
   field :from, type: String
   field :from_name, type: String
   field :to, type: Array # of hashes. [{email: '', name: ''},...]
@@ -19,10 +22,17 @@ class MailCannon::Envelope
   field :xsmtpapi, type: Hash # this will mostly be used by MailCannon itself. http://sendgrid.com/docs/API_Reference/SMTP_API/index.html
   field :auth, type: Hash # {user: 'foo', password: 'bar'}, some Adapters might need an token:secret pair, which you can translete into user:password pair.
   field :jid, type: String
-
   
   validates :from, :to, :subject, presence: true
   validates_associated :mail
+
+  def stats
+    begin
+      MailCannon::EnvelopeStatistic.find(self.id).value  
+    rescue Mongoid::Errors::DocumentNotFound => e
+      raise "You haven't run envelope.reduce_statistics yet, no data available!"
+    end
+  end
 
   # Post this Envelope!
   def post_envelope!
