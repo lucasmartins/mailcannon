@@ -36,8 +36,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'sidekiq'
   s.add_dependency 'sendgrid_webapi'
   s.add_dependency 'json-schema'
-  s.add_dependency 'librato-metrics'
-  s.add_dependency 'airbrake'
 
   s.add_development_dependency "vcr"
   s.add_development_dependency "rspec"
