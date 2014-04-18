@@ -13,6 +13,12 @@ This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mon
 
 For production deployment, you should take a look at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
 
+Changelog
+========
+
+### 1.1
+- Added retry to barrel
+
 Install
 =======
 
@@ -86,6 +92,32 @@ $ cp `bundle show mailcannon`/templates/config/mailcannon.yml config/
 Edit the file to meet your environemnt needs.
 
 Check the [specs](https://github.com/lucasmartins/mailcannon/tree/master/spec) to see the testing example, it will surely make it clearer.
+
+### Statistics & MapReduce
+
+MailCannon provides statistics calculation/reduce for the events related to an `Envelope`, like `open`,`click`,`spam`, etc. Assuming you have your Outpost running properly (running reduce jobs), you can access the data through the `envelope.stats` method to get the following hash:
+
+```ruby
+{
+  "posted"=>{"count"=>0.0, "targets"=>[]},
+  "processed"=>{"count"=>0.0, "targets"=>[]},
+  "delivered"=>{"count"=>1.0, "targets"=>["1"]},
+  "open"=>{"count"=>1.0, "targets"=>["2"]},
+  "click"=>{"count"=>0.0, "targets"=>[]},
+  "deferred"=>{"count"=>0.0, "targets"=>[]},
+  "spam_report"=>{"count"=>0.0, "targets"=>[]},
+  "spam"=>{"count"=>0.0, "targets"=>[]},
+  "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
+  "drop"=>{"count"=>0.0, "targets"=>[]},
+  "bounce"=>{"count"=>1.0, "targets"=>["3"]}
+}
+```
+
+You can trigger the reduce operation directly with `envelope.reduce_statistics`.
+
+**Targets** are your __glue_id__ to link this data inside your own application, we use it as the "Contact#id" so we can show witch `Contact` has received, read, or clicked the email.
+
+Repeating events on the same target will increase the array: `"click"=>{"count"=>3.0, "targets"=>["3","3","3"]}`
 
 Docs
 ====
