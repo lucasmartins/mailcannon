@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'redis'
 gem 'activemodel'
 gem 'mongoid', '>=3.1.6'
-gem 'sidekiq'
+gem 'sidekiq', '2.17.7'
 gem 'sendgrid_webapi', '0.0.3'
 gem 'librato-metrics'
 gem 'rubysl', platform: :rbx
