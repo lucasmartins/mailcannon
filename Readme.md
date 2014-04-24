@@ -5,9 +5,9 @@
 MailCannon
 ==========
 
-Although this is a **WORK IN PROGRESS**, we're getting great results on **production** at [Resultados Digitais](http://resultadosdigitais.com.br/).
+Although this is a **WORK IN PROGRESS**, we're getting great results at **production** environments.
 
-This Gem relies heavily on both [Sidekiq](https://github.com/mperham/sidekiq) and Celluloid Gems, you are encouraged to use it anywhere with Ruby (a http interface is on the Roadmap ).
+This Gem relies heavily on [Sidekiq](https://github.com/mperham/sidekiq), you are encouraged to use it anywhere with Ruby (a http interface is on the Roadmap ). You REALLY should buy [Sidekiq's Pro](http://sidekiq.org/pro/) license for serious deployments, check it out.
 
 This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mongodb.org/) + [Mongoid](https://github.com/mongoid/mongoid) + [Sidekiq](https://github.com/mperham/sidekiq) + [Rubinius](http://rubini.us/) (feel free to use on MRI and jRuby as well).
 
@@ -126,15 +126,15 @@ You should check the [factories](https://github.com/lucasmartins/mailcannon/tree
 Roadmap
 =======
 
-- Statistics (Map&Reduce awesomeness);
+- Load testing;
+- Webhook service to receive Sendgrid events;
 - Memory optimization (focused on MailCannon Outpost);
 - HTTP (webservice) interface - so you don't need to be coding Ruby to use it!;
-- New service adapter (Mandrill?);
 
 Contribute
 ==========
 
-Just fork [MailCannon](https://github.com/lucasmartins/mailcannon), add your feature+spec, and make a pull request. Do not mess up with the version file though.
+Just fork [MailCannon](https://github.com/lucasmartins/mailcannon), add your feature+spec, and make a pull request. **DO NOT** mess up with the version file though.
 
 **NOTICE**: The project is at embrionary stage, breaking changes will apply.
   
@@ -146,4 +146,4 @@ This is an opensource project so don't expect premium support, but don't be shy,
 License
 =======
 
-MailCannon is free software under the [FreeBSD license](http://www.freebsd.org/copyright/freebsd-license.html).
+Please see [LICENSE](https://github.com/lucasmartins/mailcannon/blob/master/LICENSE) for licensing details.
