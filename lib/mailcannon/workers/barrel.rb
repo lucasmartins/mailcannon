@@ -1,7 +1,7 @@
 # This worker handles Envelopes dispatch
 class MailCannon::Barrel
   include Sidekiq::Worker
-  
+
   def perform(envelope_id)
     envelope_id = envelope_id['$oid'] if envelope_id['$oid']
     shoot!(envelope_id)
@@ -20,8 +20,10 @@ class MailCannon::Barrel
       end
     rescue Mongoid::Errors::DocumentNotFound
       logger.error "unable to find the document MailCannon::Envelope.find('#{envelope_id}')"
+      raise Mongoid::Errors::DocumentNotFound
     rescue Exception => e
       logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}') #{e.backtrace}"
+      raise e
     end
   end
 end

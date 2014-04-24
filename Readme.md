@@ -13,6 +13,12 @@ This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mon
 
 For production deployment, you should take a look at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
 
+Changelog
+========
+
+### 1.1
+- Added retry to barrel
+
 Install
 =======
 
@@ -112,7 +118,6 @@ You can trigger the reduce operation directly with `envelope.reduce_statistics`.
 **Targets** are your __glue_id__ to link this data inside your own application, we use it as the "Contact#id" so we can show witch `Contact` has received, read, or clicked the email.
 
 Repeating events on the same target will increase the array: `"click"=>{"count"=>3.0, "targets"=>["3","3","3"]}`
-
 
 Docs
 ====
