@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage              = "http://rubygems.org/gems/mailcannon"
   s.summary               = "A mass mailing tool for real threads aficionados"
   s.description           = s.summary
-  s.license               = "MIT"
+  s.license               = "LGPL-3.0
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
