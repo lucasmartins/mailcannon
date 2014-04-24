@@ -22,3 +22,15 @@ describe "shoot 1k emails!" do
     end
   end
 end
+
+if ENV['SENDGRID_PASSWORD'] && !ENV['CI']
+  describe "shoot 1k real (@sink) emails!" do
+    let!(:envelope_a) { build(:envelope_multi_1k) }
+    it "sends http request for Sendgrid web API" do
+      Sidekiq::Testing.inline! do
+        envelope_a.post!
+        expect(envelope_a.reload.processed?).to be_true
+      end
+    end
+  end
+end

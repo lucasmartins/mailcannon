@@ -21,7 +21,7 @@ FactoryGirl.define do
 
     factory :envelope_multi_1k, class: MailCannon::Envelope do
       mails = []
-      source = 'lucasmartins+#@railsnapraia.com'
+      source = 'mailcannon+#@sink.sendgrid.net'
       1000.times.each do |i|
         mails.push source.gsub('#',i.to_s)
       end
