@@ -1,0 +1,36 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.sendgrid.com/api/mail.send.json
+    body:
+      encoding: US-ASCII
+      string: to=mailcannon%40railsonthebeach.com&subject=Test&text=Hello+%25name%25%2C+If+you+can%27t+read+the+HTML+content%2C+you%27re+screwed%21&html=%3Chtml%3E%3Cbody%3E%3Cp%3E%25name%25%2C%3Cbr%2F%3E%3Cbr%2F%3EYou+should+see+what+happens+when+your+email+client+can%27t+read+HTML+content.%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E&from=mailcannon%40railsonthebeach.com&fromname&bcc&replyto&x-smtpapi=%7B%22sub%22%3A%7B%22%2A%7CNAME%7C%2A%22%3A%5B%22Mail+Cannon%22%5D%2C%22%2A%7CEMAIL%7C%2A%22%3A%5B%22mailcannon%40railsnapraia.com%22%5D%7D%2C%22to%22%3A%5B%22mailcannon%40railsnapraia.com%22%5D%2C%22unique_args%22%3A%7B%22envelope_id%22%3A%2253512bd457b7d95b04000006%22%7D%7D&api_user=rdstation-shared&api_key=resd1gitais%232012
+    headers:
+      User-Agent:
+      - Faraday v0.8.9
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - '*/*'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.4
+      Date:
+      - Fri, 18 Apr 2014 13:42:45 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"message":"success"}'
+    http_version: 
+  recorded_at: Fri, 18 Apr 2014 13:42:45 GMT
+recorded_with: VCR 2.8.0
