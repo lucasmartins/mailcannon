@@ -155,6 +155,7 @@ describe MailCannon::EnvelopeBagMapReduce do
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
+        "bounce"=>{"count"=>1.0, "targets"=>["3"]},
         "hard_bounce"=>{"count"=>1.0, "targets"=>["3"]},
         "soft_bounce"=>{"count"=>0.0, "targets"=>[]},
         "unknown"=>{"count"=>0.0, "targets"=>[]}
@@ -173,6 +174,7 @@ describe MailCannon::EnvelopeBagMapReduce do
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
+        "bounce"=>{"count"=>2.0, "targets"=>["3","3"]},
         "hard_bounce"=>{"count"=>2.0, "targets"=>["3","3"]},
         "soft_bounce"=>{"count"=>0.0, "targets"=>[]},
         "unknown"=>{"count"=>0.0, "targets"=>[]}

@@ -33,6 +33,7 @@ describe MailCannon::EnvelopeBagStatistic do
       expect(envelope_bag.stats).to have_key("spam")
       expect(envelope_bag.stats).to have_key("unsubscribe")
       expect(envelope_bag.stats).to have_key("drop")
+      expect(envelope_bag.stats).to have_key("bounce")
       expect(envelope_bag.stats).to have_key("soft_bounce")
       expect(envelope_bag.stats).to have_key("hard_bounce")
       expect(envelope_bag.stats).to have_key("unknown")
