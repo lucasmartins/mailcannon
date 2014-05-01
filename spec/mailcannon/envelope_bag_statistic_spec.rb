@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe MailCannon::EnvelopeBagStatistic do
-  
+
   let!(:envelope_bag) { build(:empty_envelope_bag) }
   let!(:envelope_a) { build(:envelope, envelope_bag_id: envelope_bag.id) }
 
@@ -19,7 +19,7 @@ describe MailCannon::EnvelopeBagStatistic do
     envelope_a.save
     insert_sample_events
   end
-  
+
   describe "stats" do
     it "has expected keys" do
       envelope_bag.reduce_statistics
@@ -29,7 +29,6 @@ describe MailCannon::EnvelopeBagStatistic do
       expect(envelope_bag.stats).to have_key("open")
       expect(envelope_bag.stats).to have_key("click")
       expect(envelope_bag.stats).to have_key("deferred")
-      expect(envelope_bag.stats).to have_key("spam_report")
       expect(envelope_bag.stats).to have_key("spam")
       expect(envelope_bag.stats).to have_key("unsubscribe")
       expect(envelope_bag.stats).to have_key("drop")

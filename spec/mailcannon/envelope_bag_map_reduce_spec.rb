@@ -133,7 +133,7 @@ describe MailCannon::EnvelopeBagMapReduce do
       expect(envelope_b.reload.sendgrid_events.where(processed: false).count).to eq(2)
       expect(envelope_c.reload.sendgrid_events.where(processed: false).count).to eq(1)
     end
-    
+
     it "sets events status (processed) to :processed(true)" do
       MailCannon::EnvelopeBag.change_events_status_for_envelope_bag(envelope_bag.id, nil, :processed)
       expect(envelope_a.reload.sendgrid_events.where(processed: true).count).to eq(3)
@@ -151,7 +151,6 @@ describe MailCannon::EnvelopeBagMapReduce do
         "open"=>{"count"=>1.0, "targets"=>["2"]},
         "click"=>{"count"=>2.0, "targets"=>["2", "1"]},
         "deferred"=>{"count"=>0.0, "targets"=>[]},
-        "spam_report"=>{"count"=>0.0, "targets"=>[]},
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
@@ -170,7 +169,6 @@ describe MailCannon::EnvelopeBagMapReduce do
         "open"=>{"count"=>2.0, "targets"=>["2", "2"]},
         "click"=>{"count"=>4.0, "targets"=>["2", "1","2", "1"]},
         "deferred"=>{"count"=>0.0, "targets"=>[]},
-        "spam_report"=>{"count"=>0.0, "targets"=>[]},
         "spam"=>{"count"=>0.0, "targets"=>[]},
         "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
         "drop"=>{"count"=>0.0, "targets"=>[]},
