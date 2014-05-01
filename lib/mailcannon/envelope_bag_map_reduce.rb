@@ -94,7 +94,7 @@ module MailCannon::EnvelopeBagMapReduce
     end
 
     def change_events_status(from_sym, to_sym)
-      self.set_processed_status_for_envelope(self.id, from_sym, to_sym)
+      self.class.change_events_status_for_envelope_bag(self.id, from_sym, to_sym)
     end
   end
   
