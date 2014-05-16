@@ -29,10 +29,10 @@ describe 'full stack test' do
         "open" => {"count"=>2.0, "targets"=>["4", "4"]},
         "click"=>{"count"=>2.0, "targets"=>["5","5"]},
         "deferred"=>{"count"=>2.0, "targets"=>["6", "6"]},
-        "spam"=>{"count"=>4.0, "targets"=>["7", "8", "7","8"]},
+        "spam"=>{"count"=>4.0, "targets"=>["8", "7", "8", "7"]},
         "unsubscribe"=>{"count"=>2.0, "targets"=>["9", "9"]},
         "drop"=>{"count"=>2.0, "targets"=>["10", "10"]},
-        "bounce" => {"count"=>4.0, "targets"=>["11", "12", "12", "11"]},
+        "bounce" => {"count"=>4.0, "targets"=>["11", "12", "11", "12"]},
         "hard_bounce" => {"count"=>2.0, "targets"=>["11", "11"]},
         "soft_bounce"=>{"count"=>2.0, "targets"=>["12", "12"]},
         "unknown"=>{"count"=>2.0, "targets"=>["13", "13"]}
