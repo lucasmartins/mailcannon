@@ -1,8 +1,8 @@
 # Keeps the versioning clean and simple.
 module MailCannon
   module Version
-    MAJOR = 2
-    MINOR = 0
+    MAJOR = 0
+    MINOR = 2
     PATCH = 0
     STRING = "#{MAJOR}.#{MINOR}.#{PATCH}"
   end
