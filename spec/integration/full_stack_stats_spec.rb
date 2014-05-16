@@ -11,7 +11,7 @@ describe 'full stack test' do
         "open" => {"count"=>1.0, "targets"=>["4"]},
         "click"=>{"count"=>1.0, "targets"=>["5"]},
         "deferred"=>{"count"=>1.0, "targets"=>["6"]},
-        "spam"=>{"count"=>2.0, "targets"=>["7","8"]},
+        "spam"=>{"count"=>2.0, "targets"=>["8","7"]},
         "unsubscribe"=>{"count"=>1.0, "targets"=>["9"]},
         "drop"=>{"count"=>1.0, "targets"=>["10"]},
         "bounce" => {"count"=>2.0, "targets"=>["11","12"]},
