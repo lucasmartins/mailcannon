@@ -1,18 +1,6 @@
 module MailCannon::EnvelopeBagMapReduce
   module ClassMethods
 
-    def find_gem_root_path
-      path = ""
-      begin
-        spec = Gem::Specification.find_by_name("mailcannon")
-        path = spec.gem_dir
-      rescue LoadError => e
-        raise unless e.message =~ /mailcannon/
-        puts 'mailcannon gem path not found'
-      end
-      path
-    end
-
     def reduce_statistics_for_envelope_bag(id)
       events = change_events_status_for_envelope_bag(id, nil, :lock)
       result = events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_bag_statistics")
@@ -24,20 +12,18 @@ module MailCannon::EnvelopeBagMapReduce
       self.stats
     end
 
+    def js_map_reduce_path(file)
+      File.expand_path("reduces/#{file}", File.dirname(__FILE__))
+    end
+
     def js_map
-      root_path = find_gem_root_path
-      root_path += "/" unless root_path.empty?
-      @js_map ||= File.read("#{root_path}lib/mailcannon/reduces/envelope_bag_map.js")
+      @js_map ||= File.read(js_map_reduce_path("envelope_bag_map.js"))
       #TODO cache this
-      @js_map
     end
 
     def js_reduce
-      root_path = find_gem_root_path
-      root_path += "/" unless root_path.empty?
-      @js_reduce ||= File.read("#{root_path}lib/mailcannon/reduces/envelope_bag_reduce.js")
+      @js_reduce ||= File.read(js_map_reduce_path("envelope_bag_reduce.js"))
       #TODO cache this
-      @js_reduce
     end
 
     # [from|to]sym = :new, :lock, :processed
@@ -83,7 +69,7 @@ module MailCannon::EnvelopeBagMapReduce
     end
 
   end
-  
+
   module InstanceMethods
     def reduce_statistics
       self.class.reduce_statistics_for_envelope_bag(self.id)
@@ -97,10 +83,9 @@ module MailCannon::EnvelopeBagMapReduce
       self.class.change_events_status_for_envelope_bag(self.id, from_sym, to_sym)
     end
   end
-  
+
   def self.included(receiver)
     receiver.extend         ClassMethods
     receiver.send :include, InstanceMethods
   end
 end
-
