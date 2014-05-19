@@ -8,3 +8,4 @@ coverage/
 pkg/
 Gemfile.lock
 config/mailcannon.yml
+.bundle/
