@@ -1,27 +1,24 @@
 require "spec_helper"
 require 'benchmark'
 
-# The performance varies from machine to machine, specially when using dedicated servers for each service.
-if ENV['PERFORMANCE_TEST']
 
-  describe "shoot 1k emails!" do
-    let!(:envelope_a) { build(:envelope_multi_1k) }
-    #let!(:envelope_b) { build(:envelope_multi_1k) }
-    #let!(:envelope_c) { build(:envelope_multi_1k) }
-    it "sends http request for Sendgrid web API" do
-      VCR.use_cassette('mailcannon_integration_1k') do
-        Sidekiq::Testing.inline! do
-          bm = Benchmark.measure do
-            envelope_a.send_bulk!
-          end
-          puts "1k test real time: #{bm.real}"
-          # Travis has been showing unstable performance, not feasible to include performance tests.
-          unless ENV['TRAVIS']
-            expect(bm.real<0.3).to be_true
-          end
+describe "shoot 1k emails!" do
+  let!(:envelope_a) { build(:envelope_multi_1k) }
+  it "sends http request for Sendgrid web API" do
+    VCR.use_cassette('mailcannon_integration_1k') do
+      Sidekiq::Testing.inline! do
+        bm = Benchmark.measure do
+          envelope_a.post!
+        end
+        puts "1k test real time: #{bm.real}"
+        expect(envelope_a.reload.processed?).to be_true
+
+        # Travis has been showing unstable performance, not feasible to include performance tests.
+        # The performance varies from machine to machine, specially when using dedicated servers for each service.
+        if ENV['PERFORMANCE_TEST']
+          expect(bm.real<0.2).to be_true
         end
       end
     end
   end
-
 end

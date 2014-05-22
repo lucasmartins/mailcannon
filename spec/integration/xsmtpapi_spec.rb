@@ -5,10 +5,13 @@ describe 'X-SMTPAPI compatibility' do
     # This should guarantee the expected behavior for the following api:
     #   http://sendgrid.com/docs/API_Reference/SMTP_API/unique_arguments.html
     context "generates expected xsmtpapi for #post!" do
+      let(:envelope_bag) { build(:empty_envelope_bag)}
       let(:envelope) { build(:envelope_multi, xsmtpapi: { "sub" => { "-email-id-" => ["314159","271828"] }, "unique_args" => { "email_id" => "-email-id-"} }) }
-      let(:expectated_hash) { {"sub"=>{"-email-id-"=>["314159", "271828"], "*|NAME|*"=>["Mail Cannon", "Lucas Martins", "Contact"], "*|EMAIL|*"=>["mailcannon@railsnapraia.com", "lucasmartins@railsnapraia.com", "contact@railsonthebeach.com"]}, "unique_args"=>{"email_id"=>"-email-id-", "envelope_id"=>envelope.id}, "to"=>["mailcannon@railsnapraia.com", "lucasmartins@railsnapraia.com", "contact@railsonthebeach.com"]} }
+      let(:expectated_hash) { {"sub"=>{"-email-id-"=>["314159", "271828"], "*|NAME|*"=>["Mail Cannon", "Lucas Martins", "Contact"], "*|EMAIL|*"=>["mailcannon@railsnapraia.com", "lucasmartins@railsnapraia.com", "contact@railsonthebeach.com"]}, "unique_args"=>{"email_id"=>"-email-id-", "envelope_id"=>envelope.id, "envelope_bag_id"=>envelope_bag.id}, "to"=>["mailcannon@railsnapraia.com", "lucasmartins@railsnapraia.com", "contact@railsonthebeach.com"]} }
 
       it "returns true" do
+        envelope_bag.save
+        envelope_bag.envelopes << envelope
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
           Sidekiq::Testing.inline! do
             envelope.post!
