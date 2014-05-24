@@ -1,4 +1,4 @@
-[![Gem version](https://badge.fury.io/rb/mailcannon.png)](http://rubygems.org/gems/mailcannon) [![Code Climate](https://codeclimate.com/github/mailcannon/mailcannon.png)](https://codeclimate.com/github/mailcannon/mailcannon) [![Build Status](https://travis-ci.org/mailcannon/mailcannon.png?branch=master)](https://travis-ci.org/mailcannon/mailcannon) [![Coverage Status](https://coveralls.io/repos/lucasmartins/mailcannon/badge.png)](https://coveralls.io/r/mailcannon/mailcannon) [![Dependency Status](https://gemnasium.com/mailcannon/mailcannon.png)](https://gemnasium.com/mailcannon/mailcannon) [![Inline docs](http://inch-pages.github.io/github/mailcannon/mailcannon.png)](http://inch-pages.github.io/github/mailcannon/mailcannon) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mailcannon/mailcannon/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Gem version](https://badge.fury.io/rb/mailcannon.png)](http://rubygems.org/gems/mailcannon) [![Code Climate](https://codeclimate.com/github/mailcannon/mailcannon.png)](https://codeclimate.com/github/mailcannon/mailcannon) [![Build Status](https://travis-ci.org/mailcannon/mailcannon.png?branch=master)](https://travis-ci.org/mailcannon/mailcannon) [![Coverage Status](https://coveralls.io/repos/mailcannon/mailcannon/badge.png)](https://coveralls.io/r/mailcannon/mailcannon) [![Dependency Status](https://gemnasium.com/mailcannon/mailcannon.png)](https://gemnasium.com/mailcannon/mailcannon) [![Inline docs](http://inch-pages.github.io/github/mailcannon/mailcannon.png)](http://inch-pages.github.io/github/mailcannon/mailcannon) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mailcannon/mailcannon/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ![MailCannon_logo](http://blog.railsnapraia.com/images/mailcannon_seal_128.png)
 
@@ -9,7 +9,7 @@ This Gem relies heavily on [Sidekiq](https://github.com/mperham/sidekiq), you ar
 
 This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mongodb.org/) + [Mongoid](https://github.com/mongoid/mongoid) + [Sidekiq](https://github.com/mperham/sidekiq) + [Rubinius](http://rubini.us/) (feel free to use on MRI and jRuby as well).
 
-For production deployment, you should take a look at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
+For production deployment, you should take a look at both [MailCannon Outpost](https://github.com/mailcannon/mailcannon-outpost) and [MailCannon Monitor](https://github.com/mailcannon/mailcannon-monitor) projects.
 
 You can check the [changelog here](https://github.com/mailcannon/mailcannon/Changelog.md).
 
@@ -85,7 +85,7 @@ $ cp `bundle show mailcannon`/templates/config/mailcannon.yml config/
 
 Edit the file to meet your environemnt needs.
 
-Check the [specs](https://github.com/lucasmartins/mailcannon/tree/master/spec) to see the testing example, it will surely make it clearer.
+Check the [specs](https://github.com/mailcannon/mailcannon/tree/master/spec) to see the testing example, it will surely make it clearer.
 
 ### Statistics & MapReduce
 
@@ -115,7 +115,7 @@ Repeating events on the same target will increase the array: `"click"=>{"count"=
 
 Docs
 ====
-You should check the [factories](https://github.com/lucasmartins/mailcannon/tree/master/spec/factories) to learn what you need to build your objects, and the [tests](https://github.com/lucasmartins/mailcannon/tree/master/spec/mailcannon) to learn how to use them. But hey, we have docs [right here](http://rdoc.info/github/lucasmartins/mailcannon/master/frames).
+You should check the [factories](https://github.com/mailcannon/mailcannon/tree/master/spec/factories) to learn what you need to build your objects, and the [tests](https://github.com/mailcannon/mailcannon/tree/master/spec/mailcannon) to learn how to use them. But hey, we have docs [right here](http://rdoc.info/github/mailcannon/mailcannon/master/frames).
 
 Roadmap
 =======
@@ -128,14 +128,14 @@ Roadmap
 Contribute
 ==========
 
-Just fork [MailCannon](https://github.com/lucasmartins/mailcannon), add your feature+spec, and make a pull request. **DO NOT** mess up with the version file though.
+Just fork [MailCannon](https://github.com/mailcannon/mailcannon), add your feature+spec, and make a pull request. **DO NOT** mess up with the version file though.
   
 Support
 =======
 
-This is an opensource project so don't expect premium support, but don't be shy, post any troubles you're having in the [Issues](https://github.com/lucasmartins/mailcannon/issues) page and we'll do what we can to help.
+This is an opensource project so don't expect premium support, but don't be shy, post any troubles you're having in the [Issues](https://github.com/mailcannon/mailcannon/issues) page and we'll do what we can to help.
 
 License
 =======
 
-Please see [LICENSE](https://github.com/lucasmartins/mailcannon/blob/master/LICENSE) for licensing details.
+Please see [LICENSE](https://github.com/mailcannon/mailcannon/blob/master/LICENSE) for licensing details.
