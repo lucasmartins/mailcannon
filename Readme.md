@@ -5,19 +5,13 @@
 MailCannon
 ==========
 
-Although this is a **WORK IN PROGRESS**, we're getting great results at **production** environments.
-
 This Gem relies heavily on [Sidekiq](https://github.com/mperham/sidekiq), you are encouraged to use it anywhere with Ruby (a http interface is on the Roadmap ). You REALLY should buy [Sidekiq's Pro](http://sidekiq.org/pro/) license for serious deployments, check it out.
 
 This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mongodb.org/) + [Mongoid](https://github.com/mongoid/mongoid) + [Sidekiq](https://github.com/mperham/sidekiq) + [Rubinius](http://rubini.us/) (feel free to use on MRI and jRuby as well).
 
 For production deployment, you should take a look at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
 
-Changelog
-========
-
-### 1.1
-- Added retry to barrel
+You can check the [changelog here](https://github.com/mailcannon/mailcannon/Changelog.md).
 
 Install
 =======
@@ -135,8 +129,6 @@ Contribute
 ==========
 
 Just fork [MailCannon](https://github.com/lucasmartins/mailcannon), add your feature+spec, and make a pull request. **DO NOT** mess up with the version file though.
-
-**NOTICE**: The project is at embrionary stage, breaking changes will apply.
   
 Support
 =======
