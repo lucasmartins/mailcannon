@@ -27,9 +27,9 @@ module MailCannon::Adapter::SendgridWeb
       begin
         self.auth || self.envelope_bag.auth || default_auth  
       rescue Exception => e
-        logger.error "Unable to read auth config from Envelope or Bag, using default auth options from ENV"
+        logger.warn "Unable to read auth config from Envelope or Bag, using default auth options from ENV"
         return default_auth
-      end      
+      end
     end
   end
   
@@ -77,23 +77,39 @@ module MailCannon::Adapter::SendgridWeb
     if MailCannon.config['add_envelope_id_to_unique_args']
       unique_args.merge!({'envelope_id'=>self.id})
     end
+    if MailCannon.config['add_envelope_bag_id_to_unique_args'] && self.envelope_bag
+      unique_args.merge!({'envelope_bag_id'=>self.envelope_bag.id})
+    end
     unique_args
   end
 
   def build_xsmtpapi(recipients,subs)
     xsmtpapi = self.xsmtpapi || {}
-    to = []
     recipients.symbolize_keys!
-    recipients[:to].each do |h|
-      h.symbolize_keys!
-      to.push h[:email]
-    end
+    to = extract_values(recipients[:to],:email)
     xsmtpapi.merge!({'to' => to}) if to
-    xsmtpapi = xsmtpapi.deep_merge(subs) if subs!=nil && subs['sub']!=nil
-    xsmtpapi = xsmtpapi.deep_merge(build_name_subs) if build_name_subs!=nil && build_name_subs.is_a?(Hash)
-    xsmtpapi = xsmtpapi.deep_merge(build_email_subs) if build_email_subs!=nil && build_email_subs.is_a?(Hash)
+    xsmtpapi = merge_subs_hash(xsmtpapi,subs)
+    xsmtpapi = merge_subs_hash(xsmtpapi,build_name_subs)
+    xsmtpapi = merge_subs_hash(xsmtpapi,build_email_subs)
     xsmtpapi.merge!({'unique_args' => build_unique_args })
     return xsmtpapi
+  end
+
+  def extract_values(values,key)
+    extract=[]
+    values.each do |h|
+      h.symbolize_keys!
+      extract.push h[key]
+    end
+    extract
+  end
+
+  def merge_subs_hash(xsmtpapi,subs)
+    if subs!=nil && subs.is_a?(Hash)
+      xsmtpapi.deep_merge(subs)
+    else
+      xsmtpapi
+    end
   end
 
   def validate_xsmtpapi!

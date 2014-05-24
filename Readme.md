@@ -1,17 +1,23 @@
-[![Gem version](https://badge.fury.io/rb/mailcannon.png)](http://rubygems.org/gems/mailcannon) [![Code Climate](https://codeclimate.com/github/lucasmartins/mailcannon.png)](https://codeclimate.com/github/lucasmartins/mailcannon) [![Build Status](https://travis-ci.org/lucasmartins/mailcannon.png?branch=master)](https://travis-ci.org/lucasmartins/mailcannon) [![Coverage Status](https://coveralls.io/repos/lucasmartins/mailcannon/badge.png)](https://coveralls.io/r/lucasmartins/mailcannon) [![Dependency Status](https://gemnasium.com/lucasmartins/mailcannon.png)](https://gemnasium.com/lucasmartins/mailcannon) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lucasmartins/mailcannon/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Gem version](https://badge.fury.io/rb/mailcannon.png)](http://rubygems.org/gems/mailcannon) [![Code Climate](https://codeclimate.com/github/mailcannon/mailcannon.png)](https://codeclimate.com/github/mailcannon/mailcannon) [![Build Status](https://travis-ci.org/mailcannon/mailcannon.png?branch=master)](https://travis-ci.org/mailcannon/mailcannon) [![Coverage Status](https://coveralls.io/repos/lucasmartins/mailcannon/badge.png)](https://coveralls.io/r/mailcannon/mailcannon) [![Dependency Status](https://gemnasium.com/mailcannon/mailcannon.png)](https://gemnasium.com/mailcannon/mailcannon) [![Inline docs](http://inch-pages.github.io/github/mailcannon/mailcannon.png)](http://inch-pages.github.io/github/mailcannon/mailcannon) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mailcannon/mailcannon/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ![MailCannon_logo](http://blog.railsnapraia.com/images/mailcannon_seal_128.png)
 
 MailCannon
 ==========
 
-Although this is a **WORK IN PROGRESS**, we're getting great results on **production** at [Resultados Digitais](http://resultadosdigitais.com.br/).
+Although this is a **WORK IN PROGRESS**, we're getting great results at **production** environments.
 
-This Gem relies heavily on both [Sidekiq](https://github.com/mperham/sidekiq) and Celluloid Gems, you are encouraged to use it anywhere with Ruby (a http interface is on the Roadmap ).
+This Gem relies heavily on [Sidekiq](https://github.com/mperham/sidekiq), you are encouraged to use it anywhere with Ruby (a http interface is on the Roadmap ). You REALLY should buy [Sidekiq's Pro](http://sidekiq.org/pro/) license for serious deployments, check it out.
 
 This Gem provides a worker ready for deploy cooked with [MongoDB](http://www.mongodb.org/) + [Mongoid](https://github.com/mongoid/mongoid) + [Sidekiq](https://github.com/mperham/sidekiq) + [Rubinius](http://rubini.us/) (feel free to use on MRI and jRuby as well).
 
 For production deployment, you should take a look at both [MailCannon Outpost](https://github.com/lucasmartins/mailcannon-outpost) and [MailCannon Monitor](https://github.com/lucasmartins/mailcannon-monitor) projects.
+
+Changelog
+========
+
+### 1.1
+- Added retry to barrel
 
 Install
 =======
@@ -87,6 +93,32 @@ Edit the file to meet your environemnt needs.
 
 Check the [specs](https://github.com/lucasmartins/mailcannon/tree/master/spec) to see the testing example, it will surely make it clearer.
 
+### Statistics & MapReduce
+
+MailCannon provides statistics calculation/reduce for the events related to an `Envelope`, like `open`,`click`,`spam`, etc. Assuming you have your Outpost running properly (running reduce jobs), you can access the data through the `envelope.stats` method to get the following hash:
+
+```ruby
+{
+  "posted"=>{"count"=>0.0, "targets"=>[]},
+  "processed"=>{"count"=>0.0, "targets"=>[]},
+  "delivered"=>{"count"=>1.0, "targets"=>["1"]},
+  "open"=>{"count"=>1.0, "targets"=>["2"]},
+  "click"=>{"count"=>0.0, "targets"=>[]},
+  "deferred"=>{"count"=>0.0, "targets"=>[]},
+  "spam_report"=>{"count"=>0.0, "targets"=>[]},
+  "spam"=>{"count"=>0.0, "targets"=>[]},
+  "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
+  "drop"=>{"count"=>0.0, "targets"=>[]},
+  "bounce"=>{"count"=>1.0, "targets"=>["3"]}
+}
+```
+
+You can trigger the reduce operation directly with `envelope.reduce_statistics`.
+
+**Targets** are your __glue_id__ to link this data inside your own application, we use it as the "Contact#id" so we can show witch `Contact` has received, read, or clicked the email.
+
+Repeating events on the same target will increase the array: `"click"=>{"count"=>3.0, "targets"=>["3","3","3"]}`
+
 Docs
 ====
 You should check the [factories](https://github.com/lucasmartins/mailcannon/tree/master/spec/factories) to learn what you need to build your objects, and the [tests](https://github.com/lucasmartins/mailcannon/tree/master/spec/mailcannon) to learn how to use them. But hey, we have docs [right here](http://rdoc.info/github/lucasmartins/mailcannon/master/frames).
@@ -94,15 +126,15 @@ You should check the [factories](https://github.com/lucasmartins/mailcannon/tree
 Roadmap
 =======
 
-- Statistics (Map&Reduce awesomeness);
+- Load testing;
+- Webhook service to receive Sendgrid events;
 - Memory optimization (focused on MailCannon Outpost);
 - HTTP (webservice) interface - so you don't need to be coding Ruby to use it!;
-- New service adapter (Mandrill?);
 
 Contribute
 ==========
 
-Just fork [MailCannon](https://github.com/lucasmartins/mailcannon), add your feature+spec, and make a pull request. Do not mess up with the version file though.
+Just fork [MailCannon](https://github.com/lucasmartins/mailcannon), add your feature+spec, and make a pull request. **DO NOT** mess up with the version file though.
 
 **NOTICE**: The project is at embrionary stage, breaking changes will apply.
   
@@ -114,4 +146,4 @@ This is an opensource project so don't expect premium support, but don't be shy,
 License
 =======
 
-MailCannon is free software under the [FreeBSD license](http://www.freebsd.org/copyright/freebsd-license.html).
+Please see [LICENSE](https://github.com/lucasmartins/mailcannon/blob/master/LICENSE) for licensing details.

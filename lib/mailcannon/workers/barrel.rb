@@ -1,26 +1,13 @@
 # This worker handles Envelopes dispatch
 class MailCannon::Barrel
   include Sidekiq::Worker
-  
+
   def perform(envelope_id)
     envelope_id = envelope_id['$oid'] if envelope_id['$oid']
-    if MailCannon::Librato.available?
-      shoot_with_librato!(envelope_id)
-    else
-      shoot!(envelope_id)
-    end
+    shoot!(envelope_id)
   end
 
   private
-  def shoot_with_librato!(envelope_id)
-    MailCannon::Librato.authenticate
-    aggregator = Librato::Metrics::Aggregator.new
-    aggregator.time 'mailcannon.shoot' do
-      shoot!(envelope_id)
-    end
-    aggregator.submit
-  end
-
   def shoot!(envelope_id)
     logger.info "sending MailCannon::Envelope.find('#{envelope_id}')"
     begin
@@ -33,9 +20,10 @@ class MailCannon::Barrel
       end
     rescue Mongoid::Errors::DocumentNotFound
       logger.error "unable to find the document MailCannon::Envelope.find('#{envelope_id}')"
+      raise Mongoid::Errors::DocumentNotFound
     rescue Exception => e
-      logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}')\n#{e.backtrace}"
-      Airbrake.notify(e, parameters: {'envelope_id'=>envelope_id}, cgi_data: ENV.to_hash) if MailCannon::Airbrake.available?
+      logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}') #{e} #{e.backtrace}"
+      raise e
     end
   end
 end

@@ -9,3 +9,4 @@ pkg/
 Gemfile.lock
 config/mailcannon.yml
 *.DS_Store
+.bundle/
