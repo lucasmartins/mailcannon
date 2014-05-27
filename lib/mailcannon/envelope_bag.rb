@@ -9,6 +9,7 @@ class MailCannon::EnvelopeBag
   has_many :envelopes, autosave: true
   field :integration_code, type: String # Used to link your own app models to the Bag.
   field :auth, type: Hash # {user: 'foo', password: 'bar'}, some Adapters might need an token:secret pair, which you can translete into user:password pair. This config will be overriden by the Envelope.auth if present.
+  field :pending_stats, type: Boolean, default: false
 
   def stats
     begin
@@ -22,6 +23,11 @@ class MailCannon::EnvelopeBag
     self.envelopes.push envelope
   end
   alias_method :"add",:"push"
+
+  def mark_stats_processed!
+    pending_stats = false
+    save
+  end
 
   # Post this Envelope!
   def post_envelopes!
