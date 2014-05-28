@@ -42,4 +42,14 @@ class MailCannon::EnvelopeBag
   end
   alias_method :"post!",:"post_envelopes!"
 
+  def self.mark_for_update!(bags_ids)
+    self.where(:_id.in => bags_ids).update_all(pending_stats: true)
+  end
+
+  def self.rebuild_stats
+    bag_ids = MailCannon::EnvelopeBag.where(pending_stats: true).pluck(:id)
+    puts "scheduling map reduce for #{bag_ids.count} bags"
+    MailCannon::EnvelopeBagReduceJob.perform_async(bag_ids)
+  end
+
 end

@@ -18,6 +18,13 @@ describe MailCannon::EnvelopeBagMapReduce do
     end
   end
 
+  describe "#js_finalize" do
+    it "returns the correct file" do
+      js_finalize_file = File.read(MailCannon::EnvelopeBag.js_map_reduce_path("envelope_bag_finalize.js"))
+      expect(MailCannon::EnvelopeBag.js_finalize).to eq js_finalize_file
+    end
+  end
+
   context "map reduce tests" do
 
     before(:each) do
@@ -41,56 +48,24 @@ describe MailCannon::EnvelopeBagMapReduce do
       MailCannon::SendgridEvent.insert_bulk(test_hash)
     end
 
-    describe "#change_events_status_for_envelope" do
-      it "sets events status (processed) to :lock(false)" do
-        MailCannon::EnvelopeBag.change_events_status_for_envelope_bag(envelope_bag.id, nil, :lock)
-        expect(envelope_a.reload.sendgrid_events.where(processed: false).count).to eq(3)
-        expect(envelope_b.reload.sendgrid_events.where(processed: false).count).to eq(2)
-        expect(envelope_c.reload.sendgrid_events.where(processed: false).count).to eq(1)
-      end
-
-      it "sets events status (processed) to :processed(true)" do
-        MailCannon::EnvelopeBag.change_events_status_for_envelope_bag(envelope_bag.id, nil, :processed)
-        expect(envelope_a.reload.sendgrid_events.where(processed: true).count).to eq(3)
-        expect(envelope_b.reload.sendgrid_events.where(processed: true).count).to eq(2)
-        expect(envelope_c.reload.sendgrid_events.where(processed: true).count).to eq(1)
-      end
-    end
-
     describe ".reduce_statistics_for_envelope_bag" do
       let(:expected_hash_a){
         {
-          "posted"=>{"count"=>0.0, "targets"=>[]},
-          "processed"=>{"count"=>0.0, "targets"=>[]},
-          "delivered"=>{"count"=>2.0, "targets"=>["1", "1"]},
-          "open"=>{"count"=>1.0, "targets"=>["2"]},
-          "click"=>{"count"=>2.0, "targets"=>["2", "1"]},
-          "deferred"=>{"count"=>0.0, "targets"=>[]},
-          "spam"=>{"count"=>0.0, "targets"=>[]},
-          "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
-          "drop"=>{"count"=>0.0, "targets"=>[]},
-          "bounce"=>{"count"=>1.0, "targets"=>["3"]},
-          "hard_bounce"=>{"count"=>1.0, "targets"=>["3"]},
-          "soft_bounce"=>{"count"=>0.0, "targets"=>[]},
-          "unknown"=>{"count"=>0.0, "targets"=>[]}
+          "bounce" => 1.0,
+          "click" => 2.0,
+          "delivered" => 1.0,
+          "hard_bounce" => 1.0,
+          "open" => 1.0
         }
       }
 
       let(:expected_hash_b){
         {
-          "posted"=>{"count"=>0.0, "targets"=>[]},
-          "processed"=>{"count"=>0.0, "targets"=>[]},
-          "delivered"=>{"count"=>4.0, "targets"=>["1", "1","1", "1"]},
-          "open"=>{"count"=>2.0, "targets"=>["2", "2"]},
-          "click"=>{"count"=>4.0, "targets"=>["2", "1","2", "1"]},
-          "deferred"=>{"count"=>0.0, "targets"=>[]},
-          "spam"=>{"count"=>0.0, "targets"=>[]},
-          "unsubscribe"=>{"count"=>0.0, "targets"=>[]},
-          "drop"=>{"count"=>0.0, "targets"=>[]},
-          "bounce"=>{"count"=>2.0, "targets"=>["3","3"]},
-          "hard_bounce"=>{"count"=>2.0, "targets"=>["3","3"]},
-          "soft_bounce"=>{"count"=>0.0, "targets"=>[]},
-          "unknown"=>{"count"=>0.0, "targets"=>[]}
+          "bounce" => 1.0,
+          "click" => 2.0,
+          "delivered" => 1.0,
+          "hard_bounce" => 1.0,
+          "open" => 1.0
         }
       }
 
