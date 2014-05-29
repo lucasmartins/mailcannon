@@ -25,8 +25,8 @@ class MailCannon::EnvelopeBag
   alias_method :"add",:"push"
 
   def mark_stats_processed!
-    pending_stats = false
-    save
+    self.pending_stats = false
+    self.save!
   end
 
   # Post this Envelope!

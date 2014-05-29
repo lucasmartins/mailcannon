@@ -31,7 +31,7 @@ describe MailCannon::EnvelopeBagMapReduce do
       insert_sample_events
     end
 
-    let!(:envelope_bag) { create(:empty_envelope_bag) }
+    let!(:envelope_bag) { create(:empty_envelope_bag, pending_stats: true) }
     let(:envelope_a) { create(:envelope, envelope_bag_id: envelope_bag.id) }
     let(:envelope_b) { create(:envelope, envelope_bag_id: envelope_bag.id) }
     let(:envelope_c) { create(:envelope, envelope_bag_id: envelope_bag.id) }
@@ -86,6 +86,8 @@ describe MailCannon::EnvelopeBagMapReduce do
 
       it "returns statistics hash/json" do
         envelope_bag.reduce_statistics
+        envelope_bag.reload
+        expect(envelope_bag.pending_stats).to be_false
         expect(envelope_bag.stats).to eq(expected_hash_a)
       end
 

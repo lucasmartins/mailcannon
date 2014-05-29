@@ -48,6 +48,11 @@ describe 'full stack test' do
         envelope_bag.save
         envelope_bag.envelopes << envelope_a
         envelope_bag.envelopes << envelope_b
+
+        MailCannon::EnvelopeBag.mark_for_update!([envelope_bag._id])
+        envelope_bag.reload
+        expect(envelope_a.envelope_bag.pending_stats).to be_true
+
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
           Sidekiq::Testing.inline! do
             bm = Benchmark.measure do
@@ -74,10 +79,11 @@ describe 'full stack test' do
         MailCannon::SendgridEvent.insert_bulk(envelope_a_hash)
 
         Sidekiq::Testing.inline! do
-          MailCannon::EnvelopeBagReduceJob.perform_async([envelope_bag.id])
+          MailCannon::EnvelopeBagReduceJob.perform_async([envelope_bag._id])
         end
 
-        expect(envelope_a.envelope_bag.pending_stats).to be_false
+        envelope_bag.reload
+        expect(envelope_bag.pending_stats).to be_false
         expect(envelope_bag.stats).to eq(expected_hash_a)
 
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
