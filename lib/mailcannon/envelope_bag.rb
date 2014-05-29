@@ -48,8 +48,8 @@ class MailCannon::EnvelopeBag
 
   def self.rebuild_stats
     bag_ids = MailCannon::EnvelopeBag.where(pending_stats: true).pluck(:id)
-    puts "scheduling map reduce for #{bag_ids.count} bags"
-    MailCannon::EnvelopeBagReduceJob.perform_async(bag_ids)
+    puts "#{bag_ids.count} bags with pending stats"
+    MailCannon::EnvelopeBagReduceJob.perform_async(bag_ids) unless bag_ids.empty?
   end
 
 end
