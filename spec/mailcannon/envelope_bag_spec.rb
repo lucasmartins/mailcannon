@@ -10,7 +10,7 @@ describe MailCannon::EnvelopeBag do
         expect{envelope_bag.post!}.not_to raise_error
       end
       it "returns false" do
-        expect(envelope_bag.post!).to be_false
+        expect(envelope_bag.post!).to be false
       end
     end
 
@@ -21,7 +21,7 @@ describe MailCannon::EnvelopeBag do
         expect{envelope_bag.post!}.not_to raise_error
       end
       it "returns true" do
-        expect(envelope_bag.post!).to be_true
+        expect(envelope_bag.post!).to be true
       end
     end
 
@@ -47,7 +47,7 @@ describe MailCannon::EnvelopeBag do
         MailCannon::EnvelopeBag.mark_for_update!([envelope_bag._id])
         envelope_bag.reload
 
-        expect(envelope_bag.pending_stats).to be_true
+        expect(envelope_bag.pending_stats).to be true
       end
     end
 

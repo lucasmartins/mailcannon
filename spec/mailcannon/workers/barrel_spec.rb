@@ -12,7 +12,7 @@ describe MailCannon::Barrel do
     it "looks for an existing MongoDB document" do
       VCR.use_cassette('mailcannon_barrel_envelope_post') do
         Sidekiq::Testing.inline! do
-          expect{envelope.post!}.not_to raise_error(Mongoid::Errors::DocumentNotFound)
+          expect{envelope.post!}.not_to raise_error
         end
       end
     end
@@ -25,7 +25,7 @@ describe MailCannon::Barrel do
     end
     context "check for expected adapter behavior" do
       it "implements send! behavior" do
-        expect(envelope.respond_to?(:send!)).to be_true
+        expect(envelope.respond_to?(:send!)).to be true
       end
     end
   end

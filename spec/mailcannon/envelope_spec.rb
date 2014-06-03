@@ -9,7 +9,7 @@ describe MailCannon::Envelope do
     end
     context "check for expected adapter behavior" do
       it "implements send! behavior" do
-        expect(envelope.respond_to?(:send!)).to be_true
+        expect(envelope.respond_to?(:send!)).to be true
       end
     end
   end
@@ -60,13 +60,13 @@ describe MailCannon::Envelope do
         VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
           envelope.post!
         end
-        expect(envelope.posted?).to be_true
+        expect(envelope.posted?).to be true
       end
     end
     context "when not yet posted" do
       let(:envelope) { build(:envelope) }
       it "returns false" do
-        expect(envelope.posted?).to be_false
+        expect(envelope.posted?).to be false
       end
     end
   end

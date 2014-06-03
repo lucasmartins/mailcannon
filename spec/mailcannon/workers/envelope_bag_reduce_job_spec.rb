@@ -8,8 +8,8 @@ describe MailCannon::EnvelopeBagReduceJob do
 
     it "calls the reduce trigger for each envelope" do
       Sidekiq::Testing.inline! do
-        MailCannon::EnvelopeBag.should_receive(:reduce_statistics_for_envelope_bag).with(bag_2.id.to_s)
-        MailCannon::EnvelopeBag.should_receive(:reduce_statistics_for_envelope_bag).with(bag_1.id.to_s)
+        expect(MailCannon::EnvelopeBag).to receive(:reduce_statistics_for_envelope_bag).with(bag_2.id.to_s)
+        expect(MailCannon::EnvelopeBag).to receive(:reduce_statistics_for_envelope_bag).with(bag_1.id.to_s)
         MailCannon::EnvelopeBagReduceJob.perform_async([bag_2.id, bag_1.id])
       end
     end

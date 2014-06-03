@@ -77,7 +77,7 @@ describe MailCannon::EnvelopeBagMapReduce do
         end
         end_time = Time.now
         diff = end_time-start_time
-        expect(diff<1.0).to be_true
+        expect(diff<1.0).to be true
       end
 
       it "creates an EnvelopeStatistic entry" do
@@ -87,7 +87,7 @@ describe MailCannon::EnvelopeBagMapReduce do
       it "returns statistics hash/json" do
         envelope_bag.reduce_statistics
         envelope_bag.reload
-        expect(envelope_bag.pending_stats).to be_false
+        expect(envelope_bag.pending_stats).to be false
         expect(envelope_bag.stats).to eq(expected_hash_a)
       end
 

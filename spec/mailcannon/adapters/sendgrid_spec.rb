@@ -28,14 +28,14 @@ describe MailCannon::Adapter::SendgridWeb do
       envelope_bag.save
       envelope_bag.envelopes << envelope
       VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
-        expect(envelope.send!).to be_true
+        expect(envelope.send!).to be true
       end
     end
     it "calls after_sent callback" do
       envelope_bag.save
       envelope_bag.envelopes << envelope
       VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
-        envelope.should_receive(:after_sent)
+        expect(envelope).to receive(:after_sent)
         envelope.send!
       end
     end
@@ -48,7 +48,7 @@ describe MailCannon::Adapter::SendgridWeb do
       envelope_bag.save
       envelope_bag.envelopes << envelope
       VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
-        expect(envelope.send_bulk!).to be_true
+        expect(envelope.send_bulk!).to be true
       end
     end
   end
