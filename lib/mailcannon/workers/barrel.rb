@@ -2,6 +2,8 @@
 class MailCannon::Barrel
   include Sidekiq::Worker
 
+  sidekiq_options :queue => :mail_delivery
+
   def perform(envelope_id)
     envelope_id = envelope_id['$oid'] if envelope_id['$oid']
     shoot!(envelope_id)

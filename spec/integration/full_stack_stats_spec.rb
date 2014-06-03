@@ -5,37 +5,37 @@ describe 'full stack test' do
 
     let(:expected_hash_a){
       {
-        "posted"=>{"count"=>1.0, "targets"=>["1"]},
-        "processed"=>{"count"=>1.0, "targets"=>["2"]},
-        "delivered"=>{"count"=>1.0, "targets"=>["3"]},
-        "open" => {"count"=>1.0, "targets"=>["4"]},
-        "click"=>{"count"=>1.0, "targets"=>["5"]},
-        "deferred"=>{"count"=>1.0, "targets"=>["6"]},
-        "spam"=>{"count"=>2.0, "targets"=>["8","7"]},
-        "unsubscribe"=>{"count"=>1.0, "targets"=>["9"]},
-        "drop"=>{"count"=>1.0, "targets"=>["10"]},
-        "bounce" => {"count"=>2.0, "targets"=>["11","12"]},
-        "hard_bounce" => {"count"=>1.0, "targets"=>["11"]},
-        "soft_bounce"=>{"count"=>1.0, "targets"=>["12"]},
-        "unknown"=>{"count"=>1.0, "targets"=>["13"]}
+        "bounce" => 2.0,
+        "click" => 1.0,
+        "deferred" => 1.0,
+        "delivered" => 1.0,
+        "drop" => 1.0,
+        "gfyigad" => 1.0,
+        "hard_bounce" => 1.0,
+        "open" => 1.0,
+        "posted" => 1.0,
+        "processed" => 1.0,
+        "soft_bounce" => 1.0,
+        "spam" => 2.0,
+        "unsubscribe" => 1.0
       }
     }
 
     let(:expected_hash_b){
       {
-        "posted"=>{"count"=>2.0, "targets"=>["1", "1" ]},
-        "processed"=>{"count"=>2.0, "targets"=>["2", "2"]},
-        "delivered"=>{"count"=>2.0, "targets"=>["3", "3"]},
-        "open" => {"count"=>2.0, "targets"=>["4", "4"]},
-        "click"=>{"count"=>2.0, "targets"=>["5","5"]},
-        "deferred"=>{"count"=>2.0, "targets"=>["6", "6"]},
-        "spam"=>{"count"=>4.0, "targets"=>["8", "7", "8", "7"]},
-        "unsubscribe"=>{"count"=>2.0, "targets"=>["9", "9"]},
-        "drop"=>{"count"=>2.0, "targets"=>["10", "10"]},
-        "bounce" => {"count"=>4.0, "targets"=>["11", "12", "11", "12"]},
-        "hard_bounce" => {"count"=>2.0, "targets"=>["11", "11"]},
-        "soft_bounce"=>{"count"=>2.0, "targets"=>["12", "12"]},
-        "unknown"=>{"count"=>2.0, "targets"=>["13", "13"]}
+        "bounce" => 2.0,
+        "click" => 1.0,
+        "deferred" => 1.0,
+        "delivered" => 1.0,
+        "drop" => 1.0,
+        "gfyigad" => 1.0,
+        "hard_bounce" => 1.0,
+        "open" => 1.0,
+        "posted" => 1.0,
+        "processed" => 1.0,
+        "soft_bounce" => 1.0,
+        "spam" => 2.0,
+        "unsubscribe" => 1.0
       }
     }
 
@@ -48,6 +48,11 @@ describe 'full stack test' do
         envelope_bag.save
         envelope_bag.envelopes << envelope_a
         envelope_bag.envelopes << envelope_b
+
+        MailCannon::EnvelopeBag.mark_for_update!([envelope_bag._id])
+        envelope_bag.reload
+        expect(envelope_a.envelope_bag.pending_stats).to be_true
+
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
           Sidekiq::Testing.inline! do
             bm = Benchmark.measure do
@@ -74,10 +79,11 @@ describe 'full stack test' do
         MailCannon::SendgridEvent.insert_bulk(envelope_a_hash)
 
         Sidekiq::Testing.inline! do
-          MailCannon::EnvelopeBagReduceJob.perform_async([envelope_bag.id])
+          MailCannon::EnvelopeBagReduceJob.perform_async([envelope_bag._id])
         end
 
-        expect(envelope_a.reload.sendgrid_events.where(processed: true).count).to eq(13)
+        envelope_bag.reload
+        expect(envelope_bag.pending_stats).to be_false
         expect(envelope_bag.stats).to eq(expected_hash_a)
 
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
@@ -109,7 +115,7 @@ describe 'full stack test' do
           MailCannon::EnvelopeBagReduceJob.perform_async([envelope_bag.id])
         end
 
-        expect(envelope_b.reload.sendgrid_events.where(processed: true).count).to eq(13)
+        expect(envelope_a.reload.envelope_bag.pending_stats).to be_false
         expect(envelope_bag.stats).to eq(expected_hash_b)
       end
     end
