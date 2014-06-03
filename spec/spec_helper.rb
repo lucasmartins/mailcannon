@@ -28,7 +28,6 @@ Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|r| require r}
 Dir[File.dirname(__FILE__) + "/factories/**/*.rb"].each {|r| require r}
 
 RSpec.configure do |config|
-  config.treat_symbols_as_metadata_keys_with_true_values = true
   config.order = :random
   config.include FactoryGirl::Syntax::Methods
   config.before { FileUtils.mkdir_p(TMPDIR) }

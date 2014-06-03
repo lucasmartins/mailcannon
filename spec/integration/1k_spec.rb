@@ -11,12 +11,12 @@ describe "shoot 1k emails!" do
           envelope_a.post!
         end
         puts "1k test real time: #{bm.real}"
-        expect(envelope_a.reload.processed?).to be_true
+        expect(envelope_a.reload.processed?).to be true
 
         # Travis has been showing unstable performance, not feasible to include performance tests.
         # The performance varies from machine to machine, specially when using dedicated servers for each service.
         if ENV['PERFORMANCE_TEST']
-          expect(bm.real<0.2).to be_true
+          expect(bm.real<0.2).to be true
         end
       end
     end

@@ -19,7 +19,7 @@ group :development do
 end
 
 group :test do
-  gem 'rspec'
+  gem 'rspec', '>= 3.0.0'
   gem 'rspec-mocks'
   gem 'rspec-expectations'
   gem 'database_cleaner'
