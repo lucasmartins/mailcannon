@@ -1,6 +1,6 @@
 # Where the magic happens, the Envelope is responsible for keeping the information necessary to send the email(s) and holding the Stamps related to mailing Events.
 class MailCannon::EnvelopeBag
-  EVENTS_TO_PROCESS = %w(open delivered spam spam_report spamreport bounce click unsubscribe)
+  EVENTS_TO_PROCESS = %w(open delivered spamreport bounce click unsubscribe)
 
   include Mongoid::Document
   include Mongoid::Timestamps
