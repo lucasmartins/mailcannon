@@ -7,15 +7,8 @@ describe 'full stack test' do
       {
         "bounce" => 2.0,
         "click" => 1.0,
-        "deferred" => 1.0,
         "delivered" => 1.0,
-        "drop" => 1.0,
-        "gfyigad" => 1.0,
-        "hard_bounce" => 1.0,
         "open" => 1.0,
-        "posted" => 1.0,
-        "processed" => 1.0,
-        "soft_bounce" => 1.0,
         "spam" => 2.0,
         "unsubscribe" => 1.0
       }
@@ -25,15 +18,8 @@ describe 'full stack test' do
       {
         "bounce" => 2.0,
         "click" => 1.0,
-        "deferred" => 1.0,
         "delivered" => 1.0,
-        "drop" => 1.0,
-        "gfyigad" => 1.0,
-        "hard_bounce" => 1.0,
         "open" => 1.0,
-        "posted" => 1.0,
-        "processed" => 1.0,
-        "soft_bounce" => 1.0,
         "spam" => 2.0,
         "unsubscribe" => 1.0
       }

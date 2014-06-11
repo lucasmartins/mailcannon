@@ -54,7 +54,6 @@ describe MailCannon::EnvelopeBagMapReduce do
           "bounce" => 1.0,
           "click" => 2.0,
           "delivered" => 1.0,
-          "hard_bounce" => 1.0,
           "open" => 1.0
         }
       }
@@ -64,7 +63,6 @@ describe MailCannon::EnvelopeBagMapReduce do
           "bounce" => 1.0,
           "click" => 2.0,
           "delivered" => 1.0,
-          "hard_bounce" => 1.0,
           "open" => 1.0
         }
       }

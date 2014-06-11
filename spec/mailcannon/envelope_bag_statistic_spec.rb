@@ -25,7 +25,7 @@ describe MailCannon::EnvelopeBagStatistic do
       envelope_bag.reduce_statistics
       envelope_bag.reload
       expect(envelope_bag.pending_stats).to be false
-      expect(envelope_bag.stats.keys).to include *%w(delivered open soft_bounce bounce)
+      expect(envelope_bag.stats.keys).to include *%w(delivered open bounce)
     end
   end
 end
