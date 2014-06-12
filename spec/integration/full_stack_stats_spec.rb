@@ -7,16 +7,9 @@ describe 'full stack test' do
       {
         "bounce" => 2.0,
         "click" => 1.0,
-        "deferred" => 1.0,
         "delivered" => 1.0,
-        "drop" => 1.0,
-        "gfyigad" => 1.0,
-        "hard_bounce" => 1.0,
         "open" => 1.0,
-        "posted" => 1.0,
-        "processed" => 1.0,
-        "soft_bounce" => 1.0,
-        "spam" => 2.0,
+        "spamreport" => 1.0,
         "unsubscribe" => 1.0
       }
     }
@@ -25,16 +18,9 @@ describe 'full stack test' do
       {
         "bounce" => 2.0,
         "click" => 1.0,
-        "deferred" => 1.0,
         "delivered" => 1.0,
-        "drop" => 1.0,
-        "gfyigad" => 1.0,
-        "hard_bounce" => 1.0,
         "open" => 1.0,
-        "posted" => 1.0,
-        "processed" => 1.0,
-        "soft_bounce" => 1.0,
-        "spam" => 2.0,
+        "spamreport" => 1.0,
         "unsubscribe" => 1.0
       }
     }
@@ -68,8 +54,7 @@ describe 'full stack test' do
           {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'open', target_id: '4'},
           {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo3@bar.com', timestamp: 1322000094, unique_arg: 'my unique arg', event: 'click', type: 'bounce', target_id: '5'},
           {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo3@bar.com', timestamp: 1322000094, unique_arg: 'my unique arg', event: 'deferred', type: 'expected', target_id: '6'},
-          {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo1@bar.com', timestamp: 1322000092, unique_arg: 'my unique arg', event: 'spam_report', target_id: '7'},
-          {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'spam', target_id: '8'},
+          {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'spamreport', target_id: '8'},
           {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo1@bar.com', timestamp: 1322000092, unique_arg: 'my unique arg', event: 'unsubscribe', target_id: '9'},
           {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'drop', target_id: '10'},
           {envelope_id: envelope_a.id, envelope_bag_id: envelope_bag.id, email: 'foo3@bar.com', timestamp: 1322000094, unique_arg: 'my unique arg', event: 'bounce', type: 'bounce', target_id: '11'},
@@ -101,8 +86,7 @@ describe 'full stack test' do
           {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'open', target_id: '4'},
           {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo3@bar.com', timestamp: 1322000094, unique_arg: 'my unique arg', event: 'click', type: 'bounce', target_id: '5'},
           {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo3@bar.com', timestamp: 1322000094, unique_arg: 'my unique arg', event: 'deferred', type: 'expected', target_id: '6'},
-          {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo1@bar.com', timestamp: 1322000092, unique_arg: 'my unique arg', event: 'spam_report', target_id: '7'},
-          {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'spam', target_id: '8'},
+          {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'spamreport', target_id: '8'},
           {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo1@bar.com', timestamp: 1322000092, unique_arg: 'my unique arg', event: 'unsubscribe', target_id: '9'},
           {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo2@bar.com', timestamp: 1322000093, unique_arg: 'my unique arg', event: 'drop', target_id: '10'},
           {envelope_id: envelope_b.id, envelope_bag_id: envelope_bag.id, email: 'foo3@bar.com', timestamp: 1322000094, unique_arg: 'my unique arg', event: 'bounce', type: 'bounce', target_id: '11'},
