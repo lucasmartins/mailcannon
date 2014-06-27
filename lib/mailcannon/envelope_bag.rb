@@ -45,7 +45,7 @@ class MailCannon::EnvelopeBag
   alias_method :"post!",:"post_envelopes!"
 
   def self.mark_for_update!(bags_ids)
-    self.where(:_id.in => bags_ids).update_all(pending_stats: true)
+    self.where(:id.in => bags_ids).update_all(pending_stats: true)
   end
 
   def self.rebuild_stats
