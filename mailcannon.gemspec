@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
-  
+
   if RUBY_ENGINE=='rbx'
     s.add_dependency 'rubysl'
   end
@@ -28,11 +28,11 @@ Gem::Specification.new do |s|
   if RUBY_PLATFORM=='jruby'
     s.add_dependency 'jruby-openssl'
   end
-  
+
   s.add_runtime_dependency 'activemodel', '>= 3.0.0'
-  
+
   s.add_dependency 'redis'
-  s.add_dependency 'mongoid','>=3.1.6'
+  s.add_dependency 'mongoid','3.1.6'
   s.add_dependency 'sidekiq', '2.17.7'
   s.add_dependency 'sendgrid_webapi', '0.0.3'
   s.add_dependency 'json-schema'
@@ -55,4 +55,3 @@ Gem::Specification.new do |s|
     s.add_development_dependency 'coveralls'
   end
 end
-
