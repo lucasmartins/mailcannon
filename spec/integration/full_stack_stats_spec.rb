@@ -35,7 +35,7 @@ describe 'full stack test' do
         envelope_bag.envelopes << envelope_a
         envelope_bag.envelopes << envelope_b
 
-        MailCannon::EnvelopeBag.mark_for_update!([envelope_bag._id])
+        MailCannon::EnvelopeBag.mark_for_update!([envelope_bag.id])
         envelope_bag.reload
         expect(envelope_a.envelope_bag.pending_stats).to be true
 
@@ -64,7 +64,7 @@ describe 'full stack test' do
         MailCannon::SendgridEvent.insert_bulk(envelope_a_hash)
 
         Sidekiq::Testing.inline! do
-          MailCannon::EnvelopeBagReduceJob.perform_async([envelope_bag._id])
+          MailCannon::EnvelopeBagReduceJob.perform_async(envelope_bag.id)
         end
 
         envelope_bag.reload
@@ -96,7 +96,7 @@ describe 'full stack test' do
         MailCannon::SendgridEvent.insert_bulk(envelope_b_hash)
 
         Sidekiq::Testing.inline! do
-          MailCannon::EnvelopeBagReduceJob.perform_async([envelope_bag.id])
+          MailCannon::EnvelopeBagReduceJob.perform_async(envelope_bag.id)
         end
 
         expect(envelope_a.reload.envelope_bag.pending_stats).to be false
