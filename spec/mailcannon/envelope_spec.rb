@@ -100,11 +100,11 @@ describe MailCannon::Envelope do
   describe "#after_sent" do
     let(:envelope) { create(:envelope) }
     it "creates a Processed Stamp" do
-      envelope.after_sent(true)
+      envelope.after_sent
       expect(envelope.stamps.last.event).to be(MailCannon::Event::Processed)
     end
     it "destroys the email content" do
-      envelope.after_sent(true)
+      envelope.after_sent
       expect(envelope.mail).to be_nil
     end
   end
