@@ -49,13 +49,11 @@ class MailCannon::Envelope
   end
   
   # Callback to be run after the Envelope has been processed.
-  def after_sent(response)
-    if response
-      stamp!(MailCannon::Event::Processed.stamp)
-      if MailCannon.config['auto_destroy']
-        self.mail.destroy
-        self.mail=nil # to avoid reload
-      end
+  def after_sent
+    stamp!(MailCannon::Event::Processed.stamp)
+    if MailCannon.config['auto_destroy']
+      self.mail.destroy
+      self.mail=nil # to avoid reload
     end
   end
 
