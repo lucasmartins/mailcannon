@@ -76,12 +76,12 @@ describe MailCannon::Envelope do
 
     it "allows posting to any queue" do
       envelope.post!(queue: :foo_queue)
-      expect(Sidekiq::Queue.new('foo_queue').size).to eq 1
+      expect(MailCannon::Barrel.jobs.first["queue"]).to eq("foo_queue")
     end
 
     it "enqueues to mail_delivery by default" do
       envelope.post!
-      expect(Sidekiq::Queue.new(:mail_delivery).size).to eq 1
+      expect(MailCannon::Barrel.jobs.first["queue"]).to eq("mail_delivery")
     end
   end
 
