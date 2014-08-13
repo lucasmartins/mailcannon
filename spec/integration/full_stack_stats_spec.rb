@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe 'full stack test' do
+describe 'full stack test', sidekiq: :inline do
   describe "should send 2 envelopes, receive correct statistics and map/reduce data correctly" do
 
     let(:expected_hash_a){
@@ -40,10 +40,8 @@ describe 'full stack test' do
         expect(envelope_a.envelope_bag.pending_stats).to be true
 
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
-          Sidekiq::Testing.inline! do
-            bm = Benchmark.measure do
-              envelope_a.send_bulk!
-            end
+          bm = Benchmark.measure do
+            envelope_a.send_bulk!
           end
         end
 
@@ -63,19 +61,15 @@ describe 'full stack test' do
         ]
         MailCannon::SendgridEvent.insert_bulk(envelope_a_hash)
 
-        Sidekiq::Testing.inline! do
-          MailCannon::EnvelopeBagReduceJob.perform_async(envelope_bag.id)
-        end
+        MailCannon::EnvelopeBagReduceJob.perform_async(envelope_bag.id)
 
         envelope_bag.reload
         expect(envelope_bag.pending_stats).to be false
         expect(envelope_bag.stats).to eq(expected_hash_a)
 
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
-          Sidekiq::Testing.inline! do
-            bm = Benchmark.measure do
-              envelope_b.send_bulk!
-            end
+          bm = Benchmark.measure do
+            envelope_b.send_bulk!
           end
         end
 
@@ -95,9 +89,7 @@ describe 'full stack test' do
         ]
         MailCannon::SendgridEvent.insert_bulk(envelope_b_hash)
 
-        Sidekiq::Testing.inline! do
-          MailCannon::EnvelopeBagReduceJob.perform_async(envelope_bag.id)
-        end
+        MailCannon::EnvelopeBagReduceJob.perform_async(envelope_bag.id)
 
         expect(envelope_a.reload.envelope_bag.pending_stats).to be false
         expect(envelope_bag.stats).to eq(expected_hash_b)

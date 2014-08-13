@@ -77,16 +77,14 @@ describe MailCannon::Adapter::SendgridWeb do
     end
   end
 
-  context "grab auth exception" do
+  context "grab auth exception", sidekiq: :inline do
     describe "#send!" do
     let(:envelope_bag) { build(:empty_envelope_bag) }
     let(:envelope) { build(:envelope_wrong_auth) }
       it "sends http request for Sendgrid web API with a wrong user/passwd combination" do
         envelope_bag.save
         envelope_bag.envelopes << envelope
-        Sidekiq::Testing.inline! do
-          expect{envelope.send!}.to raise_error(MailCannon::Adapter::AuthException)
-        end
+        expect{envelope.send!}.to raise_error(MailCannon::Adapter::AuthException)
       end
     end
   end
