@@ -8,6 +8,7 @@ describe 'full stack test', sidekiq: :inline do
         "bounce" => 2.0,
         "click" => 1.0,
         "delivered" => 1.0,
+        "hard_bounce" => 1.0,
         "open" => 1.0,
         "spamreport" => 1.0,
         "unsubscribe" => 1.0
@@ -19,6 +20,7 @@ describe 'full stack test', sidekiq: :inline do
         "bounce" => 2.0,
         "click" => 1.0,
         "delivered" => 1.0,
+        "hard_bounce" => 1.0,
         "open" => 1.0,
         "spamreport" => 1.0,
         "unsubscribe" => 1.0
