@@ -26,11 +26,11 @@ class MailCannon::Envelope
   validates_associated :mail
 
   # Post this Envelope!
-  def post_envelope!
+  def post_envelope!(options = {})
     self.save if self.changed?
     raise "Envelope(#{self.id}) has no mail! Didn't you already send it?" unless self.mail
     if validate_xsmtpapi(self.xsmtpapi)
-      jid = schedule_send_job
+      jid = schedule_send_job(options[:queue])
       self.save if self.changed?
     else
       raise 'Invalid xsmtpapi hash!'
@@ -72,13 +72,15 @@ class MailCannon::Envelope
       false
     end
   end
-  
+
   private
-  def schedule_send_job
-    if MailCannon.config['waiting_time'].to_i>0
-      self.jid = MailCannon::Barrel.perform_in(MailCannon.config['waiting_time'].seconds,self.id)
+  def schedule_send_job(queue)
+    queue ||= :mail_delivery
+
+    if MailCannon.config['waiting_time'].to_i > 0
+      self.jid = Sidekiq::Client.enqueue_to_in(queue, MailCannon.config['waiting_time'].seconds, MailCannon::Barrel, self.id)
     else
-      self.jid = MailCannon::Barrel.perform_async(self.id)
+      self.jid = Sidekiq::Client.enqueue_to(queue, MailCannon::Barrel, self.id)
     end
     if self.jid
       self.stamp! MailCannon::Event::Posted.stamp

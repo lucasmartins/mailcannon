@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe 'X-SMTPAPI compatibility' do
-  describe "xsmtpapi for bulk" do
+  describe "xsmtpapi for bulk", sidekiq: :inline do
     # This should guarantee the expected behavior for the following api:
     #   http://sendgrid.com/docs/API_Reference/SMTP_API/unique_arguments.html
     context "generates expected xsmtpapi for #post!" do
@@ -13,9 +13,7 @@ describe 'X-SMTPAPI compatibility' do
         envelope_bag.save
         envelope_bag.envelopes << envelope
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
-          Sidekiq::Testing.inline! do
-            envelope.post!
-          end
+          envelope.post!
         end
         envelope.save
         envelope.reload # content is changed inside the Adapter module

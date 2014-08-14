@@ -71,7 +71,21 @@ describe MailCannon::Envelope do
     end
   end
 
-  describe "xsmtpapi" do
+  describe "#schedule to any queue" do
+    let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
+
+    it "allows posting to any queue" do
+      envelope.post!(queue: :foo_queue)
+      expect(MailCannon::Barrel.jobs.first["queue"]).to eq("foo_queue")
+    end
+
+    it "enqueues to mail_delivery by default" do
+      envelope.post!
+      expect(MailCannon::Barrel.jobs.first["queue"]).to eq("mail_delivery")
+    end
+  end
+
+  describe "xsmtpapi", sidekiq: :inline do
     context "keep xsmtpapi arguments after #post!" do
       let(:envelope_bag) { build(:empty_envelope_bag)}
       let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
@@ -81,9 +95,7 @@ describe MailCannon::Envelope do
         envelope_bag.save
         envelope_bag.envelopes << envelope
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
-          Sidekiq::Testing.inline! do
-            envelope.post!
-          end
+          envelope.post!
         end
         envelope.reload # content is changed inside the Adapter module
         expect(envelope.xsmtpapi).to have_key("unique_args")
