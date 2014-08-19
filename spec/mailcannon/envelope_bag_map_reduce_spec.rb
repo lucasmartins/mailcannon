@@ -51,6 +51,7 @@ describe MailCannon::EnvelopeBagMapReduce do
     describe ".reduce_statistics_for_envelope_bag" do
       let(:expected_hash_a){
         {
+          "bounce" => 1.0,
           "click" => 2.0,
           "delivered" => 1.0,
           "hard_bounce" => 1.0,
@@ -60,6 +61,7 @@ describe MailCannon::EnvelopeBagMapReduce do
 
       let(:expected_hash_b){
         {
+          "bounce" => 1.0,
           "click" => 2.0,
           "delivered" => 1.0,
           "hard_bounce" => 1.0,
