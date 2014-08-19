@@ -6,6 +6,7 @@ describe 'full stack test', sidekiq: :inline do
     let(:expected_hash_a){
       {
         "bounce" => 2.0,
+        "soft_bounce" => 1.0,
         "click" => 1.0,
         "delivered" => 1.0,
         "hard_bounce" => 1.0,
@@ -18,6 +19,7 @@ describe 'full stack test', sidekiq: :inline do
     let(:expected_hash_b){
       {
         "bounce" => 2.0,
+        "soft_bounce" => 1.0,
         "click" => 1.0,
         "delivered" => 1.0,
         "hard_bounce" => 1.0,
