@@ -31,6 +31,10 @@ class MailCannon::EnvelopeBag
     self.save!
   end
 
+  def stale?
+    self.created_at && self.created_at < (ENV['FROZEN_STATISTICS_AFTER_DAYS'] || 45).to_i.days.ago
+  end
+
   # Post this Envelope!
   def post_envelopes!
     return false if envelopes.size==0
