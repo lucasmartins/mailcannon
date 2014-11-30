@@ -53,27 +53,10 @@ module MailCannon::Adapter::SendgridWeb
     validate_envelope!
     self.xsmtpapi = {} if self.xsmtpapi.nil?
     self.xsmtpapi['sub']={} unless self.xsmtpapi['sub']
-    self.xsmtpapi = self.xsmtpapi.deep_merge(build_xsmtpapi({'to'=>self.to},{'sub'=>self.substitutions}))
+    self.xsmtpapi = build_xsmtpapi
     validate_xsmtpapi!
     self.save!
   end
-
-  def build_to_subs(placeholder, to_key)
-    selected_hash_array = []
-    self.to.map {|h| selected_hash_array.push h[to_key]||h[to_key.to_sym]||''}
-    {'sub'=>{"#{placeholder}"=>selected_hash_array}}
-  end
-
-  def build_name_subs
-    placeholder = MailCannon.config['default_name_placeholder'] || '%name%'
-    build_to_subs(placeholder, 'name')
-  end
-
-  def build_email_subs
-    placeholder = MailCannon.config['default_email_placeholder'] || '%email%'
-    build_to_subs(placeholder, 'email')
-  end
-
 
   def build_unique_args
     unique_args = {}
@@ -86,33 +69,11 @@ module MailCannon::Adapter::SendgridWeb
     unique_args
   end
 
-  def build_xsmtpapi(recipients,subs)
+  def build_xsmtpapi
     xsmtpapi = self.xsmtpapi || {}
-    recipients.symbolize_keys!
-    to = extract_values(recipients[:to],:email)
-    xsmtpapi.merge!({'to' => to}) if to
-    xsmtpapi = merge_subs_hash(xsmtpapi,subs)
-    xsmtpapi = merge_subs_hash(xsmtpapi,build_name_subs)
-    xsmtpapi = merge_subs_hash(xsmtpapi,build_email_subs)
-    xsmtpapi.merge!({'unique_args' => build_unique_args })
-    return xsmtpapi
-  end
-
-  def extract_values(values,key)
-    extract=[]
-    values.each do |h|
-      h.symbolize_keys!
-      extract.push h[key]
-    end
-    extract
-  end
-
-  def merge_subs_hash(xsmtpapi,subs)
-    if subs!=nil && subs.is_a?(Hash)
-      xsmtpapi.deep_merge(subs)
-    else
-      xsmtpapi
-    end
+    xsmtpapi["unique_args"] ||= {}
+    xsmtpapi["unique_args"].merge!(build_unique_args)
+    xsmtpapi
   end
 
   def validate_xsmtpapi!

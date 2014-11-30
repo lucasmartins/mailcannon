@@ -13,7 +13,6 @@ class MailCannon::Envelope
   field :from, type: String
   field :from_name, type: String
   field :to, type: Array # of hashes. [{email: '', name: ''},...]
-  field :substitutions, type: Hash # of hashes
   field :subject, type: String
   field :bcc, type: String
   field :reply_to, type: String

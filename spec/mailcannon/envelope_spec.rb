@@ -89,7 +89,6 @@ describe MailCannon::Envelope do
     context "keep xsmtpapi arguments after #post!" do
       let(:envelope_bag) { build(:empty_envelope_bag)}
       let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
-      let(:name_placeholder) { MailCannon.config['default_name_placeholder'].to_s }
 
       it "returns true" do
         envelope_bag.save
@@ -101,10 +100,6 @@ describe MailCannon::Envelope do
         expect(envelope.xsmtpapi).to have_key("unique_args")
         expect(envelope.xsmtpapi["unique_args"]).to have_key("envelope_id") if MailCannon.config['add_envelope_id_to_unique_args']
         expect(envelope.xsmtpapi["unique_args"]).to have_key("envelope_bag_id") if MailCannon.config['add_envelope_bag_id_to_unique_args']
-        expect(envelope.xsmtpapi).to have_key("to")
-        expect(envelope.xsmtpapi).to have_key("sub")
-        expect(envelope.xsmtpapi['sub']).to have_key("*|NAME|*")
-        expect(envelope.xsmtpapi['sub'][name_placeholder]).to match_array(['Mail Cannon','Lucas Martins','Contact'])
       end
     end
   end

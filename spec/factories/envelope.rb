@@ -40,7 +40,6 @@ FactoryGirl.define do
       from 'mailcannon@railsonthebeach.com'
       to to_array
       hash = {"%name%"=>names}
-      substitutions hash
       subject 'Test'
     end
   end
