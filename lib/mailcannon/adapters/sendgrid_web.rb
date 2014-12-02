@@ -7,8 +7,10 @@ module MailCannon::Adapter::SendgridWeb
       begin
         validate_envelope!
         response = send_multiple_emails
-        self.after_sent(successfully_sent?(response))
-        return successfully_sent?(response)
+        success = successfully_sent?(response)
+        raise MailCannon::Adapter::DeliveryFailedException.new(response) unless success
+
+        self.after_sent
       rescue Exception => e
         if e.message == "[\"Permission denied, wrong credentials\"]"
           raise MailCannon::Adapter::AuthException
@@ -16,6 +18,7 @@ module MailCannon::Adapter::SendgridWeb
           raise e
         end
       end
+      true
     end
 
     def send_bulk!
@@ -149,10 +152,6 @@ module MailCannon::Adapter::SendgridWeb
   end
   
   def successfully_sent?(response)
-    if response['message']=='success'
-      true
-    else
-      false
-    end
+    response['message'] == 'success'
   end
 end

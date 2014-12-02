@@ -2,6 +2,8 @@
 class MailCannon::Barrel
   include Sidekiq::Worker
 
+  sidekiq_options :queue => :mail_delivery
+
   def perform(envelope_id)
     envelope_id = envelope_id['$oid'] if envelope_id['$oid']
     shoot!(envelope_id)
@@ -18,9 +20,9 @@ class MailCannon::Barrel
           raise response
         end
       end
-    rescue Mongoid::Errors::DocumentNotFound
+    rescue Mongoid::Errors::DocumentNotFound => e
       logger.error "unable to find the document MailCannon::Envelope.find('#{envelope_id}')"
-      raise Mongoid::Errors::DocumentNotFound
+      raise e
     rescue Exception => e
       logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}') #{e} #{e.backtrace}"
       raise e

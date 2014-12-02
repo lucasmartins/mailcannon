@@ -9,7 +9,7 @@ describe MailCannon::Envelope do
     end
     context "check for expected adapter behavior" do
       it "implements send! behavior" do
-        expect(envelope.respond_to?(:send!)).to be_true
+        expect(envelope.respond_to?(:send!)).to be true
       end
     end
   end
@@ -60,18 +60,32 @@ describe MailCannon::Envelope do
         VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
           envelope.post!
         end
-        expect(envelope.posted?).to be_true
+        expect(envelope.posted?).to be true
       end
     end
     context "when not yet posted" do
       let(:envelope) { build(:envelope) }
       it "returns false" do
-        expect(envelope.posted?).to be_false
+        expect(envelope.posted?).to be false
       end
     end
   end
 
-  describe "xsmtpapi" do
+  describe "#schedule to any queue" do
+    let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
+
+    it "allows posting to any queue" do
+      envelope.post!(queue: :foo_queue)
+      expect(MailCannon::Barrel.jobs.first["queue"]).to eq("foo_queue")
+    end
+
+    it "enqueues to mail_delivery by default" do
+      envelope.post!
+      expect(MailCannon::Barrel.jobs.first["queue"]).to eq("mail_delivery")
+    end
+  end
+
+  describe "xsmtpapi", sidekiq: :inline do
     context "keep xsmtpapi arguments after #post!" do
       let(:envelope_bag) { build(:empty_envelope_bag)}
       let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
@@ -81,9 +95,7 @@ describe MailCannon::Envelope do
         envelope_bag.save
         envelope_bag.envelopes << envelope
         VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
-          Sidekiq::Testing.inline! do
-            envelope.post!
-          end
+          envelope.post!
         end
         envelope.reload # content is changed inside the Adapter module
         expect(envelope.xsmtpapi).to have_key("unique_args")
@@ -100,11 +112,11 @@ describe MailCannon::Envelope do
   describe "#after_sent" do
     let(:envelope) { create(:envelope) }
     it "creates a Processed Stamp" do
-      envelope.after_sent(true)
+      envelope.after_sent
       expect(envelope.stamps.last.event).to be(MailCannon::Event::Processed)
     end
     it "destroys the email content" do
-      envelope.after_sent(true)
+      envelope.after_sent
       expect(envelope.mail).to be_nil
     end
   end
