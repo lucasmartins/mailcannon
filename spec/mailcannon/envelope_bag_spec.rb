@@ -1,6 +1,31 @@
 require "spec_helper"
 
 describe MailCannon::EnvelopeBag do
+  describe "#stale?" do
+    let(:envelope_bag) { build(:empty_envelope_bag) }
+
+    it "returns false when it's a recent bag" do
+      envelope_bag.created_at = Date.today
+      expect(envelope_bag).to_not be_stale
+    end
+
+    it "returns true when it's too old" do
+      envelope_bag.created_at = 3.months.ago
+      expect(envelope_bag).to be_stale
+    end
+
+    it "checks if bag is stale from env variable" do
+      ENV['FROZEN_STATISTICS_AFTER_DAYS'] = '20'
+      envelope_bag.created_at = 19.days.ago
+      expect(envelope_bag).to_not be_stale
+
+      envelope_bag.created_at = 21.days.ago
+      expect(envelope_bag).to be_stale
+
+      ENV['FROZEN_STATISTICS_AFTER_DAYS'] = nil
+    end
+  end
+
   describe "#post!" do
 
     context "when it has no Envelopes" do
