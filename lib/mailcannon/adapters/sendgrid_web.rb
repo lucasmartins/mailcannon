@@ -71,6 +71,7 @@ module MailCannon::Adapter::SendgridWeb
 
   def build_xsmtpapi
     xsmtpapi = self.xsmtpapi || {}
+    xsmtpapi["to"] = self.to.map { |d| d["email"] }
     xsmtpapi["unique_args"] ||= {}
     xsmtpapi["unique_args"].merge!(build_unique_args)
     xsmtpapi
