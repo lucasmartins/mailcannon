@@ -1,14 +1,9 @@
 module MailCannon::EnvelopeBagMapReduce
   module ClassMethods
     def reduce_statistics_for_envelope_bag(id)
-      bag = MailCannon::EnvelopeBag.find(id)
-
-      unless bag.stale?
-        events = MailCannon::SendgridEvent.where(:envelope_bag_id => id, :event.in => MailCannon::EnvelopeBag::EVENTS_TO_PROCESS)
-        events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_bag_statistics").finalize(self.js_finalize).to_a
-      end
-
-      bag.mark_stats_processed!
+      events = MailCannon::SendgridEvent.where(:envelope_bag_id => id, :event.in => MailCannon::EnvelopeBag::EVENTS_TO_PROCESS)
+      events.map_reduce(self.js_map, self.js_reduce).out(merge: "mail_cannon_envelope_bag_statistics").finalize(self.js_finalize).to_a
+      MailCannon::EnvelopeBag.find(id).mark_stats_processed!
     end
 
     def statistics_for_envelope(id)

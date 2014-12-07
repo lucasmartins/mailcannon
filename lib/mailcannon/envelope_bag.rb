@@ -53,7 +53,8 @@ class MailCannon::EnvelopeBag
   end
 
   def self.rebuild_stats
-    bag_ids = MailCannon::EnvelopeBag.where(pending_stats: true).pluck(:id)
+    frozen_statistics_date = (ENV['FROZEN_STATISTICS_AFTER_DAYS'] || 15).to_i.days.ago
+    bag_ids = MailCannon::EnvelopeBag.where(pending_stats: true).where(:created_at.gt => frozen_statistics_date).pluck(:id)
     puts "scheduling #{bag_ids.count} bags for map reduce"
     bag_ids.each do |bag_id|
       MailCannon::EnvelopeBagReduceJob.perform_async(bag_id)

@@ -91,15 +91,6 @@ describe MailCannon::EnvelopeBagMapReduce do
         expect(envelope_bag.stats).to eq(expected_hash_a)
       end
 
-      it "Does not process statistics when bag is stale" do
-        allow(envelope_bag).to receive(:stale?).and_return(true)
-        expect(MailCannon::Event).to_not receive(:where)
-
-        envelope_bag.reduce_statistics
-        envelope_bag.reload
-        expect(envelope_bag.pending_stats).to be false
-      end
-
       it "merges recurring reduces" do
         envelope_bag.reduce_statistics
         expect(envelope_bag.stats).to eq(expected_hash_a)
