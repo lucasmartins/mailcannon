@@ -3,7 +3,7 @@ module MailCannon
   module Version
     MAJOR = 0
     MINOR = 3
-    PATCH = 11
+    PATCH = 12
     STRING = "#{MAJOR}.#{MINOR}.#{PATCH}"
   end
 end
