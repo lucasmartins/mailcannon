@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-mocks", '>= 3.0.0'
   s.add_development_dependency "rspec-expectations", '>= 3.0.0'
   s.add_development_dependency "webmock", '>= 1.8.0', '< 1.16'
-  s.add_development_dependency "database_cleaner"
+  s.add_development_dependency "database_cleaner", '1.3.0'
   s.add_development_dependency "factory_girl", "~> 4.2.0"
   s.add_development_dependency "rake"
   s.add_development_dependency "pry"
