@@ -110,7 +110,7 @@ module MailCannon::Adapter::SendgridWeb
               :bcc         => self.bcc,
               :replyto     => self.reply_to,
               :"x-smtpapi" => self.xsmtpapi.to_json,
-              :headers     => self.headers
+              :headers     => self.headers.to_json
             )
   end
 
