@@ -8,5 +8,5 @@ class MailCannon::Mail
   field :text, type: String
   field :html, type: String
   
-  validate :text, presence: true
+  validates :text, presence: true
 end

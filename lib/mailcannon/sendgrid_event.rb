@@ -1,5 +1,6 @@
 class MailCannon::SendgridEvent
   include Mongoid::Document
+  include Mongoid::Attributes::Dynamic
 
   field :email, type: String
   field :timestamp, type: String
