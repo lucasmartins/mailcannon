@@ -101,18 +101,19 @@ module MailCannon::Adapter::SendgridWeb
   def send_multiple_emails
     prepare_xsmtpapi!
     api_client.mail.send(
-              :to => self.from,
-              :subject => self.subject,
-              :text => self.mail.text,
-              :html => self.mail.html,
-              :from => self.from,
-              :fromname => self.from_name,
-              :bcc => self.bcc,
-              :replyto => self.reply_to,
-              :"x-smtpapi" => self.xsmtpapi.to_json
+              :to          => self.from,
+              :subject     => self.subject,
+              :text        => self.mail.text,
+              :html        => self.mail.html,
+              :from        => self.from,
+              :fromname    => self.from_name,
+              :bcc         => self.bcc,
+              :replyto     => self.reply_to,
+              :"x-smtpapi" => self.xsmtpapi.to_json,
+              :headers     => self.headers
             )
   end
-  
+
   def successfully_sent?(response)
     response['message'] == 'success'
   end
