@@ -3,13 +3,13 @@ class MailCannon::Envelope
   include Mongoid::Document
   include Mongoid::Timestamps
   include MailCannon::Adapter::SendgridWeb
-  
+
   belongs_to :envelope_bag, index: true
 
   embeds_one :mail
   embeds_many :stamps
   has_many :sendgrid_events
-  
+
   field :from, type: String
   field :from_name, type: String
   field :to, type: Array # of hashes. [{email: '', name: ''},...]
@@ -47,7 +47,7 @@ class MailCannon::Envelope
     end
     self.stamps.create(code: MailCannon::Stamp.from_code(code).code, recipient: recipient)
   end
-  
+
   # Callback to be run after the Envelope has been processed.
   def after_sent
     stamp!(MailCannon::Event::Processed.stamp)
@@ -102,5 +102,5 @@ class MailCannon::Envelope
       false
     end
   end
-    
+
 end

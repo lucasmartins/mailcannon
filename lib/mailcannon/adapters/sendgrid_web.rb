@@ -28,23 +28,23 @@ module MailCannon::Adapter::SendgridWeb
     def auth_pair
       default_auth = {'username'=>ENV['SENDGRID_USERNAME'],'password'=>ENV['SENDGRID_PASSWORD']}
       begin
-        self.auth || self.envelope_bag.auth || default_auth  
+        self.auth || self.envelope_bag.auth || default_auth
       rescue Exception => e
         logger.error "Unable to read auth config from Envelope or Bag, using default auth options from ENV"
         return default_auth
       end
     end
   end
-  
+
   def self.included(receiver)
     receiver.send :include, InstanceMethods
   end
-  
+
   private
   def api_client
     SendGridWebApi::Client.new(self.auth_pair['username'],self.auth_pair['password'])
   end
-  
+
   def validate_envelope!
     raise "Invalid Document! #{self.errors.messages}" unless self.valid?
   end
