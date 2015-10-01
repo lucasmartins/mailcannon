@@ -28,23 +28,23 @@ module MailCannon::Adapter::SendgridWeb
     def auth_pair
       default_auth = {'username'=>ENV['SENDGRID_USERNAME'],'password'=>ENV['SENDGRID_PASSWORD']}
       begin
-        self.auth || self.envelope_bag.auth || default_auth  
+        self.auth || self.envelope_bag.auth || default_auth
       rescue Exception => e
         logger.error "Unable to read auth config from Envelope or Bag, using default auth options from ENV"
         return default_auth
       end
     end
   end
-  
+
   def self.included(receiver)
     receiver.send :include, InstanceMethods
   end
-  
+
   private
   def api_client
     SendGridWebApi::Client.new(self.auth_pair['username'],self.auth_pair['password'])
   end
-  
+
   def validate_envelope!
     raise "Invalid Document! #{self.errors.messages}" unless self.valid?
   end
@@ -101,18 +101,19 @@ module MailCannon::Adapter::SendgridWeb
   def send_multiple_emails
     prepare_xsmtpapi!
     api_client.mail.send(
-              :to => self.from,
-              :subject => self.subject,
-              :text => self.mail.text,
-              :html => self.mail.html,
-              :from => self.from,
-              :fromname => self.from_name,
-              :bcc => self.bcc,
-              :replyto => self.reply_to,
-              :"x-smtpapi" => self.xsmtpapi.to_json
+              :to          => self.from,
+              :subject     => self.subject,
+              :text        => self.mail.text,
+              :html        => self.mail.html,
+              :from        => self.from,
+              :fromname    => self.from_name,
+              :bcc         => self.bcc,
+              :replyto     => self.reply_to,
+              :"x-smtpapi" => self.xsmtpapi.to_json,
+              :headers     => self.headers.to_json
             )
   end
-  
+
   def successfully_sent?(response)
     response['message'] == 'success'
   end
