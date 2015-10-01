@@ -12,6 +12,6 @@ class MailCannon::SendgridEvent
   belongs_to :envelope_bag, index: true
 
   def self.insert_bulk(tha_huge_string)
-    MailCannon::SendgridEvent.with(safe: true).collection.insert(tha_huge_string)
+    MailCannon::SendgridEvent.with(safe: true).collection.insert_many(tha_huge_string)
   end
 end
