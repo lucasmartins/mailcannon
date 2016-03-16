@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'redis'
   s.add_dependency 'mongoid','~> 4.0.2'
   s.add_dependency 'sidekiq', '2.17.7'
-  s.add_dependency 'sendgrid_webapi', '0.0.3'
+  s.add_dependency 'sendgrid_webapi', '0.0.6'
   s.add_dependency 'json-schema'
   s.add_dependency 'librato-metrics'
 
