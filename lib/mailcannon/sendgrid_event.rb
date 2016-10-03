@@ -13,7 +13,7 @@ class MailCannon::SendgridEvent
 
   def self.insert_bulk(tha_huge_string)
     collection_mailcannon_sendgrid_event = MailCannon::SendgridEvent.with(safe: true).collection
-    if tha_huge_string.king_of?(Array)
+    if tha_huge_string.kind_of?(Array)
       collection_mailcannon_sendgrid_event.insert_many(tha_huge_string)
     else
       collection_mailcannon_sendgrid_event.insert_one(tha_huge_string)
