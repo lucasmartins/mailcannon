@@ -10,8 +10,7 @@ describe MailCannon::SendgridEvent do
 
     it "returns write result" do
       wresult = MailCannon::SendgridEvent.insert_bulk([{}, {}])
-      expect(wresult["ok"]).to be 1.0
-      expect(wresult["err"]).to be nil
+      expect(wresult.validate!.class).to be Mongo::BulkWrite::Result
     end
   end
 

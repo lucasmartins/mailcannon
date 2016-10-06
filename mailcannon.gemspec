@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'activemodel', '>= 3.0.0'
 
   s.add_dependency 'redis'
-  s.add_dependency 'mongoid','~> 4.0.2'
+  s.add_dependency 'mongoid','~> 5.1.0'
   s.add_dependency 'sidekiq'
   s.add_dependency 'sendgrid_webapi', '0.0.6'
   s.add_dependency 'json-schema'
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-mocks", '>= 3.0.0'
   s.add_development_dependency "rspec-expectations", '>= 3.0.0'
   s.add_development_dependency "webmock", '>= 1.8.0', '< 1.16'
-  s.add_development_dependency "database_cleaner", '1.3.0'
+  s.add_development_dependency "database_cleaner", '>= 1.4'
   s.add_development_dependency "factory_girl", "~> 4.2.0"
   s.add_development_dependency "rake"
   s.add_development_dependency "pry"
