@@ -1,7 +1,7 @@
 machine:
   environment:
-    SENDGRID_USERNAME: app5967346@heroku.com
-    SENDGRID_PASSWORD: resd1gitais#2012
+    SENDGRID_USERNAME: xx
+    SENDGRID_PASSWORD: xx
 
   ruby:
     version: 2.2.2
