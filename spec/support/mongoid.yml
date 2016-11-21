@@ -9,7 +9,7 @@ development:
       # Provides the hosts the default session can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - localhost:<%= ENV['MONGODB_PORT'] || '27017' %>
+        - <%= ENV['MONGODB_URL'] || 'localhost:27017' %>
 test:
   clients:
     default:
