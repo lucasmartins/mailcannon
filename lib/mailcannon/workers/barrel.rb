@@ -14,8 +14,10 @@ class MailCannon::Barrel
     logger.info "sending MailCannon::Envelope.find('#{envelope_id}')"
     begin
       envelope = MailCannon::Envelope.find(envelope_id.to_s)
+      logger.info "envelope_id:#{envelope_id} envelope:#{envelope}"
       if envelope.valid?
         response = envelope.send!
+        logger.info "envelope_id:#{envelope_id} response:#{response}"
         unless response==true
           raise response
         end
