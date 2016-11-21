@@ -12,7 +12,7 @@ module MailCannon::Adapter::SendgridWeb
 
         self.after_sent
       rescue Exception => e
-        if e.message == "[\"Permission denied, wrong credentials\"]"
+        if e.message.include?("Permission denied, wrong credentials")
           raise MailCannon::Adapter::AuthException
         else
           raise e
