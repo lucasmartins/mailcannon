@@ -1,6 +1,6 @@
 version: '2'
 services:
-  gem:
+  mailcannon:
     build: .
     depends_on:
       - mongo
