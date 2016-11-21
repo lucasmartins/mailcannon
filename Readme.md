@@ -19,6 +19,18 @@ Changelog
 ### 1.1
 - Added retry to barrel
 
+Run Specs
+=========
+
+Build the application with docker:
+```
+  $ docker-compose up
+```
+Run specs inside docker:
+```
+  $ docker-compose run mailcannon rspec spec
+```
+
 Install
 =======
 
