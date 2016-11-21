@@ -1,0 +1,15 @@
+version: '2'
+services:
+  gem:
+    build: .
+    depends_on:
+      - mongo
+    volumes:
+      - .:/var/app
+    environment:
+      MONGODB_URL: mongo
+
+  mongo:
+    image: mongo
+    expose:
+      - '27017'
