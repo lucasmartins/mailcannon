@@ -26,7 +26,7 @@ class MailCannon::Barrel
       logger.error "unable to find the document MailCannon::Envelope.find('#{envelope_id}')"
       raise e
     rescue Exception => e
-      logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}') #{e.backtrace}"
+      logger.error "unable to send MailCannon::Envelope.find('#{envelope_id}') #{e.message}"
       raise e
     end
   end
