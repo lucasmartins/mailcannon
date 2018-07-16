@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'mongoid','~> 5.1.0'
   s.add_dependency 'sidekiq'
   s.add_dependency 'sendgrid_webapi', '0.0.6'
-  s.add_dependency 'json-schema', '~> 2.8'
+  s.add_dependency 'json-schema'
   s.add_dependency 'librato-metrics'
 
   s.add_development_dependency "vcr"
