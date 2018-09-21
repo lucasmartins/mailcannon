@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name                  = "mailcannon"
   s.version               = MailCannon::Version::STRING
   s.platform              = Gem::Platform::RUBY
-  s.required_ruby_version = ">= 1.9.3"
+  s.required_ruby_version = ">= 2.3"
   s.authors               = ["Lucas Martins"]
   s.email                 = ["lucasmartins@railsnapraia.com"]
   s.homepage              = "http://rubygems.org/gems/mailcannon"

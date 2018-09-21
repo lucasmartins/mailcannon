@@ -1,4 +1,4 @@
-FROM ruby:2.2.2
+FROM ruby:2.3.7
 
 RUN mkdir /var/app
 
