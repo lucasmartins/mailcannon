@@ -15,24 +15,23 @@ describe MailCannon::EnvelopeBag do
     end
 
     it "checks if bag is stale from env variable" do
-      ENV['FROZEN_STATISTICS_AFTER_DAYS'] = '20'
+      ENV["FROZEN_STATISTICS_AFTER_DAYS"] = "20"
       envelope_bag.created_at = 19.days.ago
       expect(envelope_bag).to_not be_stale
 
       envelope_bag.created_at = 21.days.ago
       expect(envelope_bag).to be_stale
 
-      ENV['FROZEN_STATISTICS_AFTER_DAYS'] = nil
+      ENV["FROZEN_STATISTICS_AFTER_DAYS"] = nil
     end
   end
 
   describe "#post!" do
-
     context "when it has no Envelopes" do
       let(:envelope_bag) { build(:empty_envelope_bag) }
 
       it "does not raise error" do
-        expect{envelope_bag.post!}.not_to raise_error
+        expect { envelope_bag.post! }.not_to raise_error
       end
       it "returns false" do
         expect(envelope_bag.post!).to be false
@@ -43,7 +42,7 @@ describe MailCannon::EnvelopeBag do
       let(:envelope_bag) { build(:filled_envelope_bag) }
 
       it "does not raise error" do
-        expect{envelope_bag.post!}.not_to raise_error
+        expect { envelope_bag.post! }.not_to raise_error
       end
       it "returns true" do
         expect(envelope_bag.post!).to be true

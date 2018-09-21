@@ -13,12 +13,12 @@ describe MailCannon::Envelope do
       end
     end
   end
-  
+
   describe "#stamp!" do
     context "passing Integer" do
       let(:envelope) { build(:envelope) }
       it "creates a Stamp" do
-        expect{ envelope.stamp!(2) }.to change{ envelope.stamps.size }.by(1)
+        expect { envelope.stamp!(2) }.to change { envelope.stamps.size }.by(1)
       end
       it "creates the right kind of Stamp" do
         envelope.stamp!(2)
@@ -30,7 +30,7 @@ describe MailCannon::Envelope do
       let(:envelope) { build(:envelope) }
       let(:stamp) { build(:stamp, code: 3) }
       it "creates a Stamp" do
-        expect{ envelope.stamp!(stamp) }.to change{ envelope.stamps.size }.by(1)
+        expect { envelope.stamp!(stamp) }.to change { envelope.stamps.size }.by(1)
       end
       it "creates the right kind of Stamp" do
         envelope.stamp!(stamp)
@@ -41,9 +41,9 @@ describe MailCannon::Envelope do
     context "passing Event" do
       let(:envelope) { build(:envelope) }
       let(:event) { MailCannon::Event::Click }
-      
+
       it "creates a Stamp" do
-        expect{ envelope.stamp!(event) }.to change{ envelope.stamps.size }.by(1)
+        expect { envelope.stamp!(event) }.to change { envelope.stamps.size }.by(1)
       end
       it "creates the right kind of Stamp" do
         envelope.stamp!(event)
@@ -52,12 +52,12 @@ describe MailCannon::Envelope do
       end
     end
   end
-  
+
   describe "#posted?" do
     context "when already posted" do
       let(:envelope) { build(:envelope) }
       it "returns true" do
-        VCR.use_cassette('mailcannon_adapter_sendgrid_send') do
+        VCR.use_cassette("mailcannon_adapter_sendgrid_send") do
           envelope.post!
         end
         expect(envelope.posted?).to be true
@@ -72,7 +72,7 @@ describe MailCannon::Envelope do
   end
 
   describe "#schedule to any queue" do
-    let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
+    let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" } }) }
 
     it "allows posting to any queue" do
       envelope.post!(queue: :foo_queue)
@@ -87,19 +87,19 @@ describe MailCannon::Envelope do
 
   describe "xsmtpapi", sidekiq: :inline do
     context "keep xsmtpapi arguments after #post!" do
-      let(:envelope_bag) { build(:empty_envelope_bag)}
-      let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" }}) }
+      let(:envelope_bag) { build(:empty_envelope_bag) }
+      let(:envelope) { build(:envelope_multi, xsmtpapi: { "unique_args" => { "userid" => "1123", "template" => "welcome" } }) }
 
       it "returns true" do
         envelope_bag.save
         envelope_bag.envelopes << envelope
-        VCR.use_cassette('mailcannon_adapter_sendgrid_send_bulk') do
+        VCR.use_cassette("mailcannon_adapter_sendgrid_send_bulk") do
           envelope.post!
         end
         envelope.reload # content is changed inside the Adapter module
         expect(envelope.xsmtpapi).to have_key("unique_args")
-        expect(envelope.xsmtpapi["unique_args"]).to have_key("envelope_id") if MailCannon.config['add_envelope_id_to_unique_args']
-        expect(envelope.xsmtpapi["unique_args"]).to have_key("envelope_bag_id") if MailCannon.config['add_envelope_bag_id_to_unique_args']
+        expect(envelope.xsmtpapi["unique_args"]).to have_key("envelope_id") if MailCannon.config["add_envelope_id_to_unique_args"]
+        expect(envelope.xsmtpapi["unique_args"]).to have_key("envelope_bag_id") if MailCannon.config["add_envelope_bag_id_to_unique_args"]
       end
     end
   end

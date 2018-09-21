@@ -2,19 +2,19 @@
 module MailCannon::Adapter
   class AuthException < RuntimeError; end
   class DeliveryFailedException < RuntimeError; end
-  
+
   module InstanceMethods
     # Sends an Envelope with 1 recipient.
     def send!
-      raise 'Not available for this adapter!'
+      raise "Not available for this adapter!"
     end
-    
+
     # Sends an Envelope with multiple recipients.
     def send_bulk!
-      raise 'Not available for this adapter!'
+      raise "Not available for this adapter!"
     end
   end
-  
+
   def self.included(receiver)
     receiver.send :include, InstanceMethods
   end

@@ -4,6 +4,6 @@ module MailCannon
     MAJOR = 0
     MINOR = 4
     PATCH = 3
-    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}"
+    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}".freeze
   end
 end

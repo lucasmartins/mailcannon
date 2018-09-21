@@ -18,7 +18,7 @@ class MailCannon::SendgridEvent
   private
 
   def self.parse_to_array(value)
-    return value if value.kind_of?(Array)
+    return value if value.is_a?(Array)
     [value]
   end
 end

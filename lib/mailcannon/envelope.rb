@@ -27,80 +27,60 @@ class MailCannon::Envelope
 
   # Post this Envelope!
   def post_envelope!(options = {})
-    self.save if self.changed?
-    raise "Envelope(#{self.id}) has no mail! Didn't you already send it?" unless self.mail
-    if validate_xsmtpapi(self.xsmtpapi)
-      jid = schedule_send_job(options[:queue])
-      self.save if self.changed?
-    else
-      raise 'Invalid xsmtpapi hash!'
-    end
+    save if changed?
+    raise "Envelope(#{id}) has no mail! Didn't you already send it?" unless mail
+
+    schedule_send_job(options[:queue])
+    save if changed?
   end
-  alias_method :"post!",:"post_envelope!"
+  alias post! post_envelope!
 
   # Stamp this Envelope with code.
-  def stamp!(code,recipient=nil)
+  def stamp!(code, recipient = nil)
     self.class.valid_code_kind?(code)
-    unless self.persisted?
+    unless persisted?
       logger.warn "You're trying to save the Stamp with an unsaved Envelope! Auto-saving Envelope."
-      self.save
+      save
     end
-    self.stamps.create(code: MailCannon::Stamp.from_code(code).code, recipient: recipient)
+    stamps.create(code: MailCannon::Stamp.from_code(code).code, recipient: recipient)
   end
 
   # Callback to be run after the Envelope has been processed.
   def after_sent
     stamp!(MailCannon::Event::Processed.stamp)
-    if MailCannon.config['auto_destroy']
-      self.mail.destroy
-      self.mail=nil # to avoid reload
+    if MailCannon.config["auto_destroy"]
+      mail.destroy
+      self.mail = nil # to avoid reload
     end
   end
 
   def posted?
-    if self.stamps.where(code: 0).count > 0
-      true
-    else
-      false
-    end
+    stamps.where(code: 0).count > 0
   end
 
   def processed?
-    if self.stamps.where(code: 1).count > 0
-      true
-    else
-      false
-    end
+    stamps.where(code: 1).count > 0
   end
 
   private
+
   def schedule_send_job(queue)
     queue ||= :mail_delivery
 
-    if MailCannon.config['waiting_time'].to_i > 0
-      self.jid = Sidekiq::Client.enqueue_to_in(queue, MailCannon.config['waiting_time'].seconds, MailCannon::Barrel, self.id)
-    else
-      self.jid = Sidekiq::Client.enqueue_to(queue, MailCannon::Barrel, self.id)
-    end
-    if self.jid
-      self.stamp! MailCannon::Event::Posted.stamp
-      return self.jid
+    self.jid = if MailCannon.config["waiting_time"].to_i > 0
+                 Sidekiq::Client.enqueue_to_in(queue, MailCannon.config["waiting_time"].seconds, MailCannon::Barrel, id)
+               else
+                 Sidekiq::Client.enqueue_to(queue, MailCannon::Barrel, id)
+               end
+    if jid
+      stamp! MailCannon::Event::Posted.stamp
+      return jid
     end
   end
 
   def self.valid_code_kind?(code)
-    unless [Fixnum, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code.to_s.camelize.to_sym)
-      raise 'code must be an Integer, MailCannon::Event::*, or MailCannon::Stamp !'
+    unless [Integer, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code.to_s.camelize.to_sym)
+      raise "code must be an Integer, MailCannon::Event::*, or MailCannon::Stamp !"
     end
   end
-
-  def validate_xsmtpapi(xsmtpapi)
-    return true # TODO write tests for this method
-    if xsmtpapi['to'].is_a? Array
-      true
-    else
-      false
-    end
-  end
-
 end
