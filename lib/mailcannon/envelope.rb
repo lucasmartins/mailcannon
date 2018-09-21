@@ -79,7 +79,7 @@ class MailCannon::Envelope
   end
 
   def self.valid_code_kind?(code)
-    unless [Integer, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code.to_s.camelize.to_sym)
+    unless [Integer, Fixnum, MailCannon::Stamp].include?(code.class) || MailCannon::Event.constants.include?(code.to_s.camelize.to_sym)
       raise "code must be an Integer, MailCannon::Event::*, or MailCannon::Stamp !"
     end
   end

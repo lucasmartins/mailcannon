@@ -11,16 +11,6 @@ class MailCannon::EnvelopeBag
   def push(envelope)
     envelopes.push envelope
   end
-  alias add push
-
-  def mark_stats_processed!
-    self.pending_stats = false
-    save!
-  end
-
-  def stale?
-    created_at && created_at < (ENV["FROZEN_STATISTICS_AFTER_DAYS"] || 15).to_i.days.ago
-  end
 
   # Post this Envelope!
   def post_envelopes!
