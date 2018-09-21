@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/ruby:2.3.7
         environment:
-          MONGODB_URL: mongo
+          MONGODB_URL: localhost:27017
           RACK_ENV: test
           REDIS_URL: 'redis://localhost:6379'
           COVERAGE: 'true'
