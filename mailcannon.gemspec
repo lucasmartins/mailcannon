@@ -29,15 +29,16 @@ Gem::Specification.new do |s|
   s.add_development_dependency "bundler", "~> 1.5"
   s.add_development_dependency "database_cleaner", ">= 1.4"
   s.add_development_dependency "factory_girl", "~> 4.2.0"
+  s.add_development_dependency "fivemat"
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-nav"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec", ">= 3.0.0"
   s.add_development_dependency "rspec-expectations", ">= 3.0.0"
   s.add_development_dependency "rspec-mocks", ">= 3.0.0"
+  s.add_development_dependency "rspec_junit_formatter"
+  s.add_development_dependency "simplecov"
   s.add_development_dependency "vcr"
   s.add_development_dependency "webmock", ">= 1.8.0", "< 1.16"
   s.add_development_dependency "yard"
-
-  s.add_development_dependency "coveralls" if RUBY_ENGINE == "ruby"
 end

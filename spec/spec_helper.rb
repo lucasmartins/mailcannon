@@ -1,6 +1,5 @@
 require "pry"
 require "pry-nav"
-require "mailcannon"
 require "rspec"
 require "rspec/mocks"
 require "rspec/expectations"
@@ -12,14 +11,14 @@ require "webmock"
 require "webmock/rspec"
 require "sidekiq/testing"
 
-if ENV["TRAVIS"] == true
-  begin
-    require "coveralls"
-    Coveralls.wear!
-  rescue Exception => e
-    puts "Coveralls not available!"
+if ENV["COVERAGE"] == "true"
+  require "simplecov"
+  SimpleCov.start do
+    add_filter "spec"
   end
 end
+
+require "mailcannon"
 
 SPECDIR = Pathname.new(File.dirname(__FILE__))
 TMPDIR = SPECDIR.join("tmp")
