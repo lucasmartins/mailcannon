@@ -1,7 +1,0 @@
-machine:
-  environment:
-    SENDGRID_USERNAME: xx
-    SENDGRID_PASSWORD: xx
-
-  ruby:
-    version: 2.2.2

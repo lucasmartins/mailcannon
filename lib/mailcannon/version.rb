@@ -2,8 +2,8 @@
 module MailCannon
   module Version
     MAJOR = 0
-    MINOR = 4
-    PATCH = 3
-    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}"
+    MINOR = 5
+    PATCH = 0
+    STRING = "#{MAJOR}.#{MINOR}.#{PATCH}".freeze
   end
 end

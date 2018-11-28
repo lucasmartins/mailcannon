@@ -1,12 +1,12 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+
+$LOAD_PATH.push File.expand_path("lib", __dir__)
 require "mailcannon/version"
 
 Gem::Specification.new do |s|
   s.name                  = "mailcannon"
   s.version               = MailCannon::Version::STRING
   s.platform              = Gem::Platform::RUBY
-  s.required_ruby_version = ">= 1.9.3"
+  s.required_ruby_version = ">= 2.3"
   s.authors               = ["Lucas Martins"]
   s.email                 = ["lucasmartins@railsnapraia.com"]
   s.homepage              = "http://rubygems.org/gems/mailcannon"
@@ -16,42 +16,27 @@ Gem::Specification.new do |s|
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  if RUBY_ENGINE=='rbx'
-    s.add_dependency 'rubysl'
-  end
-  if RUBY_PLATFORM=='ruby'
-    s.add_dependency 'yajl-ruby'
-  end
-  if RUBY_PLATFORM=='jruby'
-    s.add_dependency 'jruby-openssl'
-  end
+  s.add_dependency "mongoid", "~> 5.1.0"
+  s.add_dependency "redis"
+  s.add_dependency "sendgrid_webapi", "0.0.6"
+  s.add_dependency "sidekiq"
 
-  s.add_runtime_dependency 'activemodel', '>= 3.0.0'
-
-  s.add_dependency 'redis'
-  s.add_dependency 'mongoid','~> 5.1.0'
-  s.add_dependency 'sidekiq'
-  s.add_dependency 'sendgrid_webapi', '0.0.6'
-  s.add_dependency 'json-schema'
-  s.add_dependency 'librato-metrics'
-
-  s.add_development_dependency "vcr"
   s.add_development_dependency "bundler", "~> 1.5"
-  s.add_development_dependency "rspec", '>= 3.0.0'
-  s.add_development_dependency "rspec-mocks", '>= 3.0.0'
-  s.add_development_dependency "rspec-expectations", '>= 3.0.0'
-  s.add_development_dependency "webmock", '>= 1.8.0', '< 1.16'
-  s.add_development_dependency "database_cleaner", '>= 1.4'
+  s.add_development_dependency "database_cleaner", ">= 1.4"
   s.add_development_dependency "factory_girl", "~> 4.2.0"
-  s.add_development_dependency "rake"
+  s.add_development_dependency "fivemat"
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-nav"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rspec", ">= 3.0.0"
+  s.add_development_dependency "rspec-expectations", ">= 3.0.0"
+  s.add_development_dependency "rspec-mocks", ">= 3.0.0"
+  s.add_development_dependency "rspec_junit_formatter"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "vcr"
+  s.add_development_dependency "webmock", ">= 1.8.0", "< 1.16"
   s.add_development_dependency "yard"
-
-  if RUBY_ENGINE == 'ruby'
-    s.add_development_dependency 'coveralls'
-  end
 end
