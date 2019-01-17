@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "mongoid", "~> 5.1.0"
   s.add_dependency "redis"
-  s.add_dependency "sendgrid_webapi", "0.0.6"
+  s.add_dependency "sendgrid_webapi", "0.0.8"
   s.add_dependency "sidekiq"
 
   s.add_development_dependency "bundler", "~> 1.5"
