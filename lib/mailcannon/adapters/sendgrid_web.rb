@@ -1,4 +1,28 @@
 # Provides the Sendgrid Web API Adapter, refer to http://sendgrid.com/docs/API_Reference/Web_API/mail.html
+require 'net/http'
+module Net
+  class HTTP
+    def self.enable_debug!
+      # raise "You don't want to do this in anything but development mode!" unless Rails.env == 'development'
+      class << self
+        alias_method :__new__, :new
+        def new(*args, &blk)
+          instance = __new__(*args, &blk)
+          instance.set_debug_output($stdout)
+          instance
+        end
+      end
+    end
+
+    def self.disable_debug!
+      class << self
+        alias_method :new, :__new__
+        remove_method :__new__
+      end
+    end
+  end
+end
+
 module MailCannon::Adapter::SendgridWeb
   include MailCannon::Adapter
   module InstanceMethods
@@ -76,6 +100,13 @@ module MailCannon::Adapter::SendgridWeb
 
   def send_multiple_emails
     prepare_xsmtpapi!
+
+    enable_trace = xsmtpapi.key?("unique_args") && xsmtpapi["unique_args"].key?('a') && xsmtpapi["unique_args"]['a'] == '344c70ba-2312-4ed4-b449-66263aa399fc'
+
+    if enable_trace
+      Net::HTTP.enable_debug!
+    end
+
     api_client.mail.send(
       :to          => from,
       :subject     => subject,
@@ -88,6 +119,10 @@ module MailCannon::Adapter::SendgridWeb
       :"x-smtpapi" => xsmtpapi.to_json,
       :headers     => headers.to_json
     )
+
+    if enable_trace
+      Net::HTTP.disable_debug!
+    end
   end
 
   def successfully_sent?(response)
